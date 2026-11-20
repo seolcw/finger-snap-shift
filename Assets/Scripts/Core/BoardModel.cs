@@ -116,6 +116,14 @@ namespace ShiftMagicSpell.Core
         {
             var result = new List<BoardCell>();
             int length = axis == LineAxis.Row ? GeometryUtils.COLS : GeometryUtils.ROWS;
+
+            // 슬롯 칸(판 바깥 열 -1, 7)의 열처럼 판 밖 줄은 빈 줄
+            int indexLimit = axis == LineAxis.Row ? GeometryUtils.ROWS : GeometryUtils.COLS;
+            if (index < 0 || index >= indexLimit)
+            {
+                return result;
+            }
+
             for (int i = 0; i < length; i++)
             {
                 BoardCell cell = axis == LineAxis.Row ? _cells[index, i] : _cells[i, index];

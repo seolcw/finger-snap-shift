@@ -310,6 +310,21 @@ namespace ShiftMagicSpell.View
                             break;
                         }
 
+                    case FxKind.Click:
+                        {
+                            Vector2 center = ToPixel(fx.From);
+                            _canvas.DrawRing(center, 3f + (fx.Duration - fx.T) * 40f, 1, PaletteUtils.Warn.WithAlpha(fx.T / fx.Duration));
+                            break;
+                        }
+
+                    case FxKind.Impact:
+                        foreach (Vector2Int cell in fx.Cells)
+                        {
+                            Vector2 topLeft = ViewUtils.CellTopLeft(fx.Board, cell.y, cell.x);
+                            _canvas.DrawRect(topLeft.x + 1f, topLeft.y + 1f, 14f, 14f, PaletteUtils.Warn.WithAlpha(fx.T / fx.Duration * 0.6f));
+                        }
+
+                        break;
                     case FxKind.Warp:
                         {
                             Vector2 center = ViewUtils.CellCenter(fx.Board, fx.R, fx.C);

@@ -194,6 +194,22 @@ namespace ShiftMagicSpell.View
             DrawCircle(center, radius, Mathf.Max(1, thickness), color);
         }
 
+        /// <summary>꽉 찬 타원(그림자 등). 반지름 16px 원을 늘려서 그린다.</summary>
+        public void DrawEllipse(Vector2 center, float radiusX, float radiusY, Color color)
+        {
+            if (color.a <= 0f || radiusX <= 0f || radiusY <= 0f)
+            {
+                return;
+            }
+
+            const int baseRadius = 16;
+            SpriteRenderer renderer = Next(GetCircleSprite(baseRadius, 0), color);
+            Transform tr = renderer.transform;
+            tr.localPosition = ToWorld(center.x, center.y);
+            tr.localRotation = Quaternion.identity;
+            tr.localScale = new Vector3(radiusX / baseRadius, radiusY / baseRadius, 1f);
+        }
+
         private void DrawCircle(Vector2 center, float radius, int thickness, Color color)
         {
             int r = Mathf.Clamp(Mathf.RoundToInt(radius), 1, MAX_RADIUS);

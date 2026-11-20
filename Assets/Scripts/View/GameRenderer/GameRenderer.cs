@@ -29,7 +29,10 @@ namespace ShiftMagicSpell.View
             ApplyShake();
             DrawBoard(0);
             DrawBoard(1);
+            DrawWarnings();
+            DrawBullets();
             DrawPlayer();
+            DrawHand();
             DrawCellFx();
             _canvas.Offset = Vector2.zero;
             DrawHud();

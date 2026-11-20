@@ -13,6 +13,7 @@ namespace ShiftMagicSpell.Core
         public readonly BoardModel[] Boards;
         public readonly PlayerController Player;
         public readonly HandController Hand;
+        public readonly HandBrain Brain;
         public readonly WordSystem Words;
         public readonly GameRandom Random;
         public readonly List<FxEvent> Fx = new List<FxEvent>();
@@ -46,6 +47,7 @@ namespace ShiftMagicSpell.Core
             Boards = new[] { new BoardModel(0, layout), new BoardModel(1, layout) };
             Player = new PlayerController(this);
             Hand = new HandController(this);
+            Brain = new HandBrain(this);
             Words = new WordSystem(this);
         }
 
@@ -86,6 +88,7 @@ namespace ShiftMagicSpell.Core
                 Hand.Hp = handHp.Value;
             }
 
+            Brain.Reset();
             Words.Reset();
             Words.Refresh();
             Fx.Clear();
@@ -202,7 +205,8 @@ namespace ShiftMagicSpell.Core
         {
             bool isFinisher = word == Data.FinisherWord;
             SpellDef spell = Data.GetSpellOrNull(word);
-            int damage = Mathf.Max(1, Mathf.RoundToInt(word.Length * multiplier));
+            // 웹(Math.round)과 같이 .5는 올린다
+            int damage = Mathf.Max(1, Mathf.FloorToInt(word.Length * multiplier + 0.5f));
 
             // 마지막 페이즈에서는 마무리 단어로만 쓰러진다: 다른 단어는 손 HP를 1 아래로 못 내린다
             if (IsLastPhase && !isFinisher)
@@ -304,6 +308,7 @@ namespace ShiftMagicSpell.Core
                 board.Update(dt);
             }
 
+            Brain.Update(dt);
             Player.Update(dt);
             if (State == GameState.Play)
             {
