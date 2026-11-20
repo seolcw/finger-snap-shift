@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using ShiftMagicSpell.Core;
+using ShiftMagicSpell.Data;
 using UnityEngine;
 
 namespace ShiftMagicSpell.View
@@ -64,6 +65,31 @@ namespace ShiftMagicSpell.View
                 }
             }
 
+            // 단어 위치 힌트(점멸할 때만): 가장 많이 맞춘 자리는 노란 점선, 단어 글자는 노랑, 제자리에 맞은 글자는 초록
+            string word = _game.Words.Current ?? string.Empty;
+            float hint = _game.State == GameState.Play ? _game.HintAlpha() : 0f;
+            AlignResult best = _game.Words.BestOrNull();
+            var okCells = new HashSet<BoardCell>();
+            if (best != null && best.Board == boardIndex && best.Count > 0)
+            {
+                for (int i = 0; i < best.Cells.Count; i++)
+                {
+                    if (board.LetterAt(best.Cells[i].R, best.Cells[i].C) == word[i])
+                    {
+                        okCells.Add(best.Cells[i]);
+                    }
+                }
+
+                if (hint > 0f)
+                {
+                    foreach (BoardCell cell in best.Cells)
+                    {
+                        Vector2 topLeft = ViewUtils.CellTopLeft(boardIndex, cell.R, cell.C);
+                        _canvas.DrawDashedRect(topLeft.x - 1f, topLeft.y - 1f, ViewUtils.CELL_W + 2f, ViewUtils.CELL_H + 1f, 2f, PaletteUtils.Glow.WithAlpha(0.85f * hint));
+                    }
+                }
+            }
+
             // 움직이는 키를 위에 그린다
             foreach (bool isMovingPass in new[] { false, true })
             {
@@ -74,15 +100,37 @@ namespace ShiftMagicSpell.View
                         continue;
                     }
 
-                    bool isOnBand = isShowingBand && (cell.R == player.R || cell.C == player.C);
-                    DrawKey(boardIndex, cell, isOnBand);
+                    var style = new KeyStyle
+                    {
+                        IsOnBand = isShowingBand && (cell.R == player.R || cell.C == player.C),
+                        IsOk = okCells.Contains(cell),
+                        IsInWord = cell.Key.HasLetter && word.IndexOf(cell.Key.Letter) >= 0,
+                        Hint = hint,
+                    };
+                    DrawKey(boardIndex, cell, style);
+                }
+            }
+
+            foreach (BoardCell slot in board.Slots)
+            {
+                if (slot.Block != null)
+                {
+                    DrawBlock(boardIndex, slot);
                 }
             }
         }
 
         private static readonly (float Lag, float Alpha)[] GhostTrail = { (0.07f, 0.28f), (0.035f, 0.45f) };
 
-        private void DrawKey(int boardIndex, BoardCell cell, bool isOnBand)
+        private struct KeyStyle
+        {
+            public bool IsOnBand;
+            public bool IsOk;
+            public bool IsInWord;
+            public float Hint;
+        }
+
+        private void DrawKey(int boardIndex, BoardCell cell, KeyStyle style)
         {
             KeyTile key = cell.Key;
             Vector3 offset = SlideAnim.GetOffset(key.Slide);
@@ -94,15 +142,50 @@ namespace ShiftMagicSpell.View
             {
                 _canvas.DrawFrame(Frame("KeyRowBand", "Band", 1), topLeft.x, topLeft.y, tint);
             }
-            else if (isOnBand)
+            else if (style.IsOnBand)
             {
                 _canvas.DrawFrame(Frame("KeyRowBand", "Band", 0), topLeft.x, topLeft.y, tint);
             }
 
+            bool isHinted = style.Hint > 0f && (style.IsOk || style.IsInWord);
+            if (isHinted && style.IsOk)
+            {
+                _canvas.DrawFrame(Frame("KeyMatched", "Glow"), topLeft.x, topLeft.y, tint.WithAlpha(offset.z * style.Hint));
+            }
+            else if (isHinted)
+            {
+                _canvas.DrawRect(topLeft.x + 2f, topLeft.y + 2f, 12f, 12f, PaletteUtils.Glow.WithAlpha(0.22f * style.Hint * offset.z));
+            }
+
             if (key.HasLetter && _text.TryGetGlyph(key.Letter, out var glyph))
             {
-                _canvas.DrawFrame(glyph, topLeft.x + GLYPH_OFFSET_X, topLeft.y + GLYPH_OFFSET_Y, PaletteUtils.Text.WithAlpha(offset.z));
+                Color letterColor = PaletteUtils.Text;
+                if (isHinted)
+                {
+                    letterColor = Color.Lerp(PaletteUtils.Text, style.IsOk ? PaletteUtils.Ok : PaletteUtils.Glow, style.Hint);
+                }
+
+                _canvas.DrawFrame(glyph, topLeft.x + GLYPH_OFFSET_X, topLeft.y + GLYPH_OFFSET_Y, letterColor.WithAlpha(offset.z));
             }
+        }
+
+        /// <summary>
+        /// 공격 블록: 마법 색으로 틴트한 블록 위에 마법 아이콘. 들어올 때 커지며 나타나고, 손에게 맞으면 흔들리고 금이 간다.
+        /// </summary>
+        private void DrawBlock(int boardIndex, BoardCell slot)
+        {
+            AttackBlock block = slot.Block;
+            SpellDef spell = _game.Data.GetSpellOrNull(block.Word);
+            Color color = spell != null ? spell.Color : PaletteUtils.Glow;
+            float pop = Mathf.Min(1f, block.Age / 0.25f);
+            float scale = pop < 1f ? 0.4f + 0.6f * pop + Mathf.Sin(pop * Mathf.PI) * 0.25f : 1f;
+            float shake = block.HitT > 0f ? Mathf.Sin(_game.Time * 70f) * 3f * block.HitT / 0.4f : 0f;
+            Vector2 topLeft = ViewUtils.CellTopLeft(boardIndex, slot.R, slot.C);
+            Vector2 center = topLeft + new Vector2(8f + Mathf.Round(shake), 10f);
+            bool isCracked = block.Hp < _game.Config.BlockHp;
+            ArtFrame blockFrame = isCracked ? Frame("AttackBlock", "Cracked") : Animated("AttackBlock", "Idle", block.Age);
+            _canvas.DrawFrameCentered(blockFrame, center.x, center.y, color, 0f, scale);
+            _canvas.DrawFrameCentered(Frame("SpellIcon", spell?.Icon), center.x, center.y - 2f, Color.white, 0f, scale);
         }
 
         /// <summary>
@@ -184,6 +267,49 @@ namespace ShiftMagicSpell.View
                     case FxKind.Rotate:
                         DrawRotateFx(fx);
                         break;
+                    case FxKind.Match:
+                        {
+                            // 맞춘 칸이 초록으로 번쩍이며 퍼진다
+                            float u = fx.T / fx.Duration;
+                            float grow = (1f - u) * 3f;
+                            foreach (Vector2Int cell in fx.Cells)
+                            {
+                                Vector2 topLeft = ViewUtils.CellTopLeft(fx.Board, cell.y, cell.x);
+                                _canvas.DrawRect(topLeft.x - grow, topLeft.y - grow, ViewUtils.CELL_W + grow * 2f, ViewUtils.CELL_W + grow * 2f, PaletteUtils.Ok.WithAlpha(u * 0.8f));
+                            }
+
+                            break;
+                        }
+
+                    case FxKind.Store:
+                        {
+                            // 완성한 단어가 블록이 되어 반대편 슬롯으로 포물선을 그리며 날아간다
+                            float u = 1f - fx.T / fx.Duration;
+                            float eased = 1f - (1f - u) * (1f - u);
+                            Vector2 from = ToPixel(fx.From);
+                            Vector2 to = ToPixel(fx.To);
+                            Vector2 position = Vector2.Lerp(from, to, eased) - new Vector2(0f, Mathf.Sin(u * Mathf.PI) * 28f);
+                            SpellDef spell = _game.Data.GetSpellOrNull(fx.Word);
+                            _canvas.DrawFrameCentered(Frame("AttackBlock", "Idle"), position.x, position.y, fx.Color);
+                            _canvas.DrawFrameCentered(Frame("SpellIcon", spell?.Icon), position.x, position.y - 2f, Color.white);
+                            break;
+                        }
+
+                    case FxKind.Fizzle:
+                        {
+                            // 블록이 깨지거나 사라질 때 조각이 흩어진다
+                            Vector2 center = ViewUtils.CellCenter(fx.Board, fx.R, fx.C);
+                            float u = 1f - fx.T / fx.Duration;
+                            for (int i = 0; i < 6; i++)
+                            {
+                                float angle = i * Mathf.PI / 3f;
+                                Vector2 position = center + new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * (14f * u);
+                                _canvas.DrawFrameCentered(Animated("BlockDebris", "Debris", u), position.x, position.y + u * u * 8f, Color.white.WithAlpha(1f - u));
+                            }
+
+                            break;
+                        }
+
                     case FxKind.Warp:
                         {
                             Vector2 center = ViewUtils.CellCenter(fx.Board, fx.R, fx.C);
@@ -201,7 +327,12 @@ namespace ShiftMagicSpell.View
 
                     case FxKind.Float:
                         {
-                            Vector2 position = ToPixel(fx.From) - new Vector2(0f, (1f - fx.T / fx.Duration) * 10f);
+                            if (fx.Age < fx.Delay)
+                            {
+                                break;
+                            }
+
+                            Vector2 position = ToPixel(fx.From) - new Vector2(0f, Mathf.Clamp01(1f - fx.T / fx.Duration) * 10f);
                             _text.Draw(fx.Text, position.x, position.y, fx.Color.WithAlpha(Mathf.Min(1f, fx.T * 2f)), TextAlign.Center, 1f, Color.black);
                             break;
                         }

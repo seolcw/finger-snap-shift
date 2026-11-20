@@ -173,6 +173,24 @@ namespace ShiftMagicSpell.Core
 
         public static readonly MoveDir[] AllDirs = { MoveDir.Up, MoveDir.Down, MoveDir.Left, MoveDir.Right };
 
+        public BoardCell EmptySlotOrNull()
+        {
+            return Slots.Find(slot => slot.Block == null);
+        }
+
+        public int BlockCount()
+        {
+            return Slots.FindAll(slot => slot.Block != null).Count;
+        }
+
+        /// <summary>이 판에서 단어가 가장 많이 맞춰진 자리</summary>
+        public AlignResult Align(string word)
+        {
+            AlignResult result = LayoutUtils.BestAlign(Lines, LetterAt, word);
+            result.Board = Index;
+            return result;
+        }
+
         public bool CanRotate(LineAxis axis, int index)
         {
             return MovableCells(axis, index).Count >= 2;

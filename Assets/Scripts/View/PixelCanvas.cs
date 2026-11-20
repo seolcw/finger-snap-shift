@@ -20,6 +20,7 @@ namespace ShiftMagicSpell.View
 
         private readonly List<SpriteRenderer> _pool = new List<SpriteRenderer>();
         private readonly Dictionary<int, Sprite> _circleCache = new Dictionary<int, Sprite>();
+        private readonly Dictionary<(Sprite, int), Sprite> _sliceCache = new Dictionary<(Sprite, int), Sprite>();
         private int _usedCount;
         private Sprite _pixelSprite;
 
@@ -83,6 +84,47 @@ namespace ShiftMagicSpell.View
             tr.localPosition = ToWorld(cx, cy) - rotation * halfCanvas;
             tr.localRotation = rotation;
             tr.localScale = new Vector3(scale, scale, 1f);
+        }
+
+        /// <summary>9-slice: 테두리 border px는 그대로 두고 가운데만 늘려서 (x, y, width, height)를 채운다.</summary>
+        public void DrawNineSlice(ArtFrame frame, float x, float y, float width, float height, int border, Color tint)
+        {
+            if (!frame.IsValid)
+            {
+                return;
+            }
+
+            Rect source = frame.Sprite.textureRect;
+            float[] sourceX = { 0f, border, source.width - border, source.width };
+            float[] sourceY = { 0f, border, source.height - border, source.height };   // 위에서부터
+            float[] targetX = { x, x + border, x + width - border, x + width };
+            float[] targetY = { y, y + border, y + height - border, y + height };
+            for (int row = 0; row < 3; row++)
+            {
+                for (int col = 0; col < 3; col++)
+                {
+                    int sliceKey = row * 3 + col;
+                    if (!_sliceCache.TryGetValue((frame.Sprite, sliceKey), out Sprite slice))
+                    {
+                        var rect = new Rect(source.x + sourceX[col], source.y + source.height - sourceY[row + 1], sourceX[col + 1] - sourceX[col], sourceY[row + 1] - sourceY[row]);
+                        slice = Sprite.Create(frame.Sprite.texture, rect, Vector2.zero, PPU, 0, SpriteMeshType.FullRect);
+                        _sliceCache[(frame.Sprite, sliceKey)] = slice;
+                    }
+
+                    float targetWidth = targetX[col + 1] - targetX[col];
+                    float targetHeight = targetY[row + 1] - targetY[row];
+                    if (targetWidth <= 0f || targetHeight <= 0f)
+                    {
+                        continue;
+                    }
+
+                    SpriteRenderer renderer = Next(slice, tint);
+                    Transform tr = renderer.transform;
+                    tr.localPosition = ToWorld(targetX[col], targetY[row] + targetHeight);
+                    tr.localRotation = Quaternion.identity;
+                    tr.localScale = new Vector3(targetWidth / slice.rect.width, targetHeight / slice.rect.height, 1f);
+                }
+            }
         }
 
         public void DrawRect(float x, float y, float width, float height, Color color)

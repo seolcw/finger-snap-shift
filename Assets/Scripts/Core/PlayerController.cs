@@ -98,6 +98,24 @@ namespace ShiftMagicSpell.Core
             }
         }
 
+        /// <summary>Space: 슬롯 칸에 서 있으면 담긴 블록을 발동</summary>
+        public bool Fire()
+        {
+            BoardCell here = Here;
+            if (_game.State != GameState.Play || !here.IsSlot)
+            {
+                return false;
+            }
+
+            if (here.Block == null)
+            {
+                _game.Fx.Add(FxEvent.AtCell(FxKind.Deny, Board, R, C, 0.2f));
+                return false;
+            }
+
+            return _game.FireSlot(_game.Boards[Board], here);
+        }
+
         public bool TryMove(MoveDir dir)
         {
             if (_game.State != GameState.Play)

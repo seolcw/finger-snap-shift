@@ -55,6 +55,11 @@ namespace ShiftMagicSpell.Input
 
             PlayerController player = game.Player;
             player.IsShiftHeld = keyboard.leftShiftKey.isPressed || keyboard.rightShiftKey.isPressed;
+            if (keyboard.spaceKey.wasPressedThisFrame)
+            {
+                player.Fire();
+            }
+
             foreach ((Key key, MoveDir dir) in DirKeys)
             {
                 if (keyboard[key].wasPressedThisFrame)
