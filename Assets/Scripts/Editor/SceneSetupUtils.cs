@@ -29,11 +29,17 @@ namespace ShiftMagicSpell.Editor
             }
         }
 
-        /// <summary>배치 실행용: 임포트 설정 → 데이터 → 스프라이트 목록 → 화면 에셋 → 프리팹 → 씬</summary>
+        /// <summary>배치 실행용: 임포트 설정 → (없으면) 수치 데이터 → 스프라이트 목록 → 화면 에셋 → (없으면) 프리팹 → 씬</summary>
         public static void SetupAll()
         {
             AsepriteImportUtils.ApplyAll();
-            DataImportUtils.ImportAll();
+
+            // 수치 에셋은 없을 때만 웹 원본에서 만든다(인스펙터에서 바꾼 값을 지키려고)
+            if (AssetDatabase.LoadAssetAtPath<AttackPatternsData>(DataImportUtils.ATTACK_PATTERNS_PATH) == null)
+            {
+                DataImportUtils.ImportAll();
+            }
+
             ArtCatalogBuildUtils.Build();
             ViewAssetSetupUtils.Setup();
             PrefabSetupUtils.CreateMissing();

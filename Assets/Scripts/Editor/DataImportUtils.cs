@@ -18,7 +18,20 @@ namespace ShiftMagicSpell.Editor
         public const string BOARD_LAYOUTS_PATH = "Assets/Data/BoardLayouts.asset";
         private const string SOURCE_DIR = "WebPrototype/src";
 
-        [MenuItem("Tools/Shift Magic Spell/Import Prototype Data")]
+        [MenuItem("Tools/Shift Magic Spell/Import Prototype Data (overwrites asset values)")]
+        public static void ImportFromMenu()
+        {
+            bool isConfirmed = EditorUtility.DisplayDialog(
+                "Import Prototype Data",
+                "WebPrototype/src의 JSON으로 AttackPatterns·BoardLayouts 에셋 값을 덮어씁니다. 인스펙터에서 바꾼 수치는 사라집니다(Unity에서 추가한 MoveDelay·RotateDelay는 기본값으로).",
+                "덮어쓰기",
+                "취소");
+            if (isConfirmed)
+            {
+                ImportAll();
+            }
+        }
+
         public static void ImportAll()
         {
             Directory.CreateDirectory("Assets/Data");
