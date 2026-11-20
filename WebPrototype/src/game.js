@@ -1,4 +1,4 @@
-// Finger Snap Shift 웹 프로토타입 (5차) — Unity C# 이식을 염두에 둔 모듈 구성
+// Shift Magic Spell 웹 프로토타입 (5차) — Unity C# 이식을 염두에 둔 모듈 구성
 // BoardModel / PlayerController / WordSystem / Perimeter / HandBrain / HandController / Game(조립 + 렌더)
 // 핵심 동작은 Shift = 줄 돌리기. 플레이어는 Shift+방향키로 서 있는 행·열을 돌려 공격 단어를 한 줄로 맞추고,
 // 손은 피해를 주는 공격 위주로 하되 가끔 줄을 섞어 방해한다. 글자 자체는 바뀌지 않는다(판의 글자는 늘 26자 그대로).
@@ -1032,7 +1032,7 @@
         x.fillStyle = color || COL.text; x.font = `700 46px ${FONT}`; x.fillText(title, VIEW.w / 2, VIEW.h / 2 - 16);
         x.fillStyle = COL.dim; x.font = `500 15px ${FONT}`; x.fillText(sub, VIEW.w / 2, VIEW.h / 2 + 32);
       };
-      if (this.state === 'ready') center('FINGER SNAP SHIFT', '클릭 후 아무 키나 눌러 시작 · 이동 WASD/방향키 · Shift+방향키로 줄 돌리기 · 단어를 한 줄로 맞추면 반대편 슬롯에 공격 블록 · 슬롯에서 Space로 발동 · R 재시작');
+      if (this.state === 'ready') center('SHIFT MAGIC SPELL', '클릭 후 아무 키나 눌러 시작 · 이동 WASD/방향키 · Shift+방향키로 줄 돌리기 · 단어를 한 줄로 맞추면 반대편 슬롯에 공격 블록 · 슬롯에서 Space로 발동 · R 재시작');
       else if (this.state === 'dead') center('쓰러짐', `페이즈 ${this.phase + 1} 처음부터 다시 · 손 HP는 절반만 회복`, COL.hp);
       else if (this.state === 'phase' && this.stateT < 1.2) center(`PHASE ${this.phase + 1} 클리어`, '손이 빨라진다');
       else if (this.state === 'win' && this.stateT > 0.9) center('승리!', 'SHIFT로 마우스 커서를 물리쳤다 · R을 누르면 처음부터', COL.glow);

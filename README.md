@@ -1,6 +1,6 @@
-# Finger Snap Shift (GitHub Game Off 2026)
+# Shift Magic Spell (GitHub Game Off 2026)
 
-> 새 이름은 **Shift Spell Magic**(아직 파일·저장소 이름은 그대로). 이어서 작업할 때는 **`HANDOVER.md`를 먼저** 읽는다.
+> 예전 이름은 Finger Snap Shift. 이어서 작업할 때는 **`HANDOVER.md`를 먼저** 읽는다.
 
 이 폴더가 Unity 프로젝트 루트다. Unity는 `Assets/` 안만 임포트·빌드하므로, 빌드에 들어갈 것만 `Assets/`에 두고 나머지는 루트의 다른 폴더에 둔다.
 
@@ -11,7 +11,7 @@
 | `ArtSource/Palette/` | 12색 팔레트 `.gpl` | X |
 | `ArtSource/Preview/` | 에셋 시트·게임 화면 미리보기 PNG | X |
 | `ArtSource/Export/` | `.aseprite`를 가로 시트 PNG + JSON으로 내보낸 백업 | X |
-| `WebPrototype/` | 웹 프로토타입 5차(줄 돌리기). `finger-snap-shift-prototype.html`을 열면 플레이. 원본은 `src/`, `node src/build.js`로 합치고 `node src/verify-rules.js`로 규칙 검증 | X |
+| `WebPrototype/` | 웹 프로토타입 5차(줄 돌리기). `shift-magic-spell-prototype.html`을 열면 플레이. 원본은 `src/`, `node src/build.js`로 합치고 `node src/verify-rules.js`로 규칙 검증 | X |
 | `Docs/DESIGN.md` | **현재 기획 기준 문서** (5차 결정 포함) | X |
 | `Docs/HANDOVER-README.md` | 인수 폴더 설명 (폴더 경로는 예전 인수 폴더 기준) | X |
 | `Docs/claude-personal-work-rules.md` | 작업 규칙. `CLAUDE.md`에 붙여 넣어 쓴다 | X |

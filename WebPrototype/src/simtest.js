@@ -3,7 +3,7 @@ const fs=require('fs');
 const stubEl=()=>({addEventListener(){},append(){},getContext:()=>new Proxy({}, {get:(t,k)=>k in t?t[k]:()=>({width:10}), set:(t,k,v)=>{t[k]=v;return true}}),focus(){},blur(){},set textContent(v){},className:''});
 global.window={addEventListener(){},matchMedia:()=>({matches:false})};global.document={readyState:'complete',getElementById:stubEl,createElement:stubEl};
 global.performance={now:()=>0};global.requestAnimationFrame=()=>{};
-const h=fs.readFileSync(__dirname+'/../finger-snap-shift-prototype.html','utf8');
+const h=fs.readFileSync(__dirname+'/../shift-magic-spell-prototype.html','utf8');
 const scripts=[...h.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(m=>m[1]);
 (0,eval)(scripts[0].replace('})(this);','})(globalThis);'));(0,eval)(scripts[1].replace(/const /g,'globalThis.'));(0,eval)(scripts[2]);
 const {game,CONFIG,DEBUG}=window.FSS; module.exports={game,CONFIG,DEBUG};

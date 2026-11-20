@@ -1,16 +1,16 @@
-# Shift Spell Magic 인수 문서 (2026-11-20)
+# Shift Magic Spell 인수 문서 (2026-11-20)
 
 새 컴퓨터·새 세션에서 이어서 작업할 때 **이 파일을 가장 먼저** 읽는다. 그다음 `Docs/DESIGN.md`(기획 기준 문서)를 읽는다.
 
 GitHub Game Off 2026(주제 SHIFT) 출품작. 마감은 한국시간 **12월 2일 06:37**(PST 12/1 13:37).
 
 ## 1. 지금 상태 한눈에
-- **이름:** 새 이름은 **Shift Spell Magic**으로 정했다(예전 이름 Finger Snap Shift). 문서·파일·웹 프로토타입 제목·GitHub 저장소(`seolcw/finger-snap-shift`)는 **아직 예전 이름 그대로**다. 이름 바꾸기는 Unity 이식을 시작할 때 같이 하기로 했다.
+- **이름:** **Shift Magic Spell**(예전 이름 Finger Snap Shift). 11/20에 문서, 웹 프로토타입(`shift-magic-spell-prototype.html`), Unity 제품명, GitHub 저장소(`seolcw/shift-magic-spell`) 이름을 바꿨다. 에셋 생성 스크립트 안의 팔레트 파일 이름(`FingerSnapShift.gpl`)은 그대로 둔다.
 - **기획:** 5차 규칙 + 공격 슬롯 + 단어 위치 점멸까지 확정. `Docs/DESIGN.md`가 기준이다.
 - **웹 프로토타입:** 5차 규칙이 모두 들어가 있고 플레이 가능하다. 규칙 검사 20개 통과, 봇이 처음부터 끝까지 이긴다. **사람이 직접 해 본 난이도 검증은 아직 안 했다.**
 - **도트 에셋:** 기존 9개 + 5차 추가 22개. Unity에 임포트해 본 적은 없다.
-- **Unity 프로젝트:** 아직 없다. 이 폴더(`Assets/` 포함)를 Unity 프로젝트 루트로 쓰려고 정리해 두었다.
-- **사용자 안내:** 사용자가 "아직 변경 사항 있을 수 있다"고 했다. 이름 변경·Unity 이식은 **사용자가 시작하라고 할 때** 계획(브랜치 이름 포함)을 먼저 보여 주고 확인받은 뒤 한다.
+- **Unity 프로젝트:** 이 저장소가 Unity 프로젝트 루트다(Unity 6000.0.58f2, WebGL 설정 완료, 에셋 31개 임포트 확인). 노트북 내용은 `chore/project-setup` 브랜치에 작업 단위 커밋으로 들어 있다. Unity 이식은 이 브랜치에서 만든 `feature/unity-prototype`에서 한다.
+- **사용자 안내:** 무언가 고치기 전에 계획(브랜치 이름 포함)을 먼저 보여 주고 확인받는다. 커밋은 작업 단위로 나눈다.
 
 ## 2. 게임 요약 (자세한 건 DESIGN.md)
 거대한 마우스 커서(손)가 키보드 2개 위의 플레이어를 공격한다. 플레이어는 공격을 피하면서
@@ -33,11 +33,11 @@ GitHub Game Off 2026(주제 SHIFT) 출품작. 마감은 한국시간 **12월 2�
 | `ArtSource/Scripts/` | 에셋 생성 Lua: `build_assets.lua`(기존), `build_assets_v5.lua`(5차 추가), 미리보기 스크립트 2개, 공용 규칙 `fss_lib.lua` | X |
 | `ArtSource/Preview/` | `asset-sheet*.png`, `game-preview*.png` 확인 그림 | X |
 | `ArtSource/Export/` | `.aseprite`를 가로 시트 PNG + JSON으로 내보낸 백업 | X |
-| `WebPrototype/` | 웹 프로토타입. `finger-snap-shift-prototype.html`을 브라우저로 열면 바로 플레이 | X |
+| `WebPrototype/` | 웹 프로토타입. `shift-magic-spell-prototype.html`을 브라우저로 열면 바로 플레이 | X |
 | `WebPrototype/src/` | 원본: `game.js`(Unity 구조와 같은 모듈), `attackPatterns.json`(모든 수치·단어·마법), `layoutRules.js`, `layouts.json`, 봇 `simtest.js`, 검사 `verify-rules.js` | X |
 
 ## 4. 다른 컴퓨터에서 확인하는 법
-- **웹 프로토타입:** `WebPrototype/finger-snap-shift-prototype.html`을 브라우저로 연다(서버 필요 없음). 아래 디버그 패널에 수치 슬라이더, 무적, 페이즈 건너뛰기가 있다.
+- **웹 프로토타입:** `WebPrototype/shift-magic-spell-prototype.html`을 브라우저로 연다(서버 필요 없음). 아래 디버그 패널에 수치 슬라이더, 무적, 페이즈 건너뛰기가 있다.
 - **Node.js가 있으면** (`WebPrototype` 폴더에서):
   ```
   node src/build.js          # src → html 한 장으로 합치기
@@ -47,21 +47,19 @@ GitHub Game Off 2026(주제 SHIFT) 출품작. 마감은 한국시간 **12월 2�
 - **Aseprite가 있으면** 에셋을 다시 만들 수 있다(명령은 `README.md`). 이 컴퓨터에서는 Steam 설치본 `C:\Program Files (x86)\Steam\steamapps\common\Aseprite\Aseprite.exe`(1.3.18)를 썼다. 다른 컴퓨터에서는 경로가 다를 수 있다. Aseprite에서 손으로 고친 파일은 스크립트로 다시 만들면 덮어써지니 주의.
 
 ## 5. 남은 일 (순서대로)
-1. 사용자가 말한 추가 변경 사항 반영(있다면).
-2. **이름 변경:** Shift Spell Magic. 문서, 웹 프로토타입 제목·파일 이름, GitHub 저장소 이름과 내용.
-3. **Unity 이식** (Unity 6000.0.58f2, 2D Built-in, WebGL 960x600, 320x200 3배 확대) — 정해야 할 것:
-   - 어디에 만들지: 이 폴더를 그대로 Unity 프로젝트 루트로 쓸지, 예전 `D:\Unity\finger-snap-shift`(GitHub `seolcw/finger-snap-shift`, `main`에 빈 프로젝트 커밋 `06541f1`만 있음)에 옮길지.
-   - 예전 저장소의 `feature/pixel-art-assets` 브랜치(기존 에셋 9개, **커밋 전**)를 어떻게 할지. 이 폴더의 `Assets/Art`가 그 9개 + 5차 22개를 모두 갖고 있다.
+1. ~~이름 변경~~ (11/20 완료: Shift Magic Spell)
+2. **Unity 이식** (Unity 6000.0.58f2, 2D Built-in, WebGL 960x600, 320x200 3배 확대), 브랜치 `feature/unity-prototype`:
+   - 처음부터 끝까지 플레이 가능하게 만든 뒤 Play Mode로 확인하고, WebGL 빌드 zip(루트에 `index.html`)을 만들어 itch.io Draft 업로드로 웹 동작을 확인한다(업로드는 사용자가 직접).
    - 수치는 ScriptableObject로(`attackPatterns.json` 구조 그대로), 판 배치는 `layouts.json`·`layoutRules.js`의 마스크·슬롯 위치 그대로.
    - 패키지: Input System(키는 물리 위치로 읽음), Aseprite Importer(`com.unity.2d.aseprite`), 2D Pixel Perfect.
-4. 사람 플레이 테스트로 난이도 맞추기(단어 길이, 공격 간격, 점멸 주기, 줄 돌리기 반복 속도).
-5. 아직 안 정한 것(DESIGN.md 8장): 튜토리얼, 단어 거꾸로 인정 여부, 난이도 프리셋, 플레이어 정체, 결과 화면, 색맹 대응.
-6. 아직 없는 에셋: 슬롯 깨기 전용 손 동작, 플레이어 순간이동·사망 모션, 타이틀·결과 화면, 사운드.
+3. 사람 플레이 테스트로 난이도 맞추기(단어 길이, 공격 간격, 점멸 주기, 줄 돌리기 반복 속도).
+4. 아직 안 정한 것(DESIGN.md 8장): 튜토리얼, 단어 거꾸로 인정 여부, 난이도 프리셋, 플레이어 정체, 결과 화면, 색맹 대응.
+5. 아직 없는 에셋: 슬롯 깨기 전용 손 동작, 플레이어 순간이동·사망 모션, 타이틀·결과 화면, 사운드.
 
 ## 6. 새 세션에 줄 요청 (복사해서 사용)
 ```
 이 폴더의 HANDOVER.md와 Docs/DESIGN.md를 먼저 읽고,
-Docs/claude-personal-work-rules.md 규칙을 따라서 Shift Spell Magic 작업을 이어서 해 줘.
+Docs/claude-personal-work-rules.md 규칙을 따라서 Shift Magic Spell 작업을 이어서 해 줘.
 - 기획은 Docs/DESIGN.md가 기준이고, 로직은 WebPrototype/src/game.js와 attackPatterns.json을 참고해.
 - 그림은 Assets/Art/의 .aseprite를 그대로 써. 목록은 DESIGN.md 9장.
 - 무언가 고치기 전에 이해한 내용과 계획(브랜치 이름 포함)을 먼저 보여 주고 확인받아.

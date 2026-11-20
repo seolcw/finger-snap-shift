@@ -1,9 +1,9 @@
-# Finger Snap Shift 웹 프로토타입 인수 노트 (5차 규칙 기준, 2026-11-20)
+# Shift Magic Spell 웹 프로토타입 인수 노트 (5차 규칙 기준, 2026-11-20)
 
 규칙 전체는 `Docs/DESIGN.md`가 기준이다. 3차의 글자 Shift(키 글자 ±N), Space 등록·입력 버퍼, 시프트 파동·스크롤 공격은 전부 없어졌다.
 
 ## 파일
-- 결과물: `finger-snap-shift-prototype.html` (한 장). 원본은 `src/`, `node src/build.js`로 합친다.
+- 결과물: `shift-magic-spell-prototype.html` (한 장). 원본은 `src/`, `node src/build.js`로 합친다.
 - `src/layoutRules.js` 마스크, 줄 정의(`lines`), 단어 정렬 계산(`bestAlign`), 시작 배치 검사(`check`), 단어 목록 검사(`checkWordList`)
 - `src/layouts.json` 시작 배치 (3차와 같은 배치, 5차 규칙도 통과)
 - `src/attackPatterns.json` 수치: config, 슬라이더, 페이즈별 단어·공격·손 HP·배율, 단어별 마법(`spells`), 공격별 base·쿨다운·예고 배율

@@ -1,10 +1,10 @@
-# Finger Snap Shift 기획 (2026-11-20, 5차 기준)
+# Shift Magic Spell 기획 (2026-11-20, 5차 기준)
 
 거대한 마우스 커서(손)가 키보드 위의 플레이어를 공격한다. 플레이어는 공격을 피하면서 **Shift로 키보드의 행·열을 돌려** 공격 단어를 한 줄로 맞추고, 완성된 단어가 마법이 되어 커서를 친다. 마지막 한 방은 **SHIFT**.
 GitHub Game Off 2026(주제 SHIFT) 출품작이고, 마감은 한국시간 12월 2일 06:37(PST 12/1 13:37)이다.
 
 - 온라인 기획서(4차까지): https://claude.ai/artifact/7U4LFHVGAxiAq9K9Bmjk3n
-- 웹 프로토타입: `WebPrototype/finger-snap-shift-prototype.html` (5차 규칙 반영, 원본은 `WebPrototype/src/`)
+- 웹 프로토타입: `WebPrototype/shift-magic-spell-prototype.html` (5차 규칙 반영, 원본은 `WebPrototype/src/`)
 
 > **5차에서 바뀐 것 (11/20):** 플레이 테스트에서 "Shift가 어디서 쓰이는지 핵심적으로 느껴지지 않는다"는 문제가 나왔다. 걸어가서 Space로 누르는 철자 맞추기가 기본 동작이었고, Shift는 여기저기 얇게 흩어져 있었기 때문이다. 그래서 **기본 동작 자체를 Shift(줄 돌리기)로** 바꿨다.
 > - 글자 ±1 바꾸기, Space 등록, 입력 버퍼 → 없앰
@@ -20,7 +20,7 @@ GitHub Game Off 2026(주제 SHIFT) 출품작이고, 마감은 한국시간 12월
 | 엔진 | Unity 6000.0.58f2, 2D Built-in Render Pipeline |
 | 빌드 | WebGL, Gzip, Decompression Fallback 끔, 960x600 |
 | 화면 | 320x200 픽셀 화면을 3배 확대(Pixel Perfect Camera 권장), 칸 16px |
-| 저장소 | https://github.com/seolcw/finger-snap-shift (`main`) |
+| 저장소 | https://github.com/seolcw/shift-magic-spell (`main`) |
 | 대상 | 전 세계. 특정 자판 배열(QWERTY 등)에 기대지 않는다. 키는 물리 위치로 읽는다(Input System). |
 
 ## 2. 조작

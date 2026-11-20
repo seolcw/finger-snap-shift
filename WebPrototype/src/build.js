@@ -6,5 +6,5 @@ const html = rd('template.html')
   .replace('/*__LAYOUTS__*/', () => rd('layouts.json'))
   .replace('/*__ATTACKS__*/', () => rd('attackPatterns.json'))
   .replace('/*__GAME__*/', () => rd('game.js'));
-fs.writeFileSync(d + '../finger-snap-shift-prototype.html', html);
+fs.writeFileSync(d + '../shift-magic-spell-prototype.html', html);
 console.log('built', html.length, 'bytes');
