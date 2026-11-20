@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using ShiftMagicSpell.Data;
 using UnityEngine;
 
 namespace ShiftMagicSpell.Core
@@ -12,6 +13,12 @@ namespace ShiftMagicSpell.Core
         private readonly GameSession _game;
         private readonly List<MoveDir> _heldDirs = new List<MoveDir>();
         private float _repeatT;
+
+        // 동작 사이 최소 간격(쉬는 시간). 쉬는 동안 누른 입력은 하나만 예약해 두었다가 끝나면 실행한다.
+        private float _restT;
+        private bool _hasQueuedInput;
+        private MoveDir _queuedDir;
+        private bool _isQueuedRotate;
 
         public int Board;
         public int R;
@@ -45,6 +52,8 @@ namespace ShiftMagicSpell.Core
             LastDir = Vector2Int.zero;
             SinceMove = 99f;
             _repeatT = 0f;
+            _restT = 0f;
+            _hasQueuedInput = false;
             Slide = null;
         }
 
@@ -88,10 +97,18 @@ namespace ShiftMagicSpell.Core
                 }
             }
 
+            _restT = Mathf.Max(0f, _restT - dt);
+            if (_hasQueuedInput && _restT <= 0f)
+            {
+                _hasQueuedInput = false;
+                Perform(_queuedDir, _isQueuedRotate);
+                return;
+            }
+
             if (_heldDirs.Count > 0)
             {
                 _repeatT -= dt;
-                if (_repeatT <= 0f)
+                if (_repeatT <= 0f && _restT <= 0f)
                 {
                     Act(_heldDirs[_heldDirs.Count - 1]);
                 }
@@ -155,15 +172,37 @@ namespace ShiftMagicSpell.Core
         // Shift를 누른 채 방향키 = 서 있는 줄 돌리기(←→ 행, ↑↓ 열). Shift 없이 = 한 칸 이동. 누르고 있으면 반복.
         private void Act(MoveDir dir)
         {
-            if (IsShiftHeld)
+            // 쉬는 중이면 버리지 않고 마지막 입력 하나만 예약한다(입력이 씹힌 느낌이 나지 않게)
+            if (_restT > 0f)
             {
-                Rotate(dir);
-                _repeatT = _game.Config.RotateRepeat;
+                _hasQueuedInput = true;
+                _queuedDir = dir;
+                _isQueuedRotate = IsShiftHeld;
                 return;
             }
 
-            TryMove(dir);
-            _repeatT = _game.Config.MoveRepeat;
+            Perform(dir, IsShiftHeld);
+        }
+
+        private void Perform(MoveDir dir, bool isRotate)
+        {
+            ConfigValues config = _game.Config;
+            if (isRotate)
+            {
+                _repeatT = config.RotateRepeat;
+                if (Rotate(dir))
+                {
+                    _restT = config.RotateDelay;
+                }
+
+                return;
+            }
+
+            _repeatT = config.MoveRepeat;
+            if (TryMove(dir))
+            {
+                _restT = config.MoveDelay;
+            }
         }
 
         /// <summary>플레이어 Shift: 서 있는 행(←→) 또는 열(↑↓)을 그 방향으로 한 칸 돌린다. 플레이어는 칸에 그대로 있고 키만 지나간다.</summary>

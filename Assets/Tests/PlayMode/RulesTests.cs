@@ -267,6 +267,57 @@ namespace ShiftMagicSpell.Tests
         }
 
         [Test]
+        public void QuickDoubleTap_SecondMoveWaitsForRest_AndIsNotLost()
+        {
+            _game.StartPhase(0);
+            _game.IsInvincible = true;
+            PlayerController player = _game.Player;
+            player.Board = 0;
+            player.R = 2;
+            player.C = 1;
+            player.Press(MoveDir.Right);
+            player.Release(MoveDir.Right);
+            Step(0.02f);
+            player.Press(MoveDir.Right);
+            player.Release(MoveDir.Right);
+            Assert.AreEqual(2, player.C, "쉬는 시간 안에 누른 두 번째 입력은 바로 실행되지 않음");
+            Step(_game.Config.MoveDelay);
+            Assert.AreEqual(3, player.C, "쉬는 시간이 끝나면 예약된 입력이 실행됨");
+        }
+
+        [Test]
+        public void QuickDoubleRotate_SecondWaitsForRotateDelay()
+        {
+            _game.StartPhase(0);
+            _game.IsInvincible = true;
+            PlayerController player = _game.Player;
+            BoardModel board = _game.Boards[0];
+            player.Board = 0;
+            player.R = 1;
+            player.C = 2;
+            player.IsShiftHeld = true;
+            int version = board.Version;
+            player.Press(MoveDir.Right);
+            player.Release(MoveDir.Right);
+            Step(0.05f);
+            player.Press(MoveDir.Right);
+            player.Release(MoveDir.Right);
+            player.IsShiftHeld = false;
+            Assert.AreEqual(version + 1, board.Version);
+            Step(_game.Config.RotateDelay);
+            Assert.AreEqual(version + 2, board.Version, "Shift를 뗀 뒤라도 예약 당시 줄 돌리기로 실행");
+            Assert.AreEqual((1, 2), (player.R, player.C));
+        }
+
+        private void Step(float seconds)
+        {
+            for (float t = 0f; t < seconds; t += 1f / 60f)
+            {
+                _game.Update(1f / 60f);
+            }
+        }
+
+        [Test]
         public void NewPhase_ClearsBlocks()
         {
             _game.StartPhase(0);

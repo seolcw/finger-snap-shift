@@ -84,6 +84,10 @@ namespace ShiftMagicSpell.Data
         public int BlockHp = 2;
         public float StoreTime = 0.5f;
         public float BlockAggro = 0.15f;
+
+        // Unity에서 추가(웹 JSON에 없음): 연타해도 이 간격보다 빨리 움직이거나 돌리지 않는다
+        public float MoveDelay = 0.1f;
+        public float RotateDelay = 0.2f;
     }
 
     /// <summary>웹 디버그 패널 슬라이더 정의. Unity에서는 인스펙터로 조절하므로 범위 참고용으로 남긴다.</summary>
