@@ -61,7 +61,8 @@ namespace ShiftMagicSpell.Input
             }
 
             PlayerController player = game.Player;
-            player.IsShiftHeld = keyboard.leftShiftKey.isPressed || keyboard.rightShiftKey.isPressed;
+            // 짧게 톡 친 키는 누름과 뗌이 한 프레임에 같이 들어올 수 있다(빠른 입력, 낮은 프레임). 이번 프레임에 눌렸으면 눌린 것으로 본다.
+            player.IsShiftHeld = IsHeldThisFrame(keyboard.leftShiftKey) || IsHeldThisFrame(keyboard.rightShiftKey);
             if (keyboard.spaceKey.wasPressedThisFrame)
             {
                 player.Fire();
@@ -73,7 +74,9 @@ namespace ShiftMagicSpell.Input
                 {
                     player.Press(dir);
                 }
-                else if (keyboard[key].wasReleasedThisFrame && !IsDirStillHeld(keyboard, dir))
+
+                // 누름과 같은 프레임에 뗐어도 놓아 줘야 계속 눌린 것으로 남지 않는다
+                if (keyboard[key].wasReleasedThisFrame && !IsDirStillHeld(keyboard, dir))
                 {
                     player.Release(dir);
                 }
@@ -108,6 +111,11 @@ namespace ShiftMagicSpell.Input
             {
                 game.StartNewRun();
             }
+        }
+
+        private static bool IsHeldThisFrame(UnityEngine.InputSystem.Controls.KeyControl key)
+        {
+            return key.isPressed || key.wasPressedThisFrame;
         }
 
         // W와 ↑처럼 같은 방향 키 두 개 중 하나만 뗐으면 아직 누르고 있는 것
