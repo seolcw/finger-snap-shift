@@ -1,4 +1,5 @@
 using ShiftMagicSpell.Core;
+using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace ShiftMagicSpell.Input
@@ -7,6 +8,7 @@ namespace ShiftMagicSpell.Input
     /// 키보드를 물리 위치로 읽어(Input System의 Key는 자판 배열과 무관) GameSession에 넘긴다.
     /// WASD/방향키 이동, Shift+방향키 줄 돌리기, Space 발동, R 재시작, P 일시정지.
     /// 첫 화면은 클릭(또는 키)으로 시작한다: WebGL에서 캔버스에 키 포커스를 주고 오디오를 풀기 위해서다.
+    /// 에디터·개발 빌드에서만 F1 무적, F2 페이즈 건너뛰기.
     /// </summary>
     public class GameInput
     {
@@ -48,6 +50,11 @@ namespace ShiftMagicSpell.Input
                 return;
             }
 
+            if (Debug.isDebugBuild)
+            {
+                PollDebug(game, keyboard);
+            }
+
             if (game.IsPaused)
             {
                 return;
@@ -73,6 +80,21 @@ namespace ShiftMagicSpell.Input
             }
         }
 
+        // 에디터·개발 빌드 전용: F1 무적, F2 페이즈 건너뛰기
+        private static void PollDebug(GameSession game, Keyboard keyboard)
+        {
+            if (keyboard.f1Key.wasPressedThisFrame)
+            {
+                game.IsInvincible = !game.IsInvincible;
+                game.ShowToast(game.IsInvincible ? "DEBUG: INVINCIBLE ON" : "DEBUG: INVINCIBLE OFF");
+            }
+
+            if (keyboard.f2Key.wasPressedThisFrame && game.State == GameState.Play)
+            {
+                game.SkipPhase();
+            }
+        }
+
         public void OnFocusLost(GameSession game)
         {
             game.Player.ReleaseAll();
@@ -84,7 +106,7 @@ namespace ShiftMagicSpell.Input
             bool isKeyPressed = keyboard.anyKey.wasPressedThisFrame && !keyboard.leftShiftKey.wasPressedThisFrame && !keyboard.rightShiftKey.wasPressedThisFrame;
             if (isClicked || isKeyPressed)
             {
-                game.StartPhase(0);
+                game.StartNewRun();
             }
         }
 

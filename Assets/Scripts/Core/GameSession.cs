@@ -99,10 +99,43 @@ namespace ShiftMagicSpell.Core
             Banner = new TimedText($"PHASE {phase + 1}", 1.4f);
         }
 
-        /// <summary>R: 현재 페이즈를 처음부터. 승리 화면에서는 1페이즈부터.</summary>
+        /// <summary>처음부터 새 판(첫 화면·승리 화면에서). 기록도 새로 센다.</summary>
+        public void StartNewRun()
+        {
+            Stats = new GameStats();
+            StartPhase(0);
+        }
+
+        /// <summary>R: 현재 페이즈를 처음부터(손 HP도 가득). 승리 화면에서는 1페이즈부터 새 판.</summary>
         public void RestartPhase()
         {
-            StartPhase(State == GameState.Win ? 0 : Phase);
+            if (State == GameState.Win)
+            {
+                StartNewRun();
+                return;
+            }
+
+            StartPhase(Phase);
+        }
+
+        /// <summary>디버그: 다음 페이즈로 건너뛴다(마지막 페이즈면 승리).</summary>
+        public void SkipPhase()
+        {
+            if (!IsLastPhase)
+            {
+                StartPhase(Phase + 1);
+                return;
+            }
+
+            State = GameState.Win;
+            StateT = 0f;
+        }
+
+        /// <summary>사망 후 재시작할 손 HP: 잃은 만큼의 deathHandRecover(절반)만 회복(올림)</summary>
+        public int GetRecoveredHandHp()
+        {
+            int maxHp = Hand.MaxHp;
+            return Mathf.CeilToInt(Hand.Hp + (maxHp - Hand.Hp) * Config.DeathHandRecover);
         }
 
         public void ShowToast(string text)
@@ -286,10 +319,19 @@ namespace ShiftMagicSpell.Core
                     StateT += dt;
                     break;
                 case GameState.Dead:
+                    // 사망: 현재 페이즈 처음부터(판도 시작 배치로), 손 HP는 잃은 만큼의 절반만 회복
                     StateT -= dt;
                     if (StateT <= 0f)
                     {
-                        StartPhase(Phase);
+                        StartPhase(Phase, GetRecoveredHandHp());
+                    }
+
+                    break;
+                case GameState.PhaseClear:
+                    StateT -= dt;
+                    if (StateT <= 0f)
+                    {
+                        StartPhase(Phase + 1);
                     }
 
                     break;
@@ -303,6 +345,7 @@ namespace ShiftMagicSpell.Core
 
         private void UpdatePlay(float dt)
         {
+            Stats.PlayTime += dt;
             foreach (BoardModel board in Boards)
             {
                 board.Update(dt);

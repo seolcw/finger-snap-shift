@@ -15,6 +15,7 @@ namespace ShiftMagicSpell.Core
         public int BlocksLost;
         public int DoubleClicks;
         public int AimDashes;
+        public float PlayTime;
         public readonly Dictionary<string, int> Hits = new Dictionary<string, int>();
         public readonly Dictionary<string, int> Attacks = new Dictionary<string, int>();
 

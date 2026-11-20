@@ -108,7 +108,22 @@ namespace ShiftMagicSpell.View
                     DrawReadyHelp();
                     break;
                 case GameState.Dead:
-                    DrawCenterPanel("YOU FELL", $"PHASE {_game.Phase + 1} AGAIN", PaletteUtils.Hp);
+                    DrawCenterPanel("YOU FELL", $"PHASE {_game.Phase + 1} AGAIN  HAND HP {_game.GetRecoveredHandHp()}/{_game.Hand.MaxHp}", PaletteUtils.Hp);
+                    break;
+                case GameState.PhaseClear:
+                    // 마법이 터지는 걸 먼저 보여 주고 나서
+                    if (_game.StateT < 1.2f)
+                    {
+                        DrawCenterPanel($"PHASE {_game.Phase + 1} CLEAR", "THE HAND GETS FASTER", PaletteUtils.Ok);
+                    }
+
+                    break;
+                case GameState.Win:
+                    if (_game.StateT > 0.9f)
+                    {
+                        DrawWinPanel();
+                    }
+
                     break;
                 default:
                     if (_game.Banner != null)
@@ -130,6 +145,30 @@ namespace ShiftMagicSpell.View
             _canvas.DrawRect(0f, 0f, PixelCanvas.SCREEN_W, PixelCanvas.SCREEN_H, OverlayColor);
             _text.Draw(title, PixelCanvas.SCREEN_W * 0.5f, 70f, titleColor, TextAlign.Center, 2f, Color.black);
             _text.Draw(subtitle, PixelCanvas.SCREEN_W * 0.5f, 96f, PaletteUtils.Dim, TextAlign.Center);
+        }
+
+        // 승리: SHIFT로 커서를 물리쳤다 + 기록(시간, 사망, 맞은 횟수, 줄 돌리기, 콤보)
+        private void DrawWinPanel()
+        {
+            DrawCenterPanel("VICTORY!", "YOU SHIFTED THE CURSOR AWAY", PaletteUtils.Glow);
+            GameStats stats = _game.Stats;
+            int hits = 0;
+            foreach (int count in stats.Hits.Values)
+            {
+                hits += count;
+            }
+
+            int seconds = Mathf.FloorToInt(stats.PlayTime);
+            string[] lines =
+            {
+                $"TIME {seconds / 60}:{seconds % 60:00}   DEATHS {stats.Deaths}   HITS {hits}",
+                $"WORDS {stats.WordsDone}   ROTATIONS {stats.Rotations}   COMBOS {stats.Combos}",
+                "R: PLAY AGAIN",
+            };
+            for (int i = 0; i < lines.Length; i++)
+            {
+                _text.Draw(lines[i], PixelCanvas.SCREEN_W * 0.5f, 118f + i * 12f, i == lines.Length - 1 ? PaletteUtils.Text : PaletteUtils.Dim, TextAlign.Center);
+            }
         }
 
         private void DrawReadyHelp()
