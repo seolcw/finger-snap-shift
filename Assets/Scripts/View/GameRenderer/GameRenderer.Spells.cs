@@ -143,7 +143,7 @@ namespace ShiftMagicSpell.View
                 for (int i = 1; i < 8; i++)
                 {
                     Vector2 smoke = Along(context, context.V - i * 0.035f, 70f, 0.6f);
-                    _canvas.DrawDisc(smoke, 1.5f + i * 0.5f, PaletteUtils.Hex(0x9aa0ad, 0.5f * (1f - i / 8f)));
+                    _canvas.DrawDisc(smoke, 1.5f + i * 0.5f, Colors.Smoke.WithAlpha(0.5f * (1f - i / 8f)));
                 }
 
                 Vector2 position = Along(context, context.V, 70f, 0.6f);
@@ -216,7 +216,7 @@ namespace ShiftMagicSpell.View
                 }
 
                 _canvas.Offset = Vector2.zero;
-                _canvas.DrawRect(0f, 0f, PixelCanvas.SCREEN_W, PixelCanvas.SCREEN_H, Color.white.WithAlpha((1f - context.W) * 0.25f));
+                _canvas.DrawRect(0f, 0f, ViewUtils.SCREEN_W, ViewUtils.SCREEN_H, Color.white.WithAlpha((1f - context.W) * 0.25f));
             }
         }
 
@@ -342,7 +342,7 @@ namespace ShiftMagicSpell.View
                 _canvas.DrawRing(context.To, 84f * Ease(context.W), 3, context.Color.WithAlpha(1f - context.W));
                 _canvas.DrawRing(context.To, 52f * Ease(context.W), 1, context.Color.WithAlpha(1f - context.W));
                 _canvas.Offset = Vector2.zero;
-                _canvas.DrawRect(0f, 0f, PixelCanvas.SCREEN_W, PixelCanvas.SCREEN_H, context.Color.WithAlpha((1f - context.W) * 0.3f));
+                _canvas.DrawRect(0f, 0f, ViewUtils.SCREEN_W, ViewUtils.SCREEN_H, context.Color.WithAlpha((1f - context.W) * 0.3f));
             }
         }
     }

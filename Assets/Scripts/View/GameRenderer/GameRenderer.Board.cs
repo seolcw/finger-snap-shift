@@ -7,10 +7,6 @@ namespace ShiftMagicSpell.View
 {
     public partial class GameRenderer
     {
-        private const float GLYPH_OFFSET_X = 5f;
-        private const float GLYPH_OFFSET_Y = 5f;
-        private const float PLAYER_LIFT = 6f;
-
         private void DrawBoard(int boardIndex)
         {
             BoardModel board = _game.Boards[boardIndex];
@@ -33,14 +29,14 @@ namespace ShiftMagicSpell.View
                     if (player.ShiftCd > 0f)
                     {
                         float ratio = player.ShiftCd / _game.Config.ShiftCooldown;
-                        _canvas.DrawRect(topLeft.x, topLeft.y, ViewUtils.CELL_W, Mathf.Round(16f * ratio), PaletteUtils.Hex(0x0a0c12, 0.6f));
+                        _canvas.DrawRect(topLeft.x, topLeft.y, ViewUtils.CellW, Mathf.Round(16f * ratio), Colors.CooldownShade);
                     }
 
                     continue;
                 }
 
                 // 키 아래 빈 홈: 키가 미끄러지는 동안 보인다
-                _canvas.DrawRect(topLeft.x + 1f, topLeft.y + 1f, ViewUtils.CELL_W - 2f, ViewUtils.CELL_H - 2f, PaletteUtils.Hex(0x0f1116));
+                _canvas.DrawRect(topLeft.x + 1f, topLeft.y + 1f, ViewUtils.CellW - 2f, ViewUtils.CellH - 2f, Colors.KeyHome);
             }
 
             // Shift를 누르고 있으면 돌릴 수 있는 행·열을 하늘색 테로 보여 준다
@@ -61,7 +57,7 @@ namespace ShiftMagicSpell.View
                 {
                     Vector3 ghost = slide.GetOffsetAt(slide.T - lag);
                     Vector2 position = home + ViewUtils.ToPixelDelta(ghost);
-                    _canvas.DrawRect(position.x + 3f, position.y + 3f, ViewUtils.CELL_W - 6f, ViewUtils.CELL_W - 6f, PaletteUtils.ShiftHi.WithAlpha(alpha * ghost.z));
+                    _canvas.DrawRect(position.x + 3f, position.y + 3f, ViewUtils.CellW - 6f, ViewUtils.CellW - 6f, Colors.ShiftHi.WithAlpha(alpha * ghost.z));
                 }
             }
 
@@ -85,7 +81,7 @@ namespace ShiftMagicSpell.View
                     foreach (BoardCell cell in best.Cells)
                     {
                         Vector2 topLeft = ViewUtils.CellTopLeft(boardIndex, cell.R, cell.C);
-                        _canvas.DrawDashedRect(topLeft.x - 1f, topLeft.y - 1f, ViewUtils.CELL_W + 2f, ViewUtils.CELL_H + 1f, 2f, PaletteUtils.Glow.WithAlpha(0.85f * hint));
+                        _canvas.DrawDashedRect(topLeft.x - 1f, topLeft.y - 1f, ViewUtils.CellW + 2f, ViewUtils.CellH + 1f, 2f, Colors.Glow.WithAlpha(0.85f * hint));
                     }
                 }
             }
@@ -154,18 +150,18 @@ namespace ShiftMagicSpell.View
             }
             else if (isHinted)
             {
-                _canvas.DrawRect(topLeft.x + 2f, topLeft.y + 2f, 12f, 12f, PaletteUtils.Glow.WithAlpha(0.22f * style.Hint * offset.z));
+                _canvas.DrawRect(topLeft.x + 2f, topLeft.y + 2f, 12f, 12f, Colors.Glow.WithAlpha(0.22f * style.Hint * offset.z));
             }
 
             if (key.HasLetter && _text.TryGetGlyph(key.Letter, out var glyph))
             {
-                Color letterColor = PaletteUtils.Text;
+                Color letterColor = Colors.Text;
                 if (isHinted)
                 {
-                    letterColor = Color.Lerp(PaletteUtils.Text, style.IsOk ? PaletteUtils.Ok : PaletteUtils.Glow, style.Hint);
+                    letterColor = Color.Lerp(Colors.Text, style.IsOk ? Colors.Ok : Colors.Glow, style.Hint);
                 }
 
-                _canvas.DrawFrame(glyph, topLeft.x + GLYPH_OFFSET_X, topLeft.y + GLYPH_OFFSET_Y, letterColor.WithAlpha(offset.z));
+                _canvas.DrawFrame(glyph, topLeft.x + ViewAssets.Instance.Layout.GlyphOffsetPx.x, topLeft.y + ViewAssets.Instance.Layout.GlyphOffsetPx.y, letterColor.WithAlpha(offset.z));
             }
         }
 
@@ -176,7 +172,7 @@ namespace ShiftMagicSpell.View
         {
             AttackBlock block = slot.Block;
             SpellDef spell = _game.Data.GetSpellOrNull(block.Word);
-            Color color = spell != null ? spell.Color : PaletteUtils.Glow;
+            Color color = spell != null ? spell.Color : Colors.Glow;
             float pop = Mathf.Min(1f, block.Age / 0.25f);
             float scale = pop < 1f ? 0.4f + 0.6f * pop + Mathf.Sin(pop * Mathf.PI) * 0.25f : 1f;
             float shake = block.HitT > 0f ? Mathf.Sin(_game.Time * 70f) * 3f * block.HitT / 0.4f : 0f;
@@ -209,7 +205,7 @@ namespace ShiftMagicSpell.View
             foreach (BoardCell cell in cells)
             {
                 Vector2 topLeft = ViewUtils.CellTopLeft(fx.Board, cell.R, cell.C);
-                _canvas.DrawRect(topLeft.x, topLeft.y, ViewUtils.CELL_W, ViewUtils.CELL_W, PaletteUtils.Shift.WithAlpha(u * 0.3f));
+                _canvas.DrawRect(topLeft.x, topLeft.y, ViewUtils.CellW, ViewUtils.CellW, Colors.Shift.WithAlpha(u * 0.3f));
             }
 
             Color arrowTint = Color.white.WithAlpha(u);
@@ -245,15 +241,15 @@ namespace ShiftMagicSpell.View
             bool isBlinking = player.Invuln > 0f && Mathf.FloorToInt(_game.Time * 16f) % 2 == 0;
             bool isHurt = player.Invuln > _game.Config.HitInvuln - 0.35f && _game.Stats.Hits.Count > 0 && player.Hp < _game.Config.PlayerHp;
             var tint = new Color(1f, 1f, 1f, offset.z * (isBlinking ? 0.35f : 1f));
-            _canvas.DrawFrame(isHurt ? Frame("Player", "Hurt") : Animated("Player", "Idle", _game.Time), topLeft.x, topLeft.y - PLAYER_LIFT, tint);
+            _canvas.DrawFrame(isHurt ? Frame("Player", "Hurt") : Animated("Player", "Idle", _game.Time), topLeft.x, topLeft.y - ViewAssets.Instance.Layout.PlayerLiftPx, tint);
             if (player.IsShiftHeld)
             {
-                _canvas.DrawRectOutline(topLeft.x - 1f, topLeft.y - PLAYER_LIFT - 1f, 18f, 18f, 1f, PaletteUtils.ShiftHi);
+                _canvas.DrawRectOutline(topLeft.x - 1f, topLeft.y - ViewAssets.Instance.Layout.PlayerLiftPx - 1f, 18f, 18f, 1f, Colors.ShiftHi);
             }
 
             if (_game.IsInvincible)
             {
-                _canvas.DrawRectOutline(topLeft.x - 2f, topLeft.y - PLAYER_LIFT - 2f, 20f, 20f, 1f, PaletteUtils.Glow);
+                _canvas.DrawRectOutline(topLeft.x - 2f, topLeft.y - ViewAssets.Instance.Layout.PlayerLiftPx - 2f, 20f, 20f, 1f, Colors.Glow);
             }
         }
 
@@ -278,7 +274,7 @@ namespace ShiftMagicSpell.View
                             foreach (Vector2Int cell in fx.Cells)
                             {
                                 Vector2 topLeft = ViewUtils.CellTopLeft(fx.Board, cell.y, cell.x);
-                                _canvas.DrawRect(topLeft.x - grow, topLeft.y - grow, ViewUtils.CELL_W + grow * 2f, ViewUtils.CELL_W + grow * 2f, PaletteUtils.Ok.WithAlpha(u * 0.8f));
+                                _canvas.DrawRect(topLeft.x - grow, topLeft.y - grow, ViewUtils.CellW + grow * 2f, ViewUtils.CellW + grow * 2f, Colors.Ok.WithAlpha(u * 0.8f));
                             }
 
                             break;
@@ -316,7 +312,7 @@ namespace ShiftMagicSpell.View
                     case FxKind.Click:
                         {
                             Vector2 center = ToPixel(fx.From);
-                            _canvas.DrawRing(center, 3f + (fx.Duration - fx.T) * 40f, 1, PaletteUtils.Warn.WithAlpha(fx.T / fx.Duration));
+                            _canvas.DrawRing(center, 3f + (fx.Duration - fx.T) * 40f, 1, Colors.Warn.WithAlpha(fx.T / fx.Duration));
                             break;
                         }
 
@@ -324,7 +320,7 @@ namespace ShiftMagicSpell.View
                         foreach (Vector2Int cell in fx.Cells)
                         {
                             Vector2 topLeft = ViewUtils.CellTopLeft(fx.Board, cell.y, cell.x);
-                            _canvas.DrawRect(topLeft.x + 1f, topLeft.y + 1f, 14f, 14f, PaletteUtils.Warn.WithAlpha(fx.T / fx.Duration * 0.6f));
+                            _canvas.DrawRect(topLeft.x + 1f, topLeft.y + 1f, 14f, 14f, Colors.Warn.WithAlpha(fx.T / fx.Duration * 0.6f));
                         }
 
                         break;
@@ -332,14 +328,14 @@ namespace ShiftMagicSpell.View
                         {
                             Vector2 center = ViewUtils.CellCenter(fx.Board, fx.R, fx.C);
                             float u = 1f - fx.T / fx.Duration;
-                            _canvas.DrawRing(center, 4f + u * 28f, 1, PaletteUtils.Shift.WithAlpha(fx.T / fx.Duration));
+                            _canvas.DrawRing(center, 4f + u * 28f, 1, Colors.Shift.WithAlpha(fx.T / fx.Duration));
                             break;
                         }
 
                     case FxKind.Deny:
                         {
                             Vector2 topLeft = ViewUtils.CellTopLeft(fx.Board, fx.R, fx.C);
-                            _canvas.DrawRectOutline(topLeft.x - 1f, topLeft.y - 1f, 18f, 18f, 1f, PaletteUtils.Dim.WithAlpha(fx.T / fx.Duration));
+                            _canvas.DrawRectOutline(topLeft.x - 1f, topLeft.y - 1f, 18f, 18f, 1f, Colors.Dim.WithAlpha(fx.T / fx.Duration));
                             break;
                         }
 

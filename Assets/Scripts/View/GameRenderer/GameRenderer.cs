@@ -14,6 +14,8 @@ namespace ShiftMagicSpell.View
         [SerializeField] private ArtCatalog _catalog;
 
         private PixelTextDrawer _text;
+
+        private static ViewColors Colors => ViewAssets.Instance.Colors;
         private GameSession _game;
         private float _shakeSeed;
 

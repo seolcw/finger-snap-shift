@@ -6,8 +6,6 @@ namespace ShiftMagicSpell.View
 {
     public partial class GameRenderer
     {
-        private static readonly Color OverlayColor = PaletteUtils.Hex(0x0c0d11, 0.88f);
-
         private void DrawHud()
         {
             if (_game.State == GameState.Ready)
@@ -21,13 +19,13 @@ namespace ShiftMagicSpell.View
                 _canvas.DrawFrame(Frame("HpCell", i < _game.Player.Hp ? "Full" : "Empty"), 8f + i * 9f, 6f, Color.white);
             }
 
-            _text.Draw($"PHASE {_game.Phase + 1}/{_game.Data.Phases.Count}", 8f, 17f, PaletteUtils.Dim);
+            _text.Draw($"PHASE {_game.Phase + 1}/{_game.Data.Phases.Count}", 8f, 17f, Colors.Dim);
             DrawHandHp();
             DrawWordPanel();
             DrawSlotPrompt();
             if (_game.Toast != null)
             {
-                _text.Draw(_game.Toast.Text, PixelCanvas.SCREEN_W * 0.5f, 191f, PaletteUtils.Glow.WithAlpha(Mathf.Min(1f, _game.Toast.T * 2f)), TextAlign.Center, 1f, Color.black);
+                _text.Draw(_game.Toast.Text, ViewUtils.SCREEN_W * 0.5f, 191f, Colors.Glow.WithAlpha(Mathf.Min(1f, _game.Toast.T * 2f)), TextAlign.Center, 1f, Color.black);
             }
         }
 
@@ -36,7 +34,7 @@ namespace ShiftMagicSpell.View
         {
             HandController hand = _game.Hand;
             int maxHp = hand.MaxHp;
-            float right = PixelCanvas.SCREEN_W - 8f;
+            float right = ViewUtils.SCREEN_W - 8f;
             float left = right - maxHp * 4f;
             for (int i = 0; i < maxHp; i++)
             {
@@ -44,7 +42,7 @@ namespace ShiftMagicSpell.View
             }
 
             string label = hand.State == HandState.Stun ? $"STUN  HAND {hand.Hp}/{maxHp}" : $"HAND {hand.Hp}/{maxHp}";
-            _text.Draw(label, right, 17f, hand.State == HandState.Stun ? PaletteUtils.Glow : PaletteUtils.Dim, TextAlign.Right);
+            _text.Draw(label, right, 17f, hand.State == HandState.Stun ? Colors.Glow : Colors.Dim, TextAlign.Right);
         }
 
         // 목표 단어 판: 마법 아이콘 + 단어(가장 많이 맞춘 줄에서 제자리에 온 글자는 초록) + 진행도. 어느 줄인지는 안 알려 준다.
@@ -64,7 +62,7 @@ namespace ShiftMagicSpell.View
             float wordWidth = _text.Measure(word);
             float progressWidth = _text.Measure(progress);
             float width = 4f + 12f + 4f + wordWidth + 6f + progressWidth + 5f;
-            float x = Mathf.Round((PixelCanvas.SCREEN_W - width) * 0.5f);
+            float x = Mathf.Round((ViewUtils.SCREEN_W - width) * 0.5f);
             const float y = 4f;
             _canvas.DrawNineSlice(Frame("Panel", "Panel"), x, y, width, 16f, 3, Color.white);
             _canvas.DrawFrame(Frame("SpellIcon", spell?.Icon), x + 4f, y + 2f, Color.white);
@@ -72,14 +70,14 @@ namespace ShiftMagicSpell.View
             for (int i = 0; i < word.Length; i++)
             {
                 bool isOk = bestBoard != null && i < best.Cells.Count && bestBoard.LetterAt(best.Cells[i].R, best.Cells[i].C) == word[i];
-                _text.Draw(word[i].ToString(), cursor, y + 5f, isOk ? PaletteUtils.Ok : PaletteUtils.Text);
+                _text.Draw(word[i].ToString(), cursor, y + 5f, isOk ? Colors.Ok : Colors.Text);
                 cursor += 6f;
             }
 
-            Color progressColor = _game.HintAlpha() > 0f ? PaletteUtils.Glow : PaletteUtils.Dim;
+            Color progressColor = _game.HintAlpha() > 0f ? Colors.Glow : Colors.Dim;
             _text.Draw(progress, cursor + 5f, y + 5f, progressColor);
             string next = _game.Words.Next != null ? $"NEXT {_game.Words.Next}" : "FINISHER";
-            _text.Draw(next, PixelCanvas.SCREEN_W * 0.5f, y + 19f, _game.Words.Next != null ? PaletteUtils.Dim : PaletteUtils.Glow, TextAlign.Center);
+            _text.Draw(next, ViewUtils.SCREEN_W * 0.5f, y + 19f, _game.Words.Next != null ? Colors.Dim : Colors.Glow, TextAlign.Center);
         }
 
         // 슬롯 위에 서 있으면 아래쪽에 발동 안내(콤보가 가능한 시간이면 COMBO!)
@@ -93,10 +91,10 @@ namespace ShiftMagicSpell.View
 
             string label = $"CAST {here.Block.Word}" + (_game.IsComboOpen(_game.Player.Board) ? "  COMBO!" : string.Empty);
             float width = 24f + 4f + _text.Measure(label);
-            float x = Mathf.Round((PixelCanvas.SCREEN_W - width) * 0.5f);
+            float x = Mathf.Round((ViewUtils.SCREEN_W - width) * 0.5f);
             bool isPressedFrame = Mathf.FloorToInt(_game.Time * 2.5f) % 2 == 0;
             _canvas.DrawFrame(Frame("SpaceKey", isPressedFrame ? "Pressed" : "Base"), x, 175f, Color.white);
-            _text.Draw(label, x + 28f, 179f, PaletteUtils.Glow, TextAlign.Left, 1f, Color.black);
+            _text.Draw(label, x + 28f, 179f, Colors.Glow, TextAlign.Left, 1f, Color.black);
         }
 
         private void DrawOverlay()
@@ -104,18 +102,18 @@ namespace ShiftMagicSpell.View
             switch (_game.State)
             {
                 case GameState.Ready:
-                    DrawCenterPanel("SHIFT MAGIC SPELL", "CLICK TO START", PaletteUtils.Text);
+                    DrawCenterPanel("SHIFT MAGIC SPELL", "CLICK TO START", Colors.Text);
                     DrawReadyHelp();
-                    _text.Draw(Application.version, PixelCanvas.SCREEN_W - 4f, PixelCanvas.SCREEN_H - 10f, PaletteUtils.Dim.WithAlpha(0.6f), TextAlign.Right);
+                    _text.Draw(Application.version, ViewUtils.SCREEN_W - 4f, ViewUtils.SCREEN_H - 10f, Colors.Dim.WithAlpha(0.6f), TextAlign.Right);
                     break;
                 case GameState.Dead:
-                    DrawCenterPanel("YOU FELL", $"PHASE {_game.Phase + 1} AGAIN  HAND HP {_game.GetRecoveredHandHp()}/{_game.Hand.MaxHp}", PaletteUtils.Hp);
+                    DrawCenterPanel("YOU FELL", $"PHASE {_game.Phase + 1} AGAIN  HAND HP {_game.GetRecoveredHandHp()}/{_game.Hand.MaxHp}", Colors.Hp);
                     break;
                 case GameState.PhaseClear:
                     // 마법이 터지는 걸 먼저 보여 주고 나서
                     if (_game.StateT < 1.2f)
                     {
-                        DrawCenterPanel($"PHASE {_game.Phase + 1} CLEAR", "THE HAND GETS FASTER", PaletteUtils.Ok);
+                        DrawCenterPanel($"PHASE {_game.Phase + 1} CLEAR", "THE HAND GETS FASTER", Colors.Ok);
                     }
 
                     break;
@@ -129,7 +127,7 @@ namespace ShiftMagicSpell.View
                 default:
                     if (_game.Banner != null)
                     {
-                        _text.Draw(_game.Banner.Text, PixelCanvas.SCREEN_W * 0.5f, 52f, PaletteUtils.Text.WithAlpha(Mathf.Min(1f, _game.Banner.T)), TextAlign.Center, 2f, Color.black);
+                        _text.Draw(_game.Banner.Text, ViewUtils.SCREEN_W * 0.5f, 52f, Colors.Text.WithAlpha(Mathf.Min(1f, _game.Banner.T)), TextAlign.Center, 2f, Color.black);
                     }
 
                     break;
@@ -137,21 +135,21 @@ namespace ShiftMagicSpell.View
 
             if (_game.IsPaused)
             {
-                DrawCenterPanel("PAUSED", "P: RESUME  R: RESTART PHASE", PaletteUtils.Text);
+                DrawCenterPanel("PAUSED", "P: RESUME  R: RESTART PHASE", Colors.Text);
             }
         }
 
         private void DrawCenterPanel(string title, string subtitle, Color titleColor)
         {
-            _canvas.DrawRect(0f, 0f, PixelCanvas.SCREEN_W, PixelCanvas.SCREEN_H, OverlayColor);
-            _text.Draw(title, PixelCanvas.SCREEN_W * 0.5f, 70f, titleColor, TextAlign.Center, 2f, Color.black);
-            _text.Draw(subtitle, PixelCanvas.SCREEN_W * 0.5f, 96f, PaletteUtils.Dim, TextAlign.Center);
+            _canvas.DrawRect(0f, 0f, ViewUtils.SCREEN_W, ViewUtils.SCREEN_H, Colors.Overlay);
+            _text.Draw(title, ViewUtils.SCREEN_W * 0.5f, 70f, titleColor, TextAlign.Center, 2f, Color.black);
+            _text.Draw(subtitle, ViewUtils.SCREEN_W * 0.5f, 96f, Colors.Dim, TextAlign.Center);
         }
 
         // 승리: SHIFT로 커서를 물리쳤다 + 기록(시간, 사망, 맞은 횟수, 줄 돌리기, 콤보)
         private void DrawWinPanel()
         {
-            DrawCenterPanel("VICTORY!", "YOU SHIFTED THE CURSOR AWAY", PaletteUtils.Glow);
+            DrawCenterPanel("VICTORY!", "YOU SHIFTED THE CURSOR AWAY", Colors.Glow);
             GameStats stats = _game.Stats;
             int hits = 0;
             foreach (int count in stats.Hits.Values)
@@ -168,7 +166,7 @@ namespace ShiftMagicSpell.View
             };
             for (int i = 0; i < lines.Length; i++)
             {
-                _text.Draw(lines[i], PixelCanvas.SCREEN_W * 0.5f, 118f + i * 12f, i == lines.Length - 1 ? PaletteUtils.Text : PaletteUtils.Dim, TextAlign.Center);
+                _text.Draw(lines[i], ViewUtils.SCREEN_W * 0.5f, 118f + i * 12f, i == lines.Length - 1 ? Colors.Text : Colors.Dim, TextAlign.Center);
             }
         }
 
@@ -183,7 +181,7 @@ namespace ShiftMagicSpell.View
             };
             for (int i = 0; i < lines.Length; i++)
             {
-                _text.Draw(lines[i], PixelCanvas.SCREEN_W * 0.5f, 120f + i * 11f, PaletteUtils.Dim, TextAlign.Center);
+                _text.Draw(lines[i], ViewUtils.SCREEN_W * 0.5f, 120f + i * 11f, Colors.Dim, TextAlign.Center);
             }
         }
     }

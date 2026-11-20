@@ -22,6 +22,7 @@ namespace ShiftMagicSpell.Editor
             AsepriteImportUtils.ApplyAll();
             DataImportUtils.ImportAll();
             ArtCatalogBuildUtils.Build();
+            ViewAssetSetupUtils.Setup();
             BuildMainScene();
         }
 
@@ -33,14 +34,14 @@ namespace ShiftMagicSpell.Editor
             var cameraObject = new GameObject("Main Camera") { tag = "MainCamera" };
             Camera camera = cameraObject.AddComponent<Camera>();
             camera.orthographic = true;
-            camera.orthographicSize = PixelCanvas.SCREEN_H / PixelCanvas.PPU * 0.5f;
+            camera.orthographicSize = ViewUtils.SCREEN_H / ViewUtils.PPU * 0.5f;
             camera.clearFlags = CameraClearFlags.SolidColor;
             camera.backgroundColor = PaletteUtils.Background;
-            camera.transform.position = new Vector3(PixelCanvas.SCREEN_W / PixelCanvas.PPU * 0.5f, PixelCanvas.SCREEN_H / PixelCanvas.PPU * 0.5f, -10f);
+            camera.transform.position = new Vector3(ViewUtils.SCREEN_W / ViewUtils.PPU * 0.5f, ViewUtils.SCREEN_H / ViewUtils.PPU * 0.5f, -10f);
             PixelPerfectCamera pixelPerfect = cameraObject.AddComponent<PixelPerfectCamera>();
-            pixelPerfect.assetsPPU = (int)PixelCanvas.PPU;
-            pixelPerfect.refResolutionX = PixelCanvas.SCREEN_W;
-            pixelPerfect.refResolutionY = PixelCanvas.SCREEN_H;
+            pixelPerfect.assetsPPU = (int)ViewUtils.PPU;
+            pixelPerfect.refResolutionX = (int)ViewUtils.SCREEN_W;
+            pixelPerfect.refResolutionY = (int)ViewUtils.SCREEN_H;
             pixelPerfect.upscaleRT = true;
 
             var gameObject = new GameObject("Game");

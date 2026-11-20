@@ -6,9 +6,6 @@ namespace ShiftMagicSpell.View
 {
     public partial class GameRenderer
     {
-        private static readonly Color HandStunTint = PaletteUtils.Hex(0x8f98b0);
-        private static readonly Color WarnFill = PaletteUtils.Warn.WithAlpha(0.28f);
-
         // 예고: 빨간 테두리 + 깜빡임(KeyWarning), 조준선, 드래그 선택 사각형, 클릭 조준점. 이동 중에는 옅게 미리 보여 준다.
         private void DrawWarnings()
         {
@@ -28,8 +25,8 @@ namespace ShiftMagicSpell.View
             {
                 Vector2 from = ToPixel(attack.From);
                 Vector2 to = ToPixel(attack.To);
-                _canvas.DrawLine(from, to, 8f, PaletteUtils.Warn.WithAlpha(isBlinkOn ? 0.35f : 0.2f));
-                _canvas.DrawLine(from, to, 1f, PaletteUtils.Warn);
+                _canvas.DrawLine(from, to, 8f, Colors.Warn.WithAlpha(isBlinkOn ? 0.35f : 0.2f));
+                _canvas.DrawLine(from, to, 1f, Colors.Warn);
             }
 
             if (attack.Type == AttackType.Drag && isWarning && !hand.HasPath)
@@ -39,8 +36,8 @@ namespace ShiftMagicSpell.View
                 float y0 = Mathf.Min(from.y, handPixel.y) - 7f;
                 float width = Mathf.Abs(handPixel.x - from.x) + 14f;
                 float height = Mathf.Abs(handPixel.y - from.y) + 14f;
-                _canvas.DrawRect(x0, y0, width, height, PaletteUtils.Shift.WithAlpha(0.22f));
-                _canvas.DrawDashedRect(x0, y0, width, height, 2f, PaletteUtils.Shift);
+                _canvas.DrawRect(x0, y0, width, height, Colors.Shift.WithAlpha(0.22f));
+                _canvas.DrawDashedRect(x0, y0, width, height, 2f, Colors.Shift);
             }
 
             if (isTracking)
@@ -62,20 +59,20 @@ namespace ShiftMagicSpell.View
                     {
                         if (isBlinkOn)
                         {
-                            _canvas.DrawRect(topLeft.x + 1f, topLeft.y + 1f, 14f, 14f, WarnFill);
+                            _canvas.DrawRect(topLeft.x + 1f, topLeft.y + 1f, 14f, 14f, Colors.Warn.WithAlpha(0.28f));
                         }
 
                         _canvas.DrawFrame(Animated("KeyWarning", "Blink", _game.Time), topLeft.x, topLeft.y, Color.white);
                     }
                     else
                     {
-                        _canvas.DrawRectOutline(topLeft.x + 1f, topLeft.y + 1f, 14f, 14f, 1f, PaletteUtils.Warn.WithAlpha(0.45f));
+                        _canvas.DrawRectOutline(topLeft.x + 1f, topLeft.y + 1f, 14f, 14f, 1f, Colors.Warn.WithAlpha(0.45f));
                     }
 
                     // 줄 섞기만 칸마다 미는 양(→1 …)을 붙인다
                     if (attack.Type == AttackType.Flick && !cell.IsShift)
                     {
-                        _canvas.DrawRect(topLeft.x + 4f, topLeft.y - 4f, 13f, 9f, PaletteUtils.Warn);
+                        _canvas.DrawRect(topLeft.x + 4f, topLeft.y - 4f, 13f, 9f, Colors.Warn);
                         _text.Draw(attack.Badge, topLeft.x + 5f, topLeft.y - 3f, Color.white);
                     }
                 }
@@ -84,11 +81,11 @@ namespace ShiftMagicSpell.View
             if ((attack.Type == AttackType.Click || attack.Type == AttackType.Slot) && isWarning)
             {
                 Vector2 center = ToPixel(attack.Center);
-                _canvas.DrawRing(center, 5f, 1, PaletteUtils.Warn);
-                _canvas.DrawRect(center.x - 9f, center.y, 5f, 1f, PaletteUtils.Warn);
-                _canvas.DrawRect(center.x + 5f, center.y, 5f, 1f, PaletteUtils.Warn);
-                _canvas.DrawRect(center.x, center.y - 9f, 1f, 5f, PaletteUtils.Warn);
-                _canvas.DrawRect(center.x, center.y + 5f, 1f, 5f, PaletteUtils.Warn);
+                _canvas.DrawRing(center, 5f, 1, Colors.Warn);
+                _canvas.DrawRect(center.x - 9f, center.y, 5f, 1f, Colors.Warn);
+                _canvas.DrawRect(center.x + 5f, center.y, 5f, 1f, Colors.Warn);
+                _canvas.DrawRect(center.x, center.y - 9f, 1f, 5f, Colors.Warn);
+                _canvas.DrawRect(center.x, center.y + 5f, 1f, 5f, Colors.Warn);
             }
         }
 
@@ -149,11 +146,11 @@ namespace ShiftMagicSpell.View
             Color tint = Color.white;
             if (hand.IsCharging)
             {
-                tint = PaletteUtils.Hex(0xff8a8a);
+                tint = Colors.HandCharge;
             }
             else if (hand.State == HandState.Stun)
             {
-                tint = HandStunTint;
+                tint = Colors.HandStun;
             }
 
             if (isHurt && Mathf.FloorToInt(hand.AnimT * 20f) % 2 == 0)

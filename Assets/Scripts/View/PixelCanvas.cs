@@ -11,9 +11,7 @@ namespace ShiftMagicSpell.View
     /// </summary>
     public class PixelCanvas : MonoBehaviour
     {
-        public const int SCREEN_W = 320;
-        public const int SCREEN_H = 200;
-        public const float PPU = 16f;
+        public const float PPU = ViewUtils.PPU;
         private const int MAX_RADIUS = 220;
 
         [SerializeField] private Material _spriteMaterial;
@@ -273,7 +271,7 @@ namespace ShiftMagicSpell.View
 
         private Vector3 ToWorld(float x, float y)
         {
-            return new Vector3((x + Offset.x) / PPU, (SCREEN_H - y - Offset.y) / PPU, 0f);
+            return new Vector3((x + Offset.x) / PPU, (ViewUtils.SCREEN_H - y - Offset.y) / PPU, 0f);
         }
 
         private SpriteRenderer Next(Sprite sprite, Color color)
