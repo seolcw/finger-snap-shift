@@ -1,0 +1,220 @@
+{ "frames": [
+   {
+    "filename": "PixelSymbols 0.aseprite",
+    "frame": { "x": 0, "y": 0, "w": 5, "h": 7 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 5, "h": 7 },
+    "sourceSize": { "w": 5, "h": 7 },
+    "duration": 100
+   },
+   {
+    "filename": "PixelSymbols 1.aseprite",
+    "frame": { "x": 5, "y": 0, "w": 5, "h": 7 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 5, "h": 7 },
+    "sourceSize": { "w": 5, "h": 7 },
+    "duration": 100
+   },
+   {
+    "filename": "PixelSymbols 2.aseprite",
+    "frame": { "x": 10, "y": 0, "w": 5, "h": 7 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 5, "h": 7 },
+    "sourceSize": { "w": 5, "h": 7 },
+    "duration": 100
+   },
+   {
+    "filename": "PixelSymbols 3.aseprite",
+    "frame": { "x": 15, "y": 0, "w": 5, "h": 7 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 5, "h": 7 },
+    "sourceSize": { "w": 5, "h": 7 },
+    "duration": 100
+   },
+   {
+    "filename": "PixelSymbols 4.aseprite",
+    "frame": { "x": 20, "y": 0, "w": 5, "h": 7 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 5, "h": 7 },
+    "sourceSize": { "w": 5, "h": 7 },
+    "duration": 100
+   },
+   {
+    "filename": "PixelSymbols 5.aseprite",
+    "frame": { "x": 25, "y": 0, "w": 5, "h": 7 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 5, "h": 7 },
+    "sourceSize": { "w": 5, "h": 7 },
+    "duration": 100
+   },
+   {
+    "filename": "PixelSymbols 6.aseprite",
+    "frame": { "x": 30, "y": 0, "w": 5, "h": 7 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 5, "h": 7 },
+    "sourceSize": { "w": 5, "h": 7 },
+    "duration": 100
+   },
+   {
+    "filename": "PixelSymbols 7.aseprite",
+    "frame": { "x": 35, "y": 0, "w": 5, "h": 7 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 5, "h": 7 },
+    "sourceSize": { "w": 5, "h": 7 },
+    "duration": 100
+   },
+   {
+    "filename": "PixelSymbols 8.aseprite",
+    "frame": { "x": 40, "y": 0, "w": 5, "h": 7 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 5, "h": 7 },
+    "sourceSize": { "w": 5, "h": 7 },
+    "duration": 100
+   },
+   {
+    "filename": "PixelSymbols 9.aseprite",
+    "frame": { "x": 45, "y": 0, "w": 5, "h": 7 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 5, "h": 7 },
+    "sourceSize": { "w": 5, "h": 7 },
+    "duration": 100
+   },
+   {
+    "filename": "PixelSymbols 10.aseprite",
+    "frame": { "x": 50, "y": 0, "w": 5, "h": 7 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 5, "h": 7 },
+    "sourceSize": { "w": 5, "h": 7 },
+    "duration": 100
+   },
+   {
+    "filename": "PixelSymbols 11.aseprite",
+    "frame": { "x": 55, "y": 0, "w": 5, "h": 7 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 5, "h": 7 },
+    "sourceSize": { "w": 5, "h": 7 },
+    "duration": 100
+   },
+   {
+    "filename": "PixelSymbols 12.aseprite",
+    "frame": { "x": 60, "y": 0, "w": 5, "h": 7 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 5, "h": 7 },
+    "sourceSize": { "w": 5, "h": 7 },
+    "duration": 100
+   },
+   {
+    "filename": "PixelSymbols 13.aseprite",
+    "frame": { "x": 65, "y": 0, "w": 5, "h": 7 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 5, "h": 7 },
+    "sourceSize": { "w": 5, "h": 7 },
+    "duration": 100
+   },
+   {
+    "filename": "PixelSymbols 14.aseprite",
+    "frame": { "x": 70, "y": 0, "w": 5, "h": 7 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 5, "h": 7 },
+    "sourceSize": { "w": 5, "h": 7 },
+    "duration": 100
+   },
+   {
+    "filename": "PixelSymbols 15.aseprite",
+    "frame": { "x": 75, "y": 0, "w": 5, "h": 7 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 5, "h": 7 },
+    "sourceSize": { "w": 5, "h": 7 },
+    "duration": 100
+   },
+   {
+    "filename": "PixelSymbols 16.aseprite",
+    "frame": { "x": 80, "y": 0, "w": 5, "h": 7 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 5, "h": 7 },
+    "sourceSize": { "w": 5, "h": 7 },
+    "duration": 100
+   },
+   {
+    "filename": "PixelSymbols 17.aseprite",
+    "frame": { "x": 85, "y": 0, "w": 5, "h": 7 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 5, "h": 7 },
+    "sourceSize": { "w": 5, "h": 7 },
+    "duration": 100
+   },
+   {
+    "filename": "PixelSymbols 18.aseprite",
+    "frame": { "x": 90, "y": 0, "w": 5, "h": 7 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 5, "h": 7 },
+    "sourceSize": { "w": 5, "h": 7 },
+    "duration": 100
+   },
+   {
+    "filename": "PixelSymbols 19.aseprite",
+    "frame": { "x": 95, "y": 0, "w": 5, "h": 7 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 5, "h": 7 },
+    "sourceSize": { "w": 5, "h": 7 },
+    "duration": 100
+   },
+   {
+    "filename": "PixelSymbols 20.aseprite",
+    "frame": { "x": 100, "y": 0, "w": 5, "h": 7 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 5, "h": 7 },
+    "sourceSize": { "w": 5, "h": 7 },
+    "duration": 100
+   },
+   {
+    "filename": "PixelSymbols 21.aseprite",
+    "frame": { "x": 105, "y": 0, "w": 5, "h": 7 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 5, "h": 7 },
+    "sourceSize": { "w": 5, "h": 7 },
+    "duration": 100
+   },
+   {
+    "filename": "PixelSymbols 22.aseprite",
+    "frame": { "x": 110, "y": 0, "w": 5, "h": 7 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 5, "h": 7 },
+    "sourceSize": { "w": 5, "h": 7 },
+    "duration": 100
+   }
+ ],
+ "meta": {
+  "app": "https://www.aseprite.org/",
+  "version": "1.3.18.6-x64",
+  "image": "PixelSymbols.png",
+  "format": "RGBA8888",
+  "size": { "w": 115, "h": 7 },
+  "scale": "1",
+  "frameTags": [
+  ]
+ }
+}

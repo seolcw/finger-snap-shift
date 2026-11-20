@@ -1,0 +1,16 @@
+GIMP Palette
+Name: Finger Snap Shift
+Columns: 6
+#
+  0   0   0	Black
+255 255 255	White
+194 195 199	LightGray
+122 123 134	MidGray
+ 62  63  74	DarkGray
+232  52  63	Red
+126  31  61	DarkRed
+255 212  59	Yellow
+ 92 203 255	Sky
+ 42 120 181	DarkSky
+ 76 217 100	Green
+255 122 176	Pink

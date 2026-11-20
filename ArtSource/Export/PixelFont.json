@@ -1,0 +1,250 @@
+{ "frames": [
+   {
+    "filename": "PixelFont 0.aseprite",
+    "frame": { "x": 0, "y": 0, "w": 5, "h": 7 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 5, "h": 7 },
+    "sourceSize": { "w": 5, "h": 7 },
+    "duration": 100
+   },
+   {
+    "filename": "PixelFont 1.aseprite",
+    "frame": { "x": 5, "y": 0, "w": 5, "h": 7 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 5, "h": 7 },
+    "sourceSize": { "w": 5, "h": 7 },
+    "duration": 100
+   },
+   {
+    "filename": "PixelFont 2.aseprite",
+    "frame": { "x": 10, "y": 0, "w": 5, "h": 7 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 5, "h": 7 },
+    "sourceSize": { "w": 5, "h": 7 },
+    "duration": 100
+   },
+   {
+    "filename": "PixelFont 3.aseprite",
+    "frame": { "x": 15, "y": 0, "w": 5, "h": 7 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 5, "h": 7 },
+    "sourceSize": { "w": 5, "h": 7 },
+    "duration": 100
+   },
+   {
+    "filename": "PixelFont 4.aseprite",
+    "frame": { "x": 20, "y": 0, "w": 5, "h": 7 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 5, "h": 7 },
+    "sourceSize": { "w": 5, "h": 7 },
+    "duration": 100
+   },
+   {
+    "filename": "PixelFont 5.aseprite",
+    "frame": { "x": 25, "y": 0, "w": 5, "h": 7 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 5, "h": 7 },
+    "sourceSize": { "w": 5, "h": 7 },
+    "duration": 100
+   },
+   {
+    "filename": "PixelFont 6.aseprite",
+    "frame": { "x": 30, "y": 0, "w": 5, "h": 7 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 5, "h": 7 },
+    "sourceSize": { "w": 5, "h": 7 },
+    "duration": 100
+   },
+   {
+    "filename": "PixelFont 7.aseprite",
+    "frame": { "x": 35, "y": 0, "w": 5, "h": 7 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 5, "h": 7 },
+    "sourceSize": { "w": 5, "h": 7 },
+    "duration": 100
+   },
+   {
+    "filename": "PixelFont 8.aseprite",
+    "frame": { "x": 40, "y": 0, "w": 5, "h": 7 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 5, "h": 7 },
+    "sourceSize": { "w": 5, "h": 7 },
+    "duration": 100
+   },
+   {
+    "filename": "PixelFont 9.aseprite",
+    "frame": { "x": 45, "y": 0, "w": 5, "h": 7 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 5, "h": 7 },
+    "sourceSize": { "w": 5, "h": 7 },
+    "duration": 100
+   },
+   {
+    "filename": "PixelFont 10.aseprite",
+    "frame": { "x": 50, "y": 0, "w": 5, "h": 7 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 5, "h": 7 },
+    "sourceSize": { "w": 5, "h": 7 },
+    "duration": 100
+   },
+   {
+    "filename": "PixelFont 11.aseprite",
+    "frame": { "x": 55, "y": 0, "w": 5, "h": 7 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 5, "h": 7 },
+    "sourceSize": { "w": 5, "h": 7 },
+    "duration": 100
+   },
+   {
+    "filename": "PixelFont 12.aseprite",
+    "frame": { "x": 60, "y": 0, "w": 5, "h": 7 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 5, "h": 7 },
+    "sourceSize": { "w": 5, "h": 7 },
+    "duration": 100
+   },
+   {
+    "filename": "PixelFont 13.aseprite",
+    "frame": { "x": 65, "y": 0, "w": 5, "h": 7 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 5, "h": 7 },
+    "sourceSize": { "w": 5, "h": 7 },
+    "duration": 100
+   },
+   {
+    "filename": "PixelFont 14.aseprite",
+    "frame": { "x": 70, "y": 0, "w": 5, "h": 7 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 5, "h": 7 },
+    "sourceSize": { "w": 5, "h": 7 },
+    "duration": 100
+   },
+   {
+    "filename": "PixelFont 15.aseprite",
+    "frame": { "x": 75, "y": 0, "w": 5, "h": 7 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 5, "h": 7 },
+    "sourceSize": { "w": 5, "h": 7 },
+    "duration": 100
+   },
+   {
+    "filename": "PixelFont 16.aseprite",
+    "frame": { "x": 80, "y": 0, "w": 5, "h": 7 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 5, "h": 7 },
+    "sourceSize": { "w": 5, "h": 7 },
+    "duration": 100
+   },
+   {
+    "filename": "PixelFont 17.aseprite",
+    "frame": { "x": 85, "y": 0, "w": 5, "h": 7 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 5, "h": 7 },
+    "sourceSize": { "w": 5, "h": 7 },
+    "duration": 100
+   },
+   {
+    "filename": "PixelFont 18.aseprite",
+    "frame": { "x": 90, "y": 0, "w": 5, "h": 7 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 5, "h": 7 },
+    "sourceSize": { "w": 5, "h": 7 },
+    "duration": 100
+   },
+   {
+    "filename": "PixelFont 19.aseprite",
+    "frame": { "x": 95, "y": 0, "w": 5, "h": 7 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 5, "h": 7 },
+    "sourceSize": { "w": 5, "h": 7 },
+    "duration": 100
+   },
+   {
+    "filename": "PixelFont 20.aseprite",
+    "frame": { "x": 100, "y": 0, "w": 5, "h": 7 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 5, "h": 7 },
+    "sourceSize": { "w": 5, "h": 7 },
+    "duration": 100
+   },
+   {
+    "filename": "PixelFont 21.aseprite",
+    "frame": { "x": 105, "y": 0, "w": 5, "h": 7 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 5, "h": 7 },
+    "sourceSize": { "w": 5, "h": 7 },
+    "duration": 100
+   },
+   {
+    "filename": "PixelFont 22.aseprite",
+    "frame": { "x": 110, "y": 0, "w": 5, "h": 7 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 5, "h": 7 },
+    "sourceSize": { "w": 5, "h": 7 },
+    "duration": 100
+   },
+   {
+    "filename": "PixelFont 23.aseprite",
+    "frame": { "x": 115, "y": 0, "w": 5, "h": 7 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 5, "h": 7 },
+    "sourceSize": { "w": 5, "h": 7 },
+    "duration": 100
+   },
+   {
+    "filename": "PixelFont 24.aseprite",
+    "frame": { "x": 120, "y": 0, "w": 5, "h": 7 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 5, "h": 7 },
+    "sourceSize": { "w": 5, "h": 7 },
+    "duration": 100
+   },
+   {
+    "filename": "PixelFont 25.aseprite",
+    "frame": { "x": 125, "y": 0, "w": 5, "h": 7 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 5, "h": 7 },
+    "sourceSize": { "w": 5, "h": 7 },
+    "duration": 100
+   }
+ ],
+ "meta": {
+  "app": "https://www.aseprite.org/",
+  "version": "1.3.18.6-x64",
+  "image": "PixelFont.png",
+  "format": "RGBA8888",
+  "size": { "w": 130, "h": 7 },
+  "scale": "1",
+  "frameTags": [
+  ],
+  "layers": [
+   { "name": "Art", "opacity": 255, "blendMode": "normal" }
+  ]
+ }
+}

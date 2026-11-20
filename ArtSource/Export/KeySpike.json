@@ -1,0 +1,35 @@
+{ "frames": [
+   {
+    "filename": "KeySpike 0.aseprite",
+    "frame": { "x": 0, "y": 0, "w": 16, "h": 20 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 20 },
+    "sourceSize": { "w": 16, "h": 20 },
+    "duration": 120
+   },
+   {
+    "filename": "KeySpike 1.aseprite",
+    "frame": { "x": 16, "y": 0, "w": 16, "h": 20 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 20 },
+    "sourceSize": { "w": 16, "h": 20 },
+    "duration": 120
+   }
+ ],
+ "meta": {
+  "app": "https://www.aseprite.org/",
+  "version": "1.3.18.6-x64",
+  "image": "KeySpike.png",
+  "format": "RGBA8888",
+  "size": { "w": 32, "h": 20 },
+  "scale": "1",
+  "frameTags": [
+   { "name": "Spike", "from": 0, "to": 1, "direction": "forward", "color": "#000000ff" }
+  ],
+  "layers": [
+   { "name": "Art", "opacity": 255, "blendMode": "normal" }
+  ]
+ }
+}
