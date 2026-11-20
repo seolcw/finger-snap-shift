@@ -1,0 +1,616 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b83a42c3c50f084fba3c74047950d4f, type: 3}
+  m_Name: ArtCatalog
+  m_EditorClassIdentifier: 
+  Sheets:
+  - Name: AttackBlock
+    CanvasSize: {x: 16, y: 20}
+    Frames:
+    - {fileID: 3075976513610564913, guid: 686ecf86757a3cb43b3ac78c62c75df8, type: 3}
+    - {fileID: -6421837997373698972, guid: 686ecf86757a3cb43b3ac78c62c75df8, type: 3}
+    - {fileID: 4221572162164939406, guid: 686ecf86757a3cb43b3ac78c62c75df8, type: 3}
+    Durations:
+    - 0.5
+    - 0.2
+    - 0.1
+    Tags:
+    - Name: Idle
+      From: 0
+      To: 1
+    - Name: Cracked
+      From: 2
+      To: 2
+  - Name: AttackSlot
+    CanvasSize: {x: 16, y: 20}
+    Frames:
+    - {fileID: -5019435445661970186, guid: 9115ba707fb6fd94a85935512d6b4dcf, type: 3}
+    - {fileID: 3592733608516633412, guid: 9115ba707fb6fd94a85935512d6b4dcf, type: 3}
+    Durations:
+    - 0.1
+    - 0.1
+    Tags:
+    - Name: Empty
+      From: 0
+      To: 0
+    - Name: Active
+      From: 1
+      To: 1
+  - Name: Beam
+    CanvasSize: {x: 8, y: 8}
+    Frames:
+    - {fileID: -4947344248007352918, guid: 59f9accfc94654c468efaebe0a674336, type: 3}
+    - {fileID: -133156773488827406, guid: 59f9accfc94654c468efaebe0a674336, type: 3}
+    Durations:
+    - 0.1
+    - 0.1
+    Tags:
+    - Name: Segment
+      From: 0
+      To: 0
+    - Name: Head
+      From: 1
+      To: 1
+  - Name: BlockDebris
+    CanvasSize: {x: 4, y: 4}
+    Frames:
+    - {fileID: 1002816815196346648, guid: 8b4e6af27918c594c9652c50b4f43141, type: 3}
+    - {fileID: 1882289901454215220, guid: 8b4e6af27918c594c9652c50b4f43141, type: 3}
+    Durations:
+    - 0.1
+    - 0.1
+    Tags:
+    - Name: Debris
+      From: 0
+      To: 1
+  - Name: EdgeArrow
+    CanvasSize: {x: 12, y: 12}
+    Frames:
+    - {fileID: -8070714397018811806, guid: 23fe6a0768dc1964bb7f5762693eeffc, type: 3}
+    Durations:
+    - 0.1
+    Tags:
+    - Name: Arrow
+      From: 0
+      To: 0
+  - Name: Explosion
+    CanvasSize: {x: 32, y: 32}
+    Frames:
+    - {fileID: -5198704892531990176, guid: a693efd0b51bff145b8900d32b9121fc, type: 3}
+    - {fileID: -848636485239274161, guid: a693efd0b51bff145b8900d32b9121fc, type: 3}
+    - {fileID: -3401285971539193676, guid: a693efd0b51bff145b8900d32b9121fc, type: 3}
+    - {fileID: -7084871900802551893, guid: a693efd0b51bff145b8900d32b9121fc, type: 3}
+    Durations:
+    - 0.06
+    - 0.08
+    - 0.09
+    - 0.14
+    Tags:
+    - Name: Burst
+      From: 0
+      To: 3
+  - Name: Fireball
+    CanvasSize: {x: 16, y: 16}
+    Frames:
+    - {fileID: -6671062054370875235, guid: b440ab016d3c2a04fa8a8986826df52b, type: 3}
+    - {fileID: -329883649401576047, guid: b440ab016d3c2a04fa8a8986826df52b, type: 3}
+    - {fileID: -5107412552464162407, guid: b440ab016d3c2a04fa8a8986826df52b, type: 3}
+    Durations:
+    - 0.08
+    - 0.08
+    - 0.08
+    Tags:
+    - Name: Fly
+      From: 0
+      To: 2
+  - Name: Gust
+    CanvasSize: {x: 16, y: 16}
+    Frames:
+    - {fileID: -3523231527811497605, guid: 03885c530cb6fe8409944c5db3823160, type: 3}
+    - {fileID: 9011321610851156839, guid: 03885c530cb6fe8409944c5db3823160, type: 3}
+    - {fileID: 4757606356128688347, guid: 03885c530cb6fe8409944c5db3823160, type: 3}
+    - {fileID: 6146539661253219622, guid: 03885c530cb6fe8409944c5db3823160, type: 3}
+    Durations:
+    - 0.07
+    - 0.07
+    - 0.07
+    - 0.07
+    Tags:
+    - Name: Spin
+      From: 0
+      To: 3
+  - Name: Hand
+    CanvasSize: {x: 32, y: 32}
+    Frames:
+    - {fileID: -543748774455747527, guid: 49b93d92781fd3141a6339ab301beaa7, type: 3}
+    - {fileID: -8384717105691261828, guid: 49b93d92781fd3141a6339ab301beaa7, type: 3}
+    - {fileID: 3645498971366006227, guid: 49b93d92781fd3141a6339ab301beaa7, type: 3}
+    - {fileID: -3792215047996482051, guid: 49b93d92781fd3141a6339ab301beaa7, type: 3}
+    - {fileID: -6333444693613996220, guid: 49b93d92781fd3141a6339ab301beaa7, type: 3}
+    - {fileID: 3296172557772367474, guid: 49b93d92781fd3141a6339ab301beaa7, type: 3}
+    - {fileID: -2612040964149307338, guid: 49b93d92781fd3141a6339ab301beaa7, type: 3}
+    - {fileID: -4657803041018955964, guid: 49b93d92781fd3141a6339ab301beaa7, type: 3}
+    - {fileID: 5437922192632214983, guid: 49b93d92781fd3141a6339ab301beaa7, type: 3}
+    - {fileID: 2462086939817107111, guid: 49b93d92781fd3141a6339ab301beaa7, type: 3}
+    - {fileID: 1432887556903572895, guid: 49b93d92781fd3141a6339ab301beaa7, type: 3}
+    - {fileID: 4830136946611444845, guid: 49b93d92781fd3141a6339ab301beaa7, type: 3}
+    - {fileID: -280674210443531887, guid: 49b93d92781fd3141a6339ab301beaa7, type: 3}
+    Durations:
+    - 0.4
+    - 0.4
+    - 0.06
+    - 0.06
+    - 0.12
+    - 0.12
+    - 0.2
+    - 0.15
+    - 0.15
+    - 0.15
+    - 0.2
+    - 0.2
+    - 0.2
+    Tags:
+    - Name: Idle
+      From: 0
+      To: 1
+    - Name: FlickCharge
+      From: 2
+      To: 3
+    - Name: FlickRelease
+      From: 4
+      To: 4
+    - Name: FlickRecover
+      From: 5
+      To: 5
+    - Name: SlamRaise
+      From: 6
+      To: 6
+    - Name: SlamHit
+      From: 7
+      To: 7
+    - Name: Click
+      From: 8
+      To: 9
+    - Name: Wand
+      From: 10
+      To: 11
+    - Name: Hurt
+      From: 12
+      To: 12
+  - Name: HpBar
+    CanvasSize: {x: 4, y: 8}
+    Frames:
+    - {fileID: 949607217376309498, guid: e6705b9b2e0a81c47b8da4631ac832f6, type: 3}
+    - {fileID: -1556127605399727748, guid: e6705b9b2e0a81c47b8da4631ac832f6, type: 3}
+    Durations:
+    - 0.1
+    - 0.1
+    Tags:
+    - Name: Fill
+      From: 0
+      To: 0
+    - Name: Empty
+      From: 1
+      To: 1
+  - Name: HpCell
+    CanvasSize: {x: 8, y: 8}
+    Frames:
+    - {fileID: 105050017918374371, guid: c29763567bec3da4c8ff4d694caae421, type: 3}
+    - {fileID: 3738955652916520404, guid: c29763567bec3da4c8ff4d694caae421, type: 3}
+    Durations:
+    - 0.1
+    - 0.1
+    Tags:
+    - Name: Full
+      From: 0
+      To: 0
+    - Name: Empty
+      From: 1
+      To: 1
+  - Name: IceShard
+    CanvasSize: {x: 8, y: 8}
+    Frames:
+    - {fileID: -3190276481989389421, guid: 09acfba79b5802646932f79c7f114165, type: 3}
+    Durations:
+    - 0.1
+    Tags:
+    - Name: Shard
+      From: 0
+      To: 0
+  - Name: KeyMatched
+    CanvasSize: {x: 16, y: 20}
+    Frames:
+    - {fileID: 6201124631306273950, guid: aaa03ee45ed5b75418b6372d581e16b9, type: 3}
+    Durations:
+    - 0.1
+    Tags:
+    - Name: Glow
+      From: 0
+      To: 0
+  - Name: KeyRowBand
+    CanvasSize: {x: 16, y: 20}
+    Frames:
+    - {fileID: -2704741587140691154, guid: 1be1ae1771468514ea21042e5bd5a778, type: 3}
+    - {fileID: 4306636386715570505, guid: 1be1ae1771468514ea21042e5bd5a778, type: 3}
+    Durations:
+    - 0.12
+    - 0.12
+    Tags:
+    - Name: Band
+      From: 0
+      To: 1
+  - Name: KeySpike
+    CanvasSize: {x: 16, y: 20}
+    Frames:
+    - {fileID: 6713222872041472163, guid: 296942260ee7931428c363834aa7ba4a, type: 3}
+    - {fileID: -8252713869820485710, guid: 296942260ee7931428c363834aa7ba4a, type: 3}
+    Durations:
+    - 0.12
+    - 0.12
+    Tags:
+    - Name: Spike
+      From: 0
+      To: 1
+  - Name: KeyTargetGlow
+    CanvasSize: {x: 16, y: 20}
+    Frames:
+    - {fileID: 5677813347593049520, guid: 97a73ac368aef5c4abe873d72c968528, type: 3}
+    Durations:
+    - 0.1
+    Tags:
+    - Name: Glow
+      From: 0
+      To: 0
+  - Name: KeyWarning
+    CanvasSize: {x: 16, y: 20}
+    Frames:
+    - {fileID: -4440095345054917019, guid: 7c69264ee4c67aa4e8acf1f528e26d67, type: 3}
+    - {fileID: 5577593783920951229, guid: 7c69264ee4c67aa4e8acf1f528e26d67, type: 3}
+    Durations:
+    - 0.12
+    - 0.12
+    Tags:
+    - Name: Blink
+      From: 0
+      To: 1
+  - Name: Keycap
+    CanvasSize: {x: 16, y: 20}
+    Frames:
+    - {fileID: 7292447071068909194, guid: 0c6cb130c00895a459e00a56a59d43bd, type: 3}
+    - {fileID: -9099820283637240786, guid: 0c6cb130c00895a459e00a56a59d43bd, type: 3}
+    - {fileID: 6541960575342247122, guid: 0c6cb130c00895a459e00a56a59d43bd, type: 3}
+    - {fileID: 4987071411355964746, guid: 0c6cb130c00895a459e00a56a59d43bd, type: 3}
+    - {fileID: -8479634119679033883, guid: 0c6cb130c00895a459e00a56a59d43bd, type: 3}
+    - {fileID: 5854258637330044258, guid: 0c6cb130c00895a459e00a56a59d43bd, type: 3}
+    - {fileID: 5606799558001930231, guid: 0c6cb130c00895a459e00a56a59d43bd, type: 3}
+    Durations:
+    - 0.1
+    - 0.1
+    - 0.1
+    - 0.1
+    - 0.1
+    - 0.1
+    - 0.1
+    Tags:
+    - Name: Base
+      From: 0
+      To: 0
+    - Name: Pressed
+      From: 1
+      To: 1
+    - Name: Cracked
+      From: 2
+      To: 2
+    - Name: Broken
+      From: 3
+      To: 3
+    - Name: Blank
+      From: 4
+      To: 4
+    - Name: Shift
+      From: 5
+      To: 5
+    - Name: Hole
+      From: 6
+      To: 6
+  - Name: Lightning
+    CanvasSize: {x: 16, y: 48}
+    Frames:
+    - {fileID: 5324407895801513703, guid: d1bce2722fe664e419ec3a364ddefc4f, type: 3}
+    - {fileID: 4210023627268070965, guid: d1bce2722fe664e419ec3a364ddefc4f, type: 3}
+    - {fileID: 4514368507901265244, guid: d1bce2722fe664e419ec3a364ddefc4f, type: 3}
+    Durations:
+    - 0.06
+    - 0.06
+    - 0.08
+    Tags:
+    - Name: Strike
+      From: 0
+      To: 1
+    - Name: Fade
+      From: 2
+      To: 2
+  - Name: Panel
+    CanvasSize: {x: 16, y: 16}
+    Frames:
+    - {fileID: -1694140370315725620, guid: db2e0d65c8201594db7ea76158d67812, type: 3}
+    Durations:
+    - 0.1
+    Tags:
+    - Name: Panel
+      From: 0
+      To: 0
+  - Name: PixelFont
+    CanvasSize: {x: 5, y: 7}
+    Frames:
+    - {fileID: 5689972123524352124, guid: db2e8c65207a3274aaee2b2954dcc699, type: 3}
+    - {fileID: 1168714920127276170, guid: db2e8c65207a3274aaee2b2954dcc699, type: 3}
+    - {fileID: 3138471969967898246, guid: db2e8c65207a3274aaee2b2954dcc699, type: 3}
+    - {fileID: 2579929830945825820, guid: db2e8c65207a3274aaee2b2954dcc699, type: 3}
+    - {fileID: -744140763741359967, guid: db2e8c65207a3274aaee2b2954dcc699, type: 3}
+    - {fileID: -4617696684239187252, guid: db2e8c65207a3274aaee2b2954dcc699, type: 3}
+    - {fileID: -3596845586757101910, guid: db2e8c65207a3274aaee2b2954dcc699, type: 3}
+    - {fileID: -6008985040228783768, guid: db2e8c65207a3274aaee2b2954dcc699, type: 3}
+    - {fileID: -6612197380489261847, guid: db2e8c65207a3274aaee2b2954dcc699, type: 3}
+    - {fileID: -8369090124313712825, guid: db2e8c65207a3274aaee2b2954dcc699, type: 3}
+    - {fileID: -8096930385010891769, guid: db2e8c65207a3274aaee2b2954dcc699, type: 3}
+    - {fileID: 2044943468295520132, guid: db2e8c65207a3274aaee2b2954dcc699, type: 3}
+    - {fileID: -874043655935786650, guid: db2e8c65207a3274aaee2b2954dcc699, type: 3}
+    - {fileID: 9031117677897886141, guid: db2e8c65207a3274aaee2b2954dcc699, type: 3}
+    - {fileID: 8906095603760259025, guid: db2e8c65207a3274aaee2b2954dcc699, type: 3}
+    - {fileID: -3904579618440523788, guid: db2e8c65207a3274aaee2b2954dcc699, type: 3}
+    - {fileID: -3979056066792059138, guid: db2e8c65207a3274aaee2b2954dcc699, type: 3}
+    - {fileID: 5328916299328801964, guid: db2e8c65207a3274aaee2b2954dcc699, type: 3}
+    - {fileID: 8752013612107443869, guid: db2e8c65207a3274aaee2b2954dcc699, type: 3}
+    - {fileID: -5050602293891799344, guid: db2e8c65207a3274aaee2b2954dcc699, type: 3}
+    - {fileID: 7814046086444722880, guid: db2e8c65207a3274aaee2b2954dcc699, type: 3}
+    - {fileID: -7308795775196160723, guid: db2e8c65207a3274aaee2b2954dcc699, type: 3}
+    - {fileID: 6441641433179948426, guid: db2e8c65207a3274aaee2b2954dcc699, type: 3}
+    - {fileID: -6515123392977945000, guid: db2e8c65207a3274aaee2b2954dcc699, type: 3}
+    - {fileID: -5125538623298459321, guid: db2e8c65207a3274aaee2b2954dcc699, type: 3}
+    - {fileID: 7791098348308678542, guid: db2e8c65207a3274aaee2b2954dcc699, type: 3}
+    Durations:
+    - 0.1
+    - 0.1
+    - 0.1
+    - 0.1
+    - 0.1
+    - 0.1
+    - 0.1
+    - 0.1
+    - 0.1
+    - 0.1
+    - 0.1
+    - 0.1
+    - 0.1
+    - 0.1
+    - 0.1
+    - 0.1
+    - 0.1
+    - 0.1
+    - 0.1
+    - 0.1
+    - 0.1
+    - 0.1
+    - 0.1
+    - 0.1
+    - 0.1
+    - 0.1
+    Tags: []
+  - Name: PixelSymbols
+    CanvasSize: {x: 5, y: 7}
+    Frames:
+    - {fileID: 2822309165054817520, guid: dd4c5ca84ba6fc94bb7263afb9347f5a, type: 3}
+    - {fileID: 4880418944999092121, guid: dd4c5ca84ba6fc94bb7263afb9347f5a, type: 3}
+    - {fileID: 3323217215913648666, guid: dd4c5ca84ba6fc94bb7263afb9347f5a, type: 3}
+    - {fileID: -190571744081907189, guid: dd4c5ca84ba6fc94bb7263afb9347f5a, type: 3}
+    - {fileID: -1848805543857482514, guid: dd4c5ca84ba6fc94bb7263afb9347f5a, type: 3}
+    - {fileID: -3776145238385894643, guid: dd4c5ca84ba6fc94bb7263afb9347f5a, type: 3}
+    - {fileID: 2125077636837914860, guid: dd4c5ca84ba6fc94bb7263afb9347f5a, type: 3}
+    - {fileID: 3437739650797676136, guid: dd4c5ca84ba6fc94bb7263afb9347f5a, type: 3}
+    - {fileID: 7926972889716984364, guid: dd4c5ca84ba6fc94bb7263afb9347f5a, type: 3}
+    - {fileID: -3450456979998293150, guid: dd4c5ca84ba6fc94bb7263afb9347f5a, type: 3}
+    - {fileID: -6894048441014807112, guid: dd4c5ca84ba6fc94bb7263afb9347f5a, type: 3}
+    - {fileID: 2180425137907762643, guid: dd4c5ca84ba6fc94bb7263afb9347f5a, type: 3}
+    - {fileID: -4011464584640554339, guid: dd4c5ca84ba6fc94bb7263afb9347f5a, type: 3}
+    - {fileID: -7891987475858960105, guid: dd4c5ca84ba6fc94bb7263afb9347f5a, type: 3}
+    - {fileID: -6713965942330729883, guid: dd4c5ca84ba6fc94bb7263afb9347f5a, type: 3}
+    - {fileID: 2588344582537079420, guid: dd4c5ca84ba6fc94bb7263afb9347f5a, type: 3}
+    - {fileID: -3090105285939204174, guid: dd4c5ca84ba6fc94bb7263afb9347f5a, type: 3}
+    - {fileID: 7072770579499017903, guid: dd4c5ca84ba6fc94bb7263afb9347f5a, type: 3}
+    - {fileID: -1560265839989399629, guid: dd4c5ca84ba6fc94bb7263afb9347f5a, type: 3}
+    - {fileID: -8168751472608193730, guid: dd4c5ca84ba6fc94bb7263afb9347f5a, type: 3}
+    - {fileID: -6108608951662963710, guid: dd4c5ca84ba6fc94bb7263afb9347f5a, type: 3}
+    - {fileID: 828778745272588568, guid: dd4c5ca84ba6fc94bb7263afb9347f5a, type: 3}
+    - {fileID: -6698877040639109407, guid: dd4c5ca84ba6fc94bb7263afb9347f5a, type: 3}
+    Durations:
+    - 0.1
+    - 0.1
+    - 0.1
+    - 0.1
+    - 0.1
+    - 0.1
+    - 0.1
+    - 0.1
+    - 0.1
+    - 0.1
+    - 0.1
+    - 0.1
+    - 0.1
+    - 0.1
+    - 0.1
+    - 0.1
+    - 0.1
+    - 0.1
+    - 0.1
+    - 0.1
+    - 0.1
+    - 0.1
+    - 0.1
+    Tags: []
+  - Name: Player
+    CanvasSize: {x: 16, y: 16}
+    Frames:
+    - {fileID: 422446520396974720, guid: f3dbf26ad68f9b34185b2a3721083556, type: 3}
+    - {fileID: 327811887037186976, guid: f3dbf26ad68f9b34185b2a3721083556, type: 3}
+    - {fileID: -3058719141443378539, guid: f3dbf26ad68f9b34185b2a3721083556, type: 3}
+    Durations:
+    - 0.4
+    - 0.4
+    - 0.2
+    Tags:
+    - Name: Idle
+      From: 0
+      To: 1
+    - Name: Hurt
+      From: 2
+      To: 2
+  - Name: Rocket
+    CanvasSize: {x: 16, y: 10}
+    Frames:
+    - {fileID: 5220984631632231594, guid: 4177d0d3bd75cb044a871505d064523d, type: 3}
+    - {fileID: 792946613046327669, guid: 4177d0d3bd75cb044a871505d064523d, type: 3}
+    Durations:
+    - 0.06
+    - 0.06
+    Tags:
+    - Name: Fly
+      From: 0
+      To: 1
+  - Name: RotateChevron
+    CanvasSize: {x: 8, y: 8}
+    Frames:
+    - {fileID: -9055324141014360867, guid: 2296d82b6ef46da4e9cbfc9edf913495, type: 3}
+    Durations:
+    - 0.1
+    Tags:
+    - Name: Chevron
+      From: 0
+      To: 0
+  - Name: ShiftArrow
+    CanvasSize: {x: 16, y: 16}
+    Frames:
+    - {fileID: -3515653087486862931, guid: 21f141ca25ee4814a98a16f3012ad67c, type: 3}
+    Durations:
+    - 0.1
+    Tags:
+    - Name: Arrow
+      From: 0
+      To: 0
+  - Name: Slash
+    CanvasSize: {x: 32, y: 32}
+    Frames:
+    - {fileID: 6066079439088376042, guid: 8f38866943ec3c04db06be0d11dd63c6, type: 3}
+    - {fileID: -2925178651972200802, guid: 8f38866943ec3c04db06be0d11dd63c6, type: 3}
+    - {fileID: 4862562601627660125, guid: 8f38866943ec3c04db06be0d11dd63c6, type: 3}
+    Durations:
+    - 0.05
+    - 0.07
+    - 0.09
+    Tags:
+    - Name: Swing
+      From: 0
+      To: 2
+  - Name: SpaceKey
+    CanvasSize: {x: 24, y: 14}
+    Frames:
+    - {fileID: -645480597950207399, guid: 8644416583bd4494b92d8034459ff00e, type: 3}
+    - {fileID: 2834414093303097712, guid: 8644416583bd4494b92d8034459ff00e, type: 3}
+    Durations:
+    - 0.1
+    - 0.1
+    Tags:
+    - Name: Base
+      From: 0
+      To: 0
+    - Name: Pressed
+      From: 1
+      To: 1
+  - Name: SpellIcon
+    CanvasSize: {x: 12, y: 12}
+    Frames:
+    - {fileID: -5478204414067174099, guid: 54b01fce86861ee489033823f4c49475, type: 3}
+    - {fileID: -947210240746642189, guid: 54b01fce86861ee489033823f4c49475, type: 3}
+    - {fileID: 8798085306833739670, guid: 54b01fce86861ee489033823f4c49475, type: 3}
+    - {fileID: 46806156353723189, guid: 54b01fce86861ee489033823f4c49475, type: 3}
+    - {fileID: 5877262904455147408, guid: 54b01fce86861ee489033823f4c49475, type: 3}
+    - {fileID: 2919489789698824960, guid: 54b01fce86861ee489033823f4c49475, type: 3}
+    - {fileID: -3314925345274696538, guid: 54b01fce86861ee489033823f4c49475, type: 3}
+    - {fileID: 879294342625644066, guid: 54b01fce86861ee489033823f4c49475, type: 3}
+    - {fileID: -8348283992651050687, guid: 54b01fce86861ee489033823f4c49475, type: 3}
+    - {fileID: -8440779999592102972, guid: 54b01fce86861ee489033823f4c49475, type: 3}
+    Durations:
+    - 0.1
+    - 0.1
+    - 0.1
+    - 0.1
+    - 0.1
+    - 0.1
+    - 0.1
+    - 0.1
+    - 0.1
+    - 0.1
+    Tags:
+    - Name: Fire
+      From: 0
+      To: 0
+    - Name: Bolt
+      From: 1
+      To: 1
+    - Name: Beam
+      From: 2
+      To: 2
+    - Name: Gust
+      From: 3
+      To: 3
+    - Name: Star
+      From: 4
+      To: 4
+    - Name: Ice
+      From: 5
+      To: 5
+    - Name: Blade
+      From: 6
+      To: 6
+    - Name: Rocket
+      From: 7
+      To: 7
+    - Name: Dragon
+      From: 8
+      To: 8
+    - Name: Shift
+      From: 9
+      To: 9
+  - Name: Star
+    CanvasSize: {x: 8, y: 8}
+    Frames:
+    - {fileID: -4622191640385224004, guid: d01f1b566cd67714f841af633fff8d7e, type: 3}
+    - {fileID: 3423654735506590688, guid: d01f1b566cd67714f841af633fff8d7e, type: 3}
+    Durations:
+    - 0.12
+    - 0.12
+    Tags:
+    - Name: Twinkle
+      From: 0
+      To: 1
+  - Name: SummonBullet
+    CanvasSize: {x: 8, y: 8}
+    Frames:
+    - {fileID: 1208540384723197917, guid: e091bc8200ed20b42b7c21f2413f7a2e, type: 3}
+    - {fileID: 4859438671220777408, guid: e091bc8200ed20b42b7c21f2413f7a2e, type: 3}
+    Durations:
+    - 0.1
+    - 0.1
+    Tags:
+    - Name: Spin
+      From: 0
+      To: 1

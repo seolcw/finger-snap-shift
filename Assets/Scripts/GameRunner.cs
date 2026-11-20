@@ -1,0 +1,47 @@
+using ShiftMagicSpell.Core;
+using ShiftMagicSpell.Data;
+using ShiftMagicSpell.Input;
+using ShiftMagicSpell.View;
+using UnityEngine;
+
+namespace ShiftMagicSpell
+{
+    /// <summary>씬 진입점: 입력 → 로직(GameSession.Update) → 그리기 순서로 매 프레임 돌린다.</summary>
+    public class GameRunner : MonoBehaviour
+    {
+        // 웹과 같이 한 프레임에 0.05초 넘게 진행하지 않는다(탭 전환 뒤 순간이동 방지)
+        private const float MAX_DELTA = 0.05f;
+
+        [SerializeField] private AttackPatternsData _attackPatterns;
+        [SerializeField] private BoardLayoutData _boardLayouts;
+        [SerializeField] private GameRenderer _renderer;
+        [Tooltip("0이면 실행할 때마다 다른 난수")]
+        [SerializeField] private int _seed;
+
+        private readonly GameInput _input = new GameInput();
+
+        public GameSession Session { get; private set; }
+
+        private void Awake()
+        {
+            Application.targetFrameRate = 60;
+            int seed = _seed != 0 ? _seed : System.Environment.TickCount;
+            Session = new GameSession(_attackPatterns, _boardLayouts, seed);
+        }
+
+        private void Update()
+        {
+            _input.Poll(Session);
+            Session.Update(Mathf.Min(MAX_DELTA, Time.deltaTime));
+            _renderer.Render(Session);
+        }
+
+        private void OnApplicationFocus(bool hasFocus)
+        {
+            if (!hasFocus && Session != null)
+            {
+                _input.OnFocusLost(Session);
+            }
+        }
+    }
+}
