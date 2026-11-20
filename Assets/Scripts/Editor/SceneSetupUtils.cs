@@ -54,7 +54,8 @@ namespace ShiftMagicSpell.Editor
             var player = (GameObject)PrefabUtility.InstantiatePrefab(AssetDatabase.LoadAssetAtPath<GameObject>(PrefabSetupUtils.PLAYER_PATH), world.transform);
             var hand = (GameObject)PrefabUtility.InstantiatePrefab(AssetDatabase.LoadAssetAtPath<GameObject>(PrefabSetupUtils.HAND_PATH), world.transform);
             PixelCanvas fx = BuildCanvas(world, "Canvas_Fx", RenderOrderUtils.FX);
-            PixelCanvas hud = BuildCanvas(null, "Canvas_Hud", RenderOrderUtils.HUD);
+            HudView hud = HudSetupUtils.BuildHud();
+            ScreensView screens = HudSetupUtils.BuildScreens();
 
             var game = new GameObject("Game");
             GameRenderer renderer = game.AddComponent<GameRenderer>();
@@ -67,7 +68,8 @@ namespace ShiftMagicSpell.Editor
                 ("_overCanvas", over),
                 ("_warningCanvas", warning),
                 ("_fxCanvas", fx),
-                ("_hudCanvas", hud));
+                ("_hud", hud),
+                ("_screens", screens));
             var serialized = new SerializedObject(renderer);
             SerializedProperty boards = serialized.FindProperty("_boards");
             boards.arraySize = 2;

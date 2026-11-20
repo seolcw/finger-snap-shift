@@ -8,8 +8,9 @@ namespace ShiftMagicSpell.View
     /// 매 프레임 GameSession 상태를 화면에 반영한다.
     /// - 씬 오브젝트(에디터에서 고침): 판·키·슬롯(BoardView), 플레이어(PlayerView), 손(HandView)
     /// - 즉시 그리기 캔버스(매번 바뀌는 것만): 잔상·점선(under), 줄 돌리기·맞춤·순간이동 연출(over), 예고·탄(warning),
-    ///   마법·떠오르는 글자(fx), 화면 글자(hud). 캔버스마다 앞뒤 순서 시작 값이 다르다.
-    /// 판 위 연출(BoardFx), 손 예고(Warnings), 마법(Spells), 화면 글자(Hud)는 partial 파일로 나눴다.
+    ///   마법·떠오르는 글자(fx). 캔버스마다 앞뒤 순서 시작 값이 다르다.
+    /// - 화면 글자(HudView)와 전체 화면 패널(ScreensView)도 씬 오브젝트
+    /// 판 위 연출(BoardFx), 손 예고(Warnings), 마법(Spells)은 partial 파일로 나눴다.
     /// </summary>
     public partial class GameRenderer : MonoBehaviour
     {
@@ -19,13 +20,14 @@ namespace ShiftMagicSpell.View
         [SerializeField] private BoardView[] _boards = new BoardView[2];
         [SerializeField] private PlayerView _player;
         [SerializeField] private HandView _hand;
+        [SerializeField] private HudView _hud;
+        [SerializeField] private ScreensView _screens;
 
         [Header("즉시 그리기 캔버스")]
         [SerializeField] private PixelCanvas _underCanvas;
         [SerializeField] private PixelCanvas _overCanvas;
         [SerializeField] private PixelCanvas _warningCanvas;
         [SerializeField] private PixelCanvas _fxCanvas;
-        [SerializeField] private PixelCanvas _hudCanvas;
 
         [Header("화면 흔들림")]
         [Tooltip("흔들림 세기 1일 때 최대 이동(px)")]
@@ -41,13 +43,13 @@ namespace ShiftMagicSpell.View
 
         private void Awake()
         {
-            _text = new PixelTextDrawer(_hudCanvas, Catalog);
+            _text = new PixelTextDrawer(_fxCanvas, Catalog);
         }
 
         public void Render(GameSession game)
         {
             _game = game;
-            PixelCanvas[] canvases = { _underCanvas, _overCanvas, _warningCanvas, _fxCanvas, _hudCanvas };
+            PixelCanvas[] canvases = { _underCanvas, _overCanvas, _warningCanvas, _fxCanvas };
             foreach (PixelCanvas canvas in canvases)
             {
                 canvas.BeginFrame();
@@ -65,9 +67,8 @@ namespace ShiftMagicSpell.View
             _player.Render(game);
             _hand.Render(game);
             DrawCellFx();
-            UseCanvas(_hudCanvas);
-            DrawHud();
-            DrawOverlay();
+            _hud.Render(game);
+            _screens.Render(game);
             foreach (PixelCanvas canvas in canvases)
             {
                 canvas.EndFrame();
