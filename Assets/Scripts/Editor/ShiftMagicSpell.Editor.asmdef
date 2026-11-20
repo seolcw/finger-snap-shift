@@ -2,6 +2,7 @@
     "name": "ShiftMagicSpell.Editor",
     "rootNamespace": "ShiftMagicSpell.Editor",
     "references": [
+        "ShiftMagicSpell",
         "Unity.2D.Aseprite.Editor"
     ],
     "includePlatforms": [

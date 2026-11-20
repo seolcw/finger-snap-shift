@@ -1,0 +1,434 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76db6341e2c019a469fdd188117d98e6, type: 3}
+  m_Name: AttackPatterns
+  m_EditorClassIdentifier: 
+  Config:
+    WarnTime: 0.7
+    HandSpeed: 560
+    AttackInterval: 2.4
+    MoveRepeat: 0.15
+    RotateRepeat: 0.24
+    DominoStep: 0.035
+    PlayerHp: 5
+    HitInvuln: 1
+    ShiftCooldown: 2
+    ShiftInvuln: 0.5
+    SpellStun: 0.8
+    SpellTime: 0.9
+    FinisherHp: 5
+    DeathHandRecover: 0.5
+    Reaction: 0.25
+    RotateSlide: 0.24
+    HintInterval: 4
+    HintDuration: 1
+    OverflowMul: 0.8
+    ComboWindow: 1.5
+    ComboBonus: 0.5
+    BlockHp: 2
+    StoreTime: 0.5
+    BlockAggro: 0.15
+  Sliders:
+  - Key: warnTime
+    Label: "\uC608\uACE0 \uC2DC\uAC04 (\uCD08)"
+    Min: 0.3
+    Max: 2
+    Step: 0.05
+  - Key: handSpeed
+    Label: "\uC190 \uC774\uB3D9 \uC18D\uB3C4 (px/\uCD08)"
+    Min: 100
+    Max: 900
+    Step: 10
+  - Key: attackInterval
+    Label: "\uACF5\uACA9 \uAC04\uACA9 (\uCD08)"
+    Min: 0.5
+    Max: 5
+    Step: 0.1
+  - Key: moveRepeat
+    Label: "\uC774\uB3D9 \uBC18\uBCF5 \uAC04\uACA9 (\uCD08)"
+    Min: 0.05
+    Max: 0.4
+    Step: 0.01
+  - Key: rotateRepeat
+    Label: "\uC904 \uB3CC\uB9AC\uAE30 \uBC18\uBCF5 \uAC04\uACA9 (\uCD08)"
+    Min: 0.05
+    Max: 0.5
+    Step: 0.01
+  - Key: rotateSlide
+    Label: "\uC904 \uB3CC\uB9AC\uAE30 \uBBF8\uB044\uB7EC\uC9D0 \uC2DC\uAC04 (\uCD08)"
+    Min: 0.05
+    Max: 0.6
+    Step: 0.01
+  - Key: dominoStep
+    Label: "\uB3C4\uBBF8\uB178 \uAC04\uACA9 (\uCD08)"
+    Min: 0
+    Max: 0.1
+    Step: 0.005
+  - Key: spellStun
+    Label: "\uB9C8\uBC95 \uB9DE\uC740 \uC190 \uBA48\uCDA4 (\uCD08)"
+    Min: 0
+    Max: 3
+    Step: 0.1
+  - Key: hintInterval
+    Label: "\uB2E8\uC5B4 \uC704\uCE58 \uAE5C\uBE61\uC784 \uC8FC\uAE30 (\uCD08)"
+    Min: 1
+    Max: 12
+    Step: 0.5
+  - Key: hintDuration
+    Label: "\uAE5C\uBE61\uC774\uB294 \uC2DC\uAC04 (\uCD08)"
+    Min: 0.2
+    Max: 3
+    Step: 0.1
+  Phases:
+  - Words:
+    - FIRE
+    - BOLT
+    - WIND
+    - BEAM
+    - NOVA
+    Attacks:
+    - click
+    - aim
+    - summon
+    - flick
+    - slot
+    HandHp: 20
+    SpeedMul: 1
+    IntervalMul: 1
+    WarnMul: 1
+  - Words:
+    - MAGIC
+    - FROST
+    - LASER
+    - STORM
+    - BLADE
+    - FLAME
+    Attacks:
+    - click
+    - aim
+    - summon
+    - flick
+    - track
+    - charge
+    - drag
+    - slot
+    HandHp: 25
+    SpeedMul: 1.1
+    IntervalMul: 0.9
+    WarnMul: 0.95
+  - Words:
+    - COMET
+    - BLAZE
+    - VORTEX
+    - ROCKET
+    - DRAGON
+    Attacks:
+    - click
+    - aim
+    - summon
+    - flick
+    - track
+    - charge
+    - drag
+    - full
+    - slot
+    HandHp: 25
+    SpeedMul: 1.2
+    IntervalMul: 0.8
+    WarnMul: 0.9
+  FinisherWord: SHIFT
+  Spells:
+  - Word: FIRE
+    Ko: "\uD654\uC5FC\uAD6C"
+    Fx: fireball
+    Color: {r: 1, g: 0.5411765, b: 0.23921569, a: 1}
+    Size: 10
+    Count: 1
+    Icon: Fire
+  - Word: BOLT
+    Ko: "\uBC88\uAC1C"
+    Fx: bolt
+    Color: {r: 1, g: 0.9490196, b: 0.47843137, a: 1}
+    Size: 10
+    Count: 1
+    Icon: Bolt
+  - Word: WIND
+    Ko: "\uB3CC\uD48D"
+    Fx: gust
+    Color: {r: 0.62352943, g: 0.9607843, b: 0.8156863, a: 1}
+    Size: 10
+    Count: 3
+    Icon: Gust
+  - Word: BEAM
+    Ko: "\uAD11\uC120"
+    Fx: beam
+    Color: {r: 0.49803922, g: 0.84705883, b: 1, a: 1}
+    Size: 10
+    Count: 1
+    Icon: Beam
+  - Word: NOVA
+    Ko: "\uD3ED\uBC1C"
+    Fx: nova
+    Color: {r: 0.7882353, g: 0.7137255, b: 1, a: 1}
+    Size: 10
+    Count: 1
+    Icon: Star
+  - Word: MAGIC
+    Ko: "\uB9C8\uBC95"
+    Fx: sparkle
+    Color: {r: 1, g: 0.47843137, b: 0.6901961, a: 1}
+    Size: 10
+    Count: 6
+    Icon: Star
+  - Word: FROST
+    Ko: "\uC5BC\uC74C \uC870\uAC01"
+    Fx: shards
+    Color: {r: 0.65882355, g: 0.9019608, b: 1, a: 1}
+    Size: 10
+    Count: 5
+    Icon: Ice
+  - Word: LASER
+    Ko: "\uB808\uC774\uC800"
+    Fx: beam
+    Color: {r: 1, g: 0.3019608, b: 0.42745098, a: 1}
+    Size: 10
+    Count: 3
+    Icon: Beam
+  - Word: STORM
+    Ko: "\uD3ED\uD48D"
+    Fx: bolt
+    Color: {r: 1, g: 0.9490196, b: 0.47843137, a: 1}
+    Size: 10
+    Count: 3
+    Icon: Bolt
+  - Word: BLADE
+    Ko: "\uCE7C\uB0A0"
+    Fx: slash
+    Color: {r: 0.9098039, g: 0.9254902, b: 0.9607843, a: 1}
+    Size: 10
+    Count: 3
+    Icon: Blade
+  - Word: FLAME
+    Ko: "\uBD88\uAF43"
+    Fx: fireball
+    Color: {r: 1, g: 0.41568628, b: 0.16470589, a: 1}
+    Size: 13
+    Count: 1
+    Icon: Fire
+  - Word: ROCKET
+    Ko: "\uB85C\uCF13"
+    Fx: rocket
+    Color: {r: 1, g: 0.69411767, b: 0.23921569, a: 1}
+    Size: 10
+    Count: 1
+    Icon: Rocket
+  - Word: VORTEX
+    Ko: "\uC18C\uC6A9\uB3CC\uC774"
+    Fx: gust
+    Color: {r: 0.7058824, g: 0.54901963, b: 1, a: 1}
+    Size: 10
+    Count: 5
+    Icon: Gust
+  - Word: DRAGON
+    Ko: "\uC6A9\uC758 \uC228\uACB0"
+    Fx: dragon
+    Color: {r: 1, g: 0.3529412, b: 0.16470589, a: 1}
+    Size: 10
+    Count: 1
+    Icon: Dragon
+  - Word: SHIFT
+    Ko: SHIFT
+    Fx: shift
+    Color: {r: 0.23921569, g: 0.48235294, b: 1, a: 1}
+    Size: 10
+    Count: 1
+    Icon: Shift
+  - Word: COMET
+    Ko: "\uD61C\uC131"
+    Fx: fireball
+    Color: {r: 0.62352943, g: 0.84705883, b: 1, a: 1}
+    Size: 12
+    Count: 1
+    Icon: Fire
+  - Word: BLAZE
+    Ko: "\uC5C5\uD654"
+    Fx: fireball
+    Color: {r: 1, g: 0.2901961, b: 0.101960786, a: 1}
+    Size: 15
+    Count: 1
+    Icon: Fire
+  Attacks:
+  - Id: flick
+    Name: "\uC904 \uC11E\uAE30"
+    Kind: position
+    Base: 6
+    Cooldown: 7
+    WarnMul: 1
+    ShiftMin: 1
+    ShiftMax: 1
+    BulletSpeed: 0
+    ChargeSpeed: 0
+    ChainMin: 
+    ChainMax: 
+    ChainWarnMul: 1
+    TrackTime: 0
+    FollowSpeed: 0
+    LockMul: 1
+    DoubleChance: []
+    DoubleGap: 0
+  - Id: summon
+    Name: "\uC18C\uD658"
+    Kind: damage
+    Base: 7
+    Cooldown: 4.5
+    WarnMul: 0.8
+    ShiftMin: 1
+    ShiftMax: 1
+    BulletSpeed: 6
+    ChargeSpeed: 0
+    ChainMin: 
+    ChainMax: 
+    ChainWarnMul: 1
+    TrackTime: 0
+    FollowSpeed: 0
+    LockMul: 1
+    DoubleChance: []
+    DoubleGap: 0
+  - Id: charge
+    Name: "\uB458\uB808 \uB3CC\uC9C4"
+    Kind: damage
+    Base: 6
+    Cooldown: 6
+    WarnMul: 1.1
+    ShiftMin: 1
+    ShiftMax: 1
+    BulletSpeed: 0
+    ChargeSpeed: 850
+    ChainMin: 
+    ChainMax: 
+    ChainWarnMul: 1
+    TrackTime: 0
+    FollowSpeed: 0
+    LockMul: 1
+    DoubleChance: []
+    DoubleGap: 0
+  - Id: aim
+    Name: "\uC870\uC900 \uB3CC\uC9C4"
+    Kind: damage
+    Base: 8
+    Cooldown: 4
+    WarnMul: 1
+    ShiftMin: 1
+    ShiftMax: 1
+    BulletSpeed: 0
+    ChargeSpeed: 760
+    ChainMin: 010000000100000002000000
+    ChainMax: 010000000200000002000000
+    ChainWarnMul: 0.8
+    TrackTime: 0
+    FollowSpeed: 0
+    LockMul: 1
+    DoubleChance: []
+    DoubleGap: 0
+  - Id: track
+    Name: "\uCD94\uC801 \uB0B4\uB824\uCC0D\uAE30"
+    Kind: damage
+    Base: 8
+    Cooldown: 6
+    WarnMul: 1
+    ShiftMin: 1
+    ShiftMax: 1
+    BulletSpeed: 0
+    ChargeSpeed: 0
+    ChainMin: 
+    ChainMax: 
+    ChainWarnMul: 1
+    TrackTime: 1.5
+    FollowSpeed: 220
+    LockMul: 0.85
+    DoubleChance: []
+    DoubleGap: 0
+  - Id: click
+    Name: "\uD074\uB9AD"
+    Kind: damage
+    Base: 8
+    Cooldown: 3
+    WarnMul: 0.9
+    ShiftMin: 1
+    ShiftMax: 1
+    BulletSpeed: 0
+    ChargeSpeed: 0
+    ChainMin: 
+    ChainMax: 
+    ChainWarnMul: 1
+    TrackTime: 0
+    FollowSpeed: 0
+    LockMul: 1
+    DoubleChance:
+    - 0.2
+    - 0.4
+    - 0.55
+    DoubleGap: 0.5
+  - Id: drag
+    Name: "\uB4DC\uB798\uADF8 \uC120\uD0DD"
+    Kind: damage
+    Base: 7
+    Cooldown: 7
+    WarnMul: 1.3
+    ShiftMin: 1
+    ShiftMax: 1
+    BulletSpeed: 0
+    ChargeSpeed: 0
+    ChainMin: 
+    ChainMax: 
+    ChainWarnMul: 1
+    TrackTime: 0
+    FollowSpeed: 0
+    LockMul: 1
+    DoubleChance: []
+    DoubleGap: 0
+  - Id: full
+    Name: "\uC804\uCCB4 \uACF5\uACA9"
+    Kind: damage
+    Base: 0
+    Cooldown: 20
+    WarnMul: 3.2
+    ShiftMin: 1
+    ShiftMax: 1
+    BulletSpeed: 0
+    ChargeSpeed: 0
+    ChainMin: 
+    ChainMax: 
+    ChainWarnMul: 1
+    TrackTime: 0
+    FollowSpeed: 0
+    LockMul: 1
+    DoubleChance: []
+    DoubleGap: 0
+  - Id: slot
+    Name: "\uC2AC\uB86F \uAE68\uAE30"
+    Kind: damage
+    Base: 5
+    Cooldown: 6
+    WarnMul: 1.2
+    ShiftMin: 1
+    ShiftMax: 1
+    BulletSpeed: 0
+    ChargeSpeed: 0
+    ChainMin: 
+    ChainMax: 
+    ChainWarnMul: 1
+    TrackTime: 0
+    FollowSpeed: 0
+    LockMul: 1
+    DoubleChance: []
+    DoubleGap: 0
