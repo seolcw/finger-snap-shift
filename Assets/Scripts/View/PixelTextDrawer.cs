@@ -3,21 +3,11 @@ using UnityEngine;
 
 namespace ShiftMagicSpell.View
 {
-    /// <summary>
-    /// 5x7 도트 글꼴(PixelFont A~Z, PixelSymbols 0~9와 기호)로 글자를 그린다. 소문자는 대문자로 그린다.
-    /// WebGL에는 시스템 글꼴이 없어서 화면 글자는 모두 영어 대문자·숫자·기호로 쓴다.
-    /// </summary>
+    /// <summary>즉시 그리기 캔버스(PixelCanvas)에 도트 글꼴로 글자를 쓴다(떠오르는 숫자처럼 매번 바뀌는 글자용).</summary>
     public class PixelTextDrawer
     {
-        public const int GLYPH_W = 5;
-        public const int GLYPH_H = 7;
-        private const int ADVANCE = 6;
-        private const int SPACE_ADVANCE = 4;
-        private const int DOT_ADVANCE = 2;
-        private const string SYMBOLS = "0123456789+-!?:/%×→←↑↓⇧";
-
-        private readonly PixelCanvas _canvas;
         private readonly ArtCatalog _catalog;
+        private PixelCanvas _canvas;
 
         public PixelTextDrawer(PixelCanvas canvas, ArtCatalog catalog)
         {
@@ -25,15 +15,21 @@ namespace ShiftMagicSpell.View
             _catalog = catalog;
         }
 
+        /// <summary>그릴 캔버스를 바꾼다(앞뒤 순서가 다른 캔버스에 같은 글꼴로 쓸 때)</summary>
+        public PixelCanvas Canvas
+        {
+            get => _canvas;
+            set => _canvas = value;
+        }
+
         public float Measure(string text, float scale = 1f)
         {
-            float width = 0f;
-            foreach (char ch in text)
-            {
-                width += GetAdvance(ch) * scale;
-            }
+            return PixelFontUtils.Measure(text, scale);
+        }
 
-            return Mathf.Max(0f, width - scale);
+        public bool TryGetGlyph(char ch, out ArtFrame frame)
+        {
+            return PixelFontUtils.TryGetGlyph(_catalog, ch, out frame);
         }
 
         /// <summary>(x, y) = 글자 줄의 기준점(왼쪽·가운데·오른쪽) 위쪽. 그림자를 주면 1px 아래·오른쪽에 먼저 그린다.</summary>
@@ -44,47 +40,13 @@ namespace ShiftMagicSpell.View
                 return;
             }
 
-            float width = Measure(text, scale);
-            float startX = align == TextAlign.Center ? Mathf.Round(x - width * 0.5f) : align == TextAlign.Right ? x - width : x;
+            float startX = PixelFontUtils.GetStartX(x, Measure(text, scale), align);
             if (shadow.HasValue)
             {
                 DrawRun(text, startX + scale, y + scale, shadow.Value, scale);
             }
 
             DrawRun(text, startX, y, color, scale);
-        }
-
-        public bool TryGetGlyph(char ch, out ArtFrame frame)
-        {
-            char upper = char.ToUpperInvariant(ch);
-            if (upper >= 'A' && upper <= 'Z')
-            {
-                frame = _catalog.GetFrame("PixelFont", null, upper - 'A');
-                return frame.IsValid;
-            }
-
-            int symbol = SYMBOLS.IndexOf(ch);
-            if (symbol >= 0)
-            {
-                frame = _catalog.GetFrame("PixelSymbols", null, symbol);
-                return frame.IsValid;
-            }
-
-            frame = default;
-            return false;
-        }
-
-        private static int GetAdvance(char ch)
-        {
-            switch (ch)
-            {
-                case ' ':
-                    return SPACE_ADVANCE;
-                case '.':
-                    return DOT_ADVANCE;
-                default:
-                    return ADVANCE;
-            }
         }
 
         private void DrawRun(string text, float x, float y, Color color, float scale)
@@ -98,11 +60,10 @@ namespace ShiftMagicSpell.View
                 }
                 else if (ch == '.')
                 {
-                    // 글꼴에 마침표가 없어서 바닥에 점 하나로 그린다(버전 표시용)
-                    _canvas.DrawRect(cursor, y + (GLYPH_H - 1) * scale, scale, scale, color);
+                    _canvas.DrawRect(cursor, y + (PixelFontUtils.GLYPH_H - 1) * scale, scale, scale, color);
                 }
 
-                cursor += GetAdvance(ch) * scale;
+                cursor += PixelFontUtils.GetAdvance(ch) * scale;
             }
         }
     }

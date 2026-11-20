@@ -11,9 +11,5 @@ namespace ShiftMagicSpell.View
         public Vector2 BoardOriginPx = new Vector2(32f, 72f);
         [Tooltip("칸 하나 크기(px). 키 그림은 16x20")]
         public Vector2 CellSizePx = new Vector2(16f, 20f);
-        [Tooltip("키 왼쪽 위에서 글자(5x7) 왼쪽 위까지(px)")]
-        public Vector2 GlyphOffsetPx = new Vector2(5f, 5f);
-        [Tooltip("플레이어를 칸보다 띄우는 높이(px)")]
-        public float PlayerLiftPx = 6f;
     }
 }

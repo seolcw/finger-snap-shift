@@ -215,7 +215,6 @@ namespace ShiftMagicSpell.View
                     _canvas.DrawFrameStretched(strike, new Vector2(context.To.x + offset, context.To.y - height * 0.5f + 6f), new Vector2(1f, height / 48f), 0f, Color.white.WithAlpha(1f - context.W * 0.8f));
                 }
 
-                _canvas.Offset = Vector2.zero;
                 _canvas.DrawRect(0f, 0f, ViewUtils.SCREEN_W, ViewUtils.SCREEN_H, Color.white.WithAlpha((1f - context.W) * 0.25f));
             }
         }
@@ -341,7 +340,6 @@ namespace ShiftMagicSpell.View
             {
                 _canvas.DrawRing(context.To, 84f * Ease(context.W), 3, context.Color.WithAlpha(1f - context.W));
                 _canvas.DrawRing(context.To, 52f * Ease(context.W), 1, context.Color.WithAlpha(1f - context.W));
-                _canvas.Offset = Vector2.zero;
                 _canvas.DrawRect(0f, 0f, ViewUtils.SCREEN_W, ViewUtils.SCREEN_H, context.Color.WithAlpha((1f - context.W) * 0.3f));
             }
         }

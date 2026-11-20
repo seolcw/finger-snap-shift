@@ -15,6 +15,8 @@ namespace ShiftMagicSpell.View
         private const int MAX_RADIUS = 220;
 
         [SerializeField] private Material _spriteMaterial;
+        [Tooltip("그린 순서대로 이 값부터 1씩 올라간다")]
+        [SerializeField] private int _baseSortingOrder = RenderOrderUtils.FX;
 
         private readonly List<SpriteRenderer> _pool = new List<SpriteRenderer>();
         private readonly Dictionary<int, Sprite> _circleCache = new Dictionary<int, Sprite>();
@@ -290,7 +292,7 @@ namespace ShiftMagicSpell.View
             }
 
             SpriteRenderer renderer = _pool[_usedCount];
-            renderer.sortingOrder = _usedCount;
+            renderer.sortingOrder = _baseSortingOrder + _usedCount;
             _usedCount++;
             renderer.enabled = true;
             renderer.sprite = sprite;

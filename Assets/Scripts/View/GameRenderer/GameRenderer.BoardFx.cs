@@ -1,0 +1,164 @@
+using System.Collections.Generic;
+using ShiftMagicSpell.Core;
+using ShiftMagicSpell.Data;
+using UnityEngine;
+
+namespace ShiftMagicSpell.View
+{
+    public partial class GameRenderer
+    {
+        /// <summary>
+        /// 플레이어 줄 돌리기: 줄 전체에 파란 띠가 깔리고, 그 위로 › 가 돌리는 방향으로 흐른다.
+        /// 양 끝 바깥에는 큰 화살표: 한쪽 끝에서 밀려 나간 키가 반대쪽 끝으로 들어온다는 뜻.
+        /// </summary>
+        private void DrawRotateFx(FxEvent fx)
+        {
+            float u = fx.T / fx.Duration;
+            List<BoardCell> cells = _game.Boards[fx.Board].LineCells(fx.Axis, fx.Index);
+            cells.RemoveAll(cell => cell.IsShift);
+            if (cells.Count == 0)
+            {
+                return;
+            }
+
+            bool isRow = fx.Axis == LineAxis.Row;
+            var unit = new Vector2(isRow ? fx.Sign : 0f, isRow ? 0f : fx.Sign);
+            float angle = -Mathf.Atan2(unit.y, unit.x) * Mathf.Rad2Deg;
+            float flow = ((1f - u) * 2.5f) % 1f;
+            foreach (BoardCell cell in cells)
+            {
+                Vector2 topLeft = ViewUtils.CellTopLeft(fx.Board, cell.R, cell.C);
+                _canvas.DrawRect(topLeft.x, topLeft.y, ViewUtils.CellW, ViewUtils.CellW, Colors.Shift.WithAlpha(u * 0.3f));
+            }
+
+            Color arrowTint = Color.white.WithAlpha(u);
+            foreach (BoardCell cell in cells)
+            {
+                // 글자를 가리지 않게 키 가장자리(행은 아래, 열은 오른쪽)에
+                Vector2 center = ViewUtils.CellCenter(fx.Board, cell.R, cell.C);
+                Vector2 edge = isRow ? new Vector2(0f, 6f) : new Vector2(6f, 0f);
+                Vector2 travel = ViewUtils.ToPixelDelta(unit * (flow - 0.5f));
+                Vector2 position = center + edge + travel;
+                _canvas.DrawFrameCentered(Frame("RotateChevron", "Chevron"), position.x, position.y, arrowTint, angle);
+            }
+
+            Vector2 first = ViewUtils.CellCenter(fx.Board, cells[0].R, cells[0].C);
+            Vector2 last = ViewUtils.CellCenter(fx.Board, cells[cells.Count - 1].R, cells[cells.Count - 1].C);
+            Vector2 outEnd = fx.Sign > 0 ? last : first;
+            Vector2 inEnd = fx.Sign > 0 ? first : last;
+            Vector2 gap = ViewUtils.ToPixelDelta(unit * 0.85f);
+            _canvas.DrawFrameCentered(Frame("EdgeArrow", "Arrow"), outEnd.x + gap.x, outEnd.y + gap.y, arrowTint, angle);
+            _canvas.DrawFrameCentered(Frame("EdgeArrow", "Arrow"), inEnd.x - gap.x, inEnd.y - gap.y, arrowTint, angle);
+        }
+
+        // 칸에 붙는 짧은 연출. 판 위 연출은 over 캔버스, 마법·글자·클릭 고리는 fx 캔버스에 그린다
+        private void DrawCellFx()
+        {
+            foreach (FxEvent fx in _game.Fx)
+            {
+                UseCanvas(IsFxLayer(fx.Kind) ? _fxCanvas : _overCanvas);
+                switch (fx.Kind)
+                {
+                    case FxKind.Rotate:
+                        DrawRotateFx(fx);
+                        break;
+                    case FxKind.Spell:
+                        DrawSpell(fx);
+                        break;
+                    case FxKind.Match:
+                        {
+                            // 맞춘 칸이 초록으로 번쩍이며 퍼진다
+                            float u = fx.T / fx.Duration;
+                            float grow = (1f - u) * 3f;
+                            foreach (Vector2Int cell in fx.Cells)
+                            {
+                                Vector2 topLeft = ViewUtils.CellTopLeft(fx.Board, cell.y, cell.x);
+                                _canvas.DrawRect(topLeft.x - grow, topLeft.y - grow, ViewUtils.CellW + grow * 2f, ViewUtils.CellW + grow * 2f, Colors.Ok.WithAlpha(u * 0.8f));
+                            }
+
+                            break;
+                        }
+
+                    case FxKind.Store:
+                        {
+                            // 완성한 단어가 블록이 되어 반대편 슬롯으로 포물선을 그리며 날아간다
+                            float u = 1f - fx.T / fx.Duration;
+                            float eased = 1f - (1f - u) * (1f - u);
+                            Vector2 from = ToPixel(fx.From);
+                            Vector2 to = ToPixel(fx.To);
+                            Vector2 position = Vector2.Lerp(from, to, eased) - new Vector2(0f, Mathf.Sin(u * Mathf.PI) * 28f);
+                            SpellDef spell = _game.Data.GetSpellOrNull(fx.Word);
+                            _canvas.DrawFrameCentered(Frame("AttackBlock", "Idle"), position.x, position.y, fx.Color);
+                            _canvas.DrawFrameCentered(Frame("SpellIcon", spell?.Icon), position.x, position.y - 2f, Color.white);
+                            break;
+                        }
+
+                    case FxKind.Fizzle:
+                        {
+                            // 블록이 깨지거나 사라질 때 조각이 흩어진다
+                            Vector2 center = ViewUtils.CellCenter(fx.Board, fx.R, fx.C);
+                            float u = 1f - fx.T / fx.Duration;
+                            for (int i = 0; i < 6; i++)
+                            {
+                                float angle = i * Mathf.PI / 3f;
+                                Vector2 position = center + new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * (14f * u);
+                                _canvas.DrawFrameCentered(Animated("BlockDebris", "Debris", u), position.x, position.y + u * u * 8f, Color.white.WithAlpha(1f - u));
+                            }
+
+                            break;
+                        }
+
+                    case FxKind.Click:
+                        {
+                            Vector2 center = ToPixel(fx.From);
+                            _canvas.DrawRing(center, 3f + (fx.Duration - fx.T) * 40f, 1, Colors.Warn.WithAlpha(fx.T / fx.Duration));
+                            break;
+                        }
+
+                    case FxKind.Impact:
+                        foreach (Vector2Int cell in fx.Cells)
+                        {
+                            Vector2 topLeft = ViewUtils.CellTopLeft(fx.Board, cell.y, cell.x);
+                            _canvas.DrawRect(topLeft.x + 1f, topLeft.y + 1f, 14f, 14f, Colors.Warn.WithAlpha(fx.T / fx.Duration * 0.6f));
+                        }
+
+                        break;
+                    case FxKind.Warp:
+                        {
+                            Vector2 center = ViewUtils.CellCenter(fx.Board, fx.R, fx.C);
+                            float u = 1f - fx.T / fx.Duration;
+                            _canvas.DrawRing(center, 4f + u * 28f, 1, Colors.Shift.WithAlpha(fx.T / fx.Duration));
+                            break;
+                        }
+
+                    case FxKind.Deny:
+                        {
+                            Vector2 topLeft = ViewUtils.CellTopLeft(fx.Board, fx.R, fx.C);
+                            _canvas.DrawRectOutline(topLeft.x - 1f, topLeft.y - 1f, 18f, 18f, 1f, Colors.Dim.WithAlpha(fx.T / fx.Duration));
+                            break;
+                        }
+
+                    case FxKind.Float:
+                        {
+                            if (fx.Age < fx.Delay)
+                            {
+                                break;
+                            }
+
+                            Vector2 position = ToPixel(fx.From) - new Vector2(0f, Mathf.Clamp01(1f - fx.T / fx.Duration) * 10f);
+                            _text.Draw(fx.Text, position.x, position.y, fx.Color.WithAlpha(Mathf.Min(1f, fx.T * 2f)), TextAlign.Center, 1f, Color.black);
+                            break;
+                        }
+
+                    default:
+                        break;
+                }
+            }
+        }
+
+        private static bool IsFxLayer(FxKind kind)
+        {
+            return kind == FxKind.Spell || kind == FxKind.Float || kind == FxKind.Click;
+        }
+    }
+}

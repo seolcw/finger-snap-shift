@@ -37,6 +37,8 @@ MonoBehaviour:
     BlockHp: 2
     StoreTime: 0.5
     BlockAggro: 0.15
+    MoveDelay: 0.1
+    RotateDelay: 0.2
   Sliders:
   - Key: warnTime
     Label: "\uC608\uACE0 \uC2DC\uAC04 (\uCD08)"
