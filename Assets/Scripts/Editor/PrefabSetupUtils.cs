@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using ShiftMagicSpell.Core;
 using ShiftMagicSpell.Data;
 using ShiftMagicSpell.View;
 using UnityEditor;
@@ -21,6 +22,9 @@ namespace ShiftMagicSpell.Editor
         public const string SLOT_PATH = PREFAB_DIR + "/Board/Slot.prefab";
         public const string PLAYER_PATH = PREFAB_DIR + "/Actors/Player.prefab";
         public const string HAND_PATH = PREFAB_DIR + "/Actors/Hand.prefab";
+        public const string WARNING_CELL_PATH = PREFAB_DIR + "/Fx/WarningCell.prefab";
+        public const string BULLET_PATH = PREFAB_DIR + "/Fx/Bullet.prefab";
+        public const string FLOAT_TEXT_PATH = PREFAB_DIR + "/Fx/FloatText.prefab";
 
         private static ViewAssets Assets => ViewAssets.Instance;
         private static ArtCatalog Catalog => ViewAssets.Instance.Catalog;
@@ -33,6 +37,9 @@ namespace ShiftMagicSpell.Editor
             LoadOrCreate(SLOT_PATH, BuildSlot);
             LoadOrCreate(PLAYER_PATH, BuildPlayer);
             LoadOrCreate(HAND_PATH, BuildHand);
+            LoadOrCreate(WARNING_CELL_PATH, BuildWarningCell);
+            LoadOrCreate(BULLET_PATH, BuildBullet);
+            LoadOrCreate(FLOAT_TEXT_PATH, BuildFloatText);
         }
 
         public static GameObject LoadOrCreate(string path, Func<GameObject> build)
@@ -129,6 +136,45 @@ namespace ShiftMagicSpell.Editor
             SpriteRenderer body = AddChildRenderer(root, "Body", Catalog.GetFrame("Hand", "Idle", 0).Sprite, new Vector2(-16f, -16f), Vector2.one, RenderOrderUtils.HAND);
             HandView view = root.AddComponent<HandView>();
             SetRefs(view, ("_body", body), ("_shadow", shadow));
+            return root;
+        }
+
+        private static GameObject BuildWarningCell()
+        {
+            var root = new GameObject("WarningCell");
+            SpriteRenderer frame = AddRenderer(root, Catalog.GetFrame("KeyWarning", "Blink", 0).Sprite, RenderOrderUtils.WARNING + 1);
+            SpriteRenderer fill = AddChildRenderer(root, "Fill", Assets.WhitePixel, new Vector2(1f, 5f), new Vector2(14f, 14f), RenderOrderUtils.WARNING);
+            fill.color = Assets.Colors.Warn.WithAlpha(0.28f);
+            fill.enabled = false;
+
+            // 줄 섞기 미는 양 표시: 칸 오른쪽 위에 걸친 빨간 딱지
+            var badge = new GameObject("Badge");
+            badge.transform.SetParent(root.transform, false);
+            SpriteRenderer badgeBack = AddChildRenderer(badge, "Back", Assets.WhitePixel, new Vector2(4f, 15f), new Vector2(13f, 9f), RenderOrderUtils.WARNING + 2);
+            badgeBack.color = Assets.Colors.Warn;
+            var textObject = new GameObject("Text");
+            textObject.transform.SetParent(badge.transform, false);
+            textObject.transform.localPosition = Px(5f, 23f);
+            PixelText text = textObject.AddComponent<PixelText>();
+            HudSetupUtils.SetFields(text, ("_text", "→1"), ("_color", Color.white), ("_sortingOrder", RenderOrderUtils.WARNING + 3));
+            badge.SetActive(false);
+            WarningCellView view = root.AddComponent<WarningCellView>();
+            SetRefs(view, ("_frame", frame), ("_fill", fill), ("_badge", badge), ("_badgeText", text));
+            return root;
+        }
+
+        private static GameObject BuildBullet()
+        {
+            var root = new GameObject("Bullet");
+            AddRenderer(root, Catalog.GetFrame("SummonBullet", "Spin", 0).Sprite, RenderOrderUtils.WARNING + 10);
+            return root;
+        }
+
+        private static GameObject BuildFloatText()
+        {
+            var root = new GameObject("FloatText");
+            PixelText text = root.AddComponent<PixelText>();
+            HudSetupUtils.SetFields(text, ("_text", "-1"), ("_align", (int)TextAlign.Center), ("_hasShadow", true), ("_sortingOrder", RenderOrderUtils.FX + 2000));
             return root;
         }
 

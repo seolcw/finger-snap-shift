@@ -55,26 +55,12 @@ namespace ShiftMagicSpell.View
                     }
 
                     Vector2 topLeft = ViewUtils.CellTopLeft(attack.Board, cell.R, cell.C);
-                    if (isWarning)
-                    {
-                        if (isBlinkOn)
-                        {
-                            _canvas.DrawRect(topLeft.x + 1f, topLeft.y + 1f, 14f, 14f, Colors.Warn.WithAlpha(0.28f));
-                        }
-
-                        _canvas.DrawFrame(Animated("KeyWarning", "Blink", _game.Time), topLeft.x, topLeft.y, Color.white);
-                    }
-                    else
-                    {
-                        _canvas.DrawRectOutline(topLeft.x + 1f, topLeft.y + 1f, 14f, 14f, 1f, Colors.Warn.WithAlpha(0.45f));
-                    }
+                    WarningCellView view = _warningPool.Next();
+                    view.transform.localPosition = ViewUtils.TopLeftToWorld(topLeft, ViewUtils.CellH);
 
                     // 줄 섞기만 칸마다 미는 양(→1 …)을 붙인다
-                    if (attack.Type == AttackType.Flick && !cell.IsShift)
-                    {
-                        _canvas.DrawRect(topLeft.x + 4f, topLeft.y - 4f, 13f, 9f, Colors.Warn);
-                        _text.Draw(attack.Badge, topLeft.x + 5f, topLeft.y - 3f, Color.white);
-                    }
+                    string badge = attack.Type == AttackType.Flick && !cell.IsShift ? attack.Badge : null;
+                    view.Render(isWarning, isBlinkOn, _game.Time, badge);
                 }
             }
 
@@ -97,7 +83,10 @@ namespace ShiftMagicSpell.View
                     ? new Vector2(GeometryUtils.BoardOffsetX(bullet.Board) + bullet.Pos + 0.5f, bullet.Index + 0.5f)
                     : new Vector2(GeometryUtils.BoardOffsetX(bullet.Board) + bullet.Index + 0.5f, bullet.Pos + 0.5f);
                 Vector2 position = ToPixel(logic) - new Vector2(0f, 2f);
-                _canvas.DrawFrameCentered(Animated("SummonBullet", "Spin", _game.Time), position.x, position.y, Color.white);
+                ArtFrame frame = Animated("SummonBullet", "Spin", _game.Time);
+                SpriteRenderer view = _bulletPool.Next();
+                view.sprite = frame.Sprite;
+                view.transform.localPosition = ViewUtils.PixelToWorld(position - (Vector2)frame.CanvasSize * 0.5f + new Vector2(0f, frame.CanvasSize.y));
             }
         }
     }

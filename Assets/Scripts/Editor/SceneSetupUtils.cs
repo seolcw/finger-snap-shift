@@ -54,6 +54,8 @@ namespace ShiftMagicSpell.Editor
             var player = (GameObject)PrefabUtility.InstantiatePrefab(AssetDatabase.LoadAssetAtPath<GameObject>(PrefabSetupUtils.PLAYER_PATH), world.transform);
             var hand = (GameObject)PrefabUtility.InstantiatePrefab(AssetDatabase.LoadAssetAtPath<GameObject>(PrefabSetupUtils.HAND_PATH), world.transform);
             PixelCanvas fx = BuildCanvas(world, "Canvas_Fx", RenderOrderUtils.FX);
+            var pools = new GameObject("FxPools");
+            pools.transform.SetParent(world.transform, false);
             HudView hud = HudSetupUtils.BuildHud();
             ScreensView screens = HudSetupUtils.BuildScreens();
 
@@ -68,6 +70,10 @@ namespace ShiftMagicSpell.Editor
                 ("_overCanvas", over),
                 ("_warningCanvas", warning),
                 ("_fxCanvas", fx),
+                ("_poolRoot", pools.transform),
+                ("_warningCellPrefab", AssetDatabase.LoadAssetAtPath<WarningCellView>(PrefabSetupUtils.WARNING_CELL_PATH)),
+                ("_bulletPrefab", AssetDatabase.LoadAssetAtPath<SpriteRenderer>(PrefabSetupUtils.BULLET_PATH)),
+                ("_floatTextPrefab", AssetDatabase.LoadAssetAtPath<PixelText>(PrefabSetupUtils.FLOAT_TEXT_PATH)),
                 ("_hud", hud),
                 ("_screens", screens));
             var serialized = new SerializedObject(renderer);

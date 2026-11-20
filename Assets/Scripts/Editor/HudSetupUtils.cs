@@ -151,7 +151,7 @@ namespace ShiftMagicSpell.Editor
             return child;
         }
 
-        private static void SetFields(Object target, params (string Field, object Value)[] fields)
+        public static void SetFields(Object target, params (string Field, object Value)[] fields)
         {
             var serialized = new SerializedObject(target);
             foreach ((string field, object value) in fields)

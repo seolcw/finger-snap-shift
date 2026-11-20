@@ -10,8 +10,6 @@ namespace ShiftMagicSpell.View
     /// </summary>
     public partial class GameRenderer
     {
-        private const float SPELL_TRAVEL = 0.55f;
-        private const float WEB_TO_PIXEL = 16f / 50f;
 
         private struct SpellContext
         {
@@ -32,8 +30,8 @@ namespace ShiftMagicSpell.View
                 Fx = fx,
                 From = ToPixel(fx.From),
                 To = ToPixel(_game.Hand.Pos) - new Vector2(0f, 3f),
-                V = u / SPELL_TRAVEL,
-                W = (u - SPELL_TRAVEL) / (1f - SPELL_TRAVEL),
+                V = u / _spellTravelRatio,
+                W = (u - _spellTravelRatio) / (1f - _spellTravelRatio),
                 Color = fx.Color,
                 Count = Mathf.Max(1, fx.Count),
             };
@@ -88,12 +86,12 @@ namespace ShiftMagicSpell.View
         }
 
         // 맞춘 줄에서 손까지 포물선. arc는 위로 휘는 정도, side는 옆으로 퍼지는 정도(웹 px)
-        private static Vector2 Along(SpellContext context, float v, float arc, float side)
+        private Vector2 Along(SpellContext context, float v, float arc, float side)
         {
             float e = Ease(Mathf.Clamp01(v));
             Vector2 position = Vector2.Lerp(context.From, context.To, e);
-            position.x += side * Mathf.Sin(e * Mathf.PI) * 30f * WEB_TO_PIXEL;
-            position.y -= Mathf.Sin(e * Mathf.PI) * arc * WEB_TO_PIXEL;
+            position.x += side * Mathf.Sin(e * Mathf.PI) * 30f * _spellDistanceScale;
+            position.y -= Mathf.Sin(e * Mathf.PI) * arc * _spellDistanceScale;
             return position;
         }
 

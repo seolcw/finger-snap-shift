@@ -146,7 +146,11 @@ namespace ShiftMagicSpell.View
                             }
 
                             Vector2 position = ToPixel(fx.From) - new Vector2(0f, Mathf.Clamp01(1f - fx.T / fx.Duration) * 10f);
-                            _text.Draw(fx.Text, position.x, position.y, fx.Color.WithAlpha(Mathf.Min(1f, fx.T * 2f)), TextAlign.Center, 1f, Color.black);
+                            PixelText text = _floatTextPool.Next();
+                            text.transform.localPosition = ViewUtils.PixelToWorld(position);
+                            text.SetDisplay(fx.Text);
+                            text.Color = fx.Color;
+                            text.Alpha = Mathf.Min(1f, fx.T * 2f);
                             break;
                         }
 
