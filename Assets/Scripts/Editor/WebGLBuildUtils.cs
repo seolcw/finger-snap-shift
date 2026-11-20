@@ -74,6 +74,10 @@ namespace ShiftMagicSpell.Editor
             PlayerSettings.WebGL.template = "APPLICATION:Default";
             PlayerSettings.defaultWebScreenWidth = WEB_WIDTH;
             PlayerSettings.defaultWebScreenHeight = WEB_HEIGHT;
+
+            // 스플래시가 떠 있는 동안 한 첫 클릭은 버려진다: 로딩이 끝나면 바로 "CLICK TO START"가 뜨게 끈다
+            PlayerSettings.SplashScreen.show = false;
+            PlayerSettings.SplashScreen.showUnityLogo = false;
             Debug.Log($"[INFO] WebGLBuildUtils::ApplyWebSettings() - Web settings. Details: [Compression={PlayerSettings.WebGL.compressionFormat}, DecompressionFallback={PlayerSettings.WebGL.decompressionFallback}, Exceptions={PlayerSettings.WebGL.exceptionSupport}, Size={PlayerSettings.defaultWebScreenWidth}x{PlayerSettings.defaultWebScreenHeight}, Template={PlayerSettings.WebGL.template}]");
         }
 
