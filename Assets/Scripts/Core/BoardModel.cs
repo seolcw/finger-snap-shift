@@ -173,6 +173,73 @@ namespace ShiftMagicSpell.Core
 
         public static readonly MoveDir[] AllDirs = { MoveDir.Up, MoveDir.Down, MoveDir.Left, MoveDir.Right };
 
+        public bool CanRotate(LineAxis axis, int index)
+        {
+            return MovableCells(axis, index).Count >= 2;
+        }
+
+        /// <summary>
+        /// 줄 돌리기(Shift): SHIFT 칸은 고정, 나머지 키가 sign(+1 = 오른쪽/아래) 방향으로 count칸 순환한다.
+        /// 미는 쪽 끝부터 step초 간격으로 도미노처럼 미끄러진다.
+        /// </summary>
+        public bool RotateLine(LineAxis axis, int index, int count, int sign, float step, float duration)
+        {
+            List<BoardCell> cells = MovableCells(axis, index);
+            int length = cells.Count;
+            if (length < 2)
+            {
+                return false;
+            }
+
+            var oldKeys = new KeyTile[length];
+            for (int i = 0; i < length; i++)
+            {
+                oldKeys[i] = cells[i].Key;
+            }
+
+            Vector2 unit = axis == LineAxis.Row ? new Vector2(sign, 0f) : new Vector2(0f, sign);
+            for (int i = 0; i < length; i++)
+            {
+                int raw = i + sign * count;
+                int j = ((raw % length) + length) % length;
+                bool isWrap = raw < 0 || raw >= length;
+                float delay = (sign > 0 ? i : length - 1 - i) * step;
+                KeyTile key = oldKeys[i];
+                cells[j].Key = key;
+                key.Slide = SlideAnim.Create(cells[i], cells[j], unit, isWrap, delay, duration, SlideAnim.GetOffset(key.Slide));
+            }
+
+            Version++;
+            return true;
+        }
+
+        /// <summary>그 줄 위에 서 있던 것(플레이어)이 같이 밀려 도착하는 칸과 연출. 줄 밖이면 null.</summary>
+        public BoardCell RideLine(LineAxis axis, int index, int r, int c, int count, int sign, float step, float duration, out SlideAnim slide)
+        {
+            slide = null;
+            List<BoardCell> cells = MovableCells(axis, index);
+            int length = cells.Count;
+            int i = cells.FindIndex(cell => cell.Is(r, c));
+            if (i < 0 || length < 2)
+            {
+                return null;
+            }
+
+            int raw = i + sign * count;
+            BoardCell to = cells[((raw % length) + length) % length];
+            Vector2 unit = axis == LineAxis.Row ? new Vector2(sign, 0f) : new Vector2(0f, sign);
+            float delay = (sign > 0 ? i : length - 1 - i) * step;
+            slide = SlideAnim.Create(cells[i], to, unit, raw < 0 || raw >= length, delay, duration, Vector3.zero);
+            return to;
+        }
+
+        private List<BoardCell> MovableCells(LineAxis axis, int index)
+        {
+            List<BoardCell> cells = LineCells(axis, index);
+            cells.RemoveAll(cell => cell.IsShift);
+            return cells;
+        }
+
         public void Update(float dt)
         {
             foreach (BoardCell cell in _allCells)

@@ -137,8 +137,43 @@ namespace ShiftMagicSpell.Core
         // Shift를 누른 채 방향키 = 서 있는 줄 돌리기(←→ 행, ↑↓ 열). Shift 없이 = 한 칸 이동. 누르고 있으면 반복.
         private void Act(MoveDir dir)
         {
+            if (IsShiftHeld)
+            {
+                Rotate(dir);
+                _repeatT = _game.Config.RotateRepeat;
+                return;
+            }
+
             TryMove(dir);
             _repeatT = _game.Config.MoveRepeat;
+        }
+
+        /// <summary>플레이어 Shift: 서 있는 행(←→) 또는 열(↑↓)을 그 방향으로 한 칸 돌린다. 플레이어는 칸에 그대로 있고 키만 지나간다.</summary>
+        public bool Rotate(MoveDir dir)
+        {
+            if (_game.State != GameState.Play)
+            {
+                return false;
+            }
+
+            BoardModel board = _game.Boards[Board];
+            BoardCell here = Here;
+            Vector2Int delta = GeometryUtils.ToDelta(dir);
+            LineAxis axis = delta.x != 0 ? LineAxis.Row : LineAxis.Col;
+            int index = axis == LineAxis.Row ? R : C;
+            int sign = delta.x != 0 ? delta.x : delta.y;
+            if (here.IsShift || here.IsSlot || !board.CanRotate(axis, index))
+            {
+                _game.Fx.Add(FxEvent.AtCell(FxKind.Deny, Board, R, C, 0.2f));
+                return false;
+            }
+
+            board.RotateLine(axis, index, 1, sign, _game.Config.DominoStep, _game.Config.RotateSlide);
+            _game.Fx.Add(new FxEvent { Kind = FxKind.Rotate, Board = Board, Axis = axis, Index = index, Sign = sign, T = 0.45f, Duration = 0.45f });
+            _game.Stats.Rotations++;
+            Dwell = 0f;
+            _game.OnBoardChanged();
+            return true;
         }
 
         // SHIFT 칸을 밟으면 반대편 판의 SHIFT 칸으로 순간이동(쿨다운 중이면 그냥 서 있는다)

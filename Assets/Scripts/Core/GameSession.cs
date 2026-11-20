@@ -79,6 +79,11 @@ namespace ShiftMagicSpell.Core
             }
         }
 
+        /// <summary>판이 바뀔 때마다(플레이어·손의 줄 돌리기) 부른다. 단어 판정이 여기에 붙는다.</summary>
+        public void OnBoardChanged()
+        {
+        }
+
         public void Update(float dt)
         {
             if (IsPaused)
