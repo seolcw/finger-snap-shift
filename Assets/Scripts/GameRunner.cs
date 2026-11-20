@@ -27,6 +27,7 @@ namespace ShiftMagicSpell
             Application.targetFrameRate = 60;
             int seed = _seed != 0 ? _seed : System.Environment.TickCount;
             Session = new GameSession(_attackPatterns, _boardLayouts, seed);
+            Debug.Log($"[INFO] GameRunner::Awake() - Game started. Details: [Version={Application.version}, Platform={Application.platform}]");
         }
 
         private void Update()

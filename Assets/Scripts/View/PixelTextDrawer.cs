@@ -13,6 +13,7 @@ namespace ShiftMagicSpell.View
         public const int GLYPH_H = 7;
         private const int ADVANCE = 6;
         private const int SPACE_ADVANCE = 4;
+        private const int DOT_ADVANCE = 2;
         private const string SYMBOLS = "0123456789+-!?:/%×→←↑↓⇧";
 
         private readonly PixelCanvas _canvas;
@@ -29,7 +30,7 @@ namespace ShiftMagicSpell.View
             float width = 0f;
             foreach (char ch in text)
             {
-                width += (ch == ' ' ? SPACE_ADVANCE : ADVANCE) * scale;
+                width += GetAdvance(ch) * scale;
             }
 
             return Mathf.Max(0f, width - scale);
@@ -73,6 +74,19 @@ namespace ShiftMagicSpell.View
             return false;
         }
 
+        private static int GetAdvance(char ch)
+        {
+            switch (ch)
+            {
+                case ' ':
+                    return SPACE_ADVANCE;
+                case '.':
+                    return DOT_ADVANCE;
+                default:
+                    return ADVANCE;
+            }
+        }
+
         private void DrawRun(string text, float x, float y, Color color, float scale)
         {
             float cursor = x;
@@ -82,8 +96,13 @@ namespace ShiftMagicSpell.View
                 {
                     _canvas.DrawFrame(frame, cursor, y, color, scale);
                 }
+                else if (ch == '.')
+                {
+                    // 글꼴에 마침표가 없어서 바닥에 점 하나로 그린다(버전 표시용)
+                    _canvas.DrawRect(cursor, y + (GLYPH_H - 1) * scale, scale, scale, color);
+                }
 
-                cursor += (ch == ' ' ? SPACE_ADVANCE : ADVANCE) * scale;
+                cursor += GetAdvance(ch) * scale;
             }
         }
     }

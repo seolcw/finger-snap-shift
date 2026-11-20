@@ -106,6 +106,7 @@ namespace ShiftMagicSpell.View
                 case GameState.Ready:
                     DrawCenterPanel("SHIFT MAGIC SPELL", "CLICK TO START", PaletteUtils.Text);
                     DrawReadyHelp();
+                    _text.Draw(Application.version, PixelCanvas.SCREEN_W - 4f, PixelCanvas.SCREEN_H - 10f, PaletteUtils.Dim.WithAlpha(0.6f), TextAlign.Right);
                     break;
                 case GameState.Dead:
                     DrawCenterPanel("YOU FELL", $"PHASE {_game.Phase + 1} AGAIN  HAND HP {_game.GetRecoveredHandHp()}/{_game.Hand.MaxHp}", PaletteUtils.Hp);
