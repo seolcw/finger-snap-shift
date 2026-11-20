@@ -127,6 +127,23 @@ namespace ShiftMagicSpell.View
             }
         }
 
+        /// <summary>가운데 기준으로 가로·세로 배율을 따로 주고 회전해서 그린다(광선 몸통 늘리기 등).</summary>
+        public void DrawFrameStretched(ArtFrame frame, Vector2 center, Vector2 scale, float rotationDeg, Color tint)
+        {
+            if (!frame.IsValid || tint.a <= 0f)
+            {
+                return;
+            }
+
+            SpriteRenderer renderer = Next(frame.Sprite, tint);
+            Vector2 halfCanvas = new Vector2(frame.CanvasSize.x * scale.x, frame.CanvasSize.y * scale.y) * (0.5f / PPU);
+            Quaternion rotation = Quaternion.Euler(0f, 0f, rotationDeg);
+            Transform tr = renderer.transform;
+            tr.localPosition = ToWorld(center.x, center.y) - rotation * halfCanvas;
+            tr.localRotation = rotation;
+            tr.localScale = new Vector3(scale.x, scale.y, 1f);
+        }
+
         public void DrawRect(float x, float y, float width, float height, Color color)
         {
             if (width <= 0f || height <= 0f || color.a <= 0f)

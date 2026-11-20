@@ -267,6 +267,9 @@ namespace ShiftMagicSpell.View
                     case FxKind.Rotate:
                         DrawRotateFx(fx);
                         break;
+                    case FxKind.Spell:
+                        DrawSpell(fx);
+                        break;
                     case FxKind.Match:
                         {
                             // 맞춘 칸이 초록으로 번쩍이며 퍼진다
