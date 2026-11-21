@@ -14,7 +14,7 @@ namespace ShiftMagicSpell.Editor
         private const string SFX_DIR = "Assets/Audio/Sfx/";
         private const string MUSIC_PATH = "Assets/Audio/Music/ChiptuneGrooving.mp3";
         private const string LIBRARY_PATH = "Assets/Audio/SoundLibrary.asset";
-        private const string PREFAB_PATH = "Assets/Prefabs/Audio.prefab";
+        public const string PREFAB_PATH = "Assets/Prefabs/Audio.prefab";
 
         // 이벤트 → (클립 파일, 볼륨, 피치, 피치 랜덤폭, 최소 간격). Assets/Audio/Sfx/README.md의 표와 같다.
         private static readonly (SoundKey Key, string Clip, float Volume, float Pitch, float Jitter, float MinInterval)[] Defaults =

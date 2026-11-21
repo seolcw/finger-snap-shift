@@ -1,3 +1,4 @@
+using ShiftMagicSpell.Audio;
 using ShiftMagicSpell.Data;
 using ShiftMagicSpell.View;
 using UnityEditor;
@@ -93,14 +94,48 @@ namespace ShiftMagicSpell.Editor
                 ("_boardLayouts", AssetDatabase.LoadAssetAtPath<BoardLayoutData>(DataImportUtils.BOARD_LAYOUTS_PATH)),
                 ("_renderer", renderer));
 
+            InstantiateAudio();
             EditorSceneManager.SaveScene(scene, SCENE_PATH);
             Debug.Log($"[INFO] SceneSetupUtils::BuildMainScene() - Scene saved. Details: [Path={SCENE_PATH}]");
+        }
+
+        /// <summary>지금 Main 씬을 열어 소리(Audio 프리팹, 카메라 AudioListener)가 없으면 넣는다. 씬의 다른 내용은 건드리지 않는다.</summary>
+        [MenuItem("Tools/Shift Magic Spell/Add Audio To Main Scene (keeps edits)")]
+        public static void AddAudioToMainScene()
+        {
+            var scene = EditorSceneManager.OpenScene(SCENE_PATH, OpenSceneMode.Single);
+
+            // 소리를 들으려면 카메라에 AudioListener가 있어야 한다
+            Camera camera = Camera.main;
+            if (camera != null && camera.GetComponent<AudioListener>() == null)
+            {
+                camera.gameObject.AddComponent<AudioListener>();
+            }
+
+            if (Object.FindAnyObjectByType<SoundManager>() == null)
+            {
+                InstantiateAudio();
+            }
+
+            EditorSceneManager.SaveScene(scene);
+            Debug.Log($"[INFO] SceneSetupUtils::AddAudioToMainScene() - Audio added. Details: [Scene={SCENE_PATH}]");
+        }
+
+        // 소리는 게임 오브젝트를 실행 중에 찾아 관찰하므로 프리팹만 놓으면 된다
+        private static void InstantiateAudio()
+        {
+            var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(AudioSetupUtils.PREFAB_PATH);
+            if (prefab != null)
+            {
+                PrefabUtility.InstantiatePrefab(prefab);
+            }
         }
 
         private static void BuildCamera()
         {
             var cameraObject = new GameObject("Main Camera") { tag = "MainCamera" };
             Camera camera = cameraObject.AddComponent<Camera>();
+            cameraObject.AddComponent<AudioListener>();
             camera.orthographic = true;
             camera.orthographicSize = ViewUtils.SCREEN_H / ViewUtils.PPU * 0.5f;
             camera.clearFlags = CameraClearFlags.SolidColor;
