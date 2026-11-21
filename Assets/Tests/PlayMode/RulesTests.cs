@@ -256,10 +256,7 @@ namespace ShiftMagicSpell.Tests
             _game.Hand.Hp = 3;
             _game.CastSpell("FIRE", UnityEngine.Vector2.zero, 1f);
             Assert.AreEqual(GameState.PhaseClear, _game.State);
-            for (int i = 0; i < 150; i++)
-            {
-                _game.Update(1f / 60f);
-            }
+            Step(_game.Config.PhaseClearTime + _game.Config.PhaseIntroTime + 0.1f);
 
             Assert.AreEqual(GameState.Play, _game.State);
             Assert.AreEqual(1, _game.Phase);
