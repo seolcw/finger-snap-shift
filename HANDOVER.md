@@ -8,8 +8,8 @@ GitHub Game Off 2026(주제 SHIFT) 출품작. 마감은 한국시간 **12월 2�
 - **이름:** **Shift Magic Spell**(예전 이름 Finger Snap Shift). 11/20에 문서, 웹 프로토타입(`shift-magic-spell-prototype.html`), Unity 제품명, GitHub 저장소(`seolcw/shift-magic-spell`) 이름을 바꿨다. 에셋 생성 스크립트 안의 팔레트 파일 이름(`FingerSnapShift.gpl`)은 그대로 둔다.
 - **기획:** 5차 규칙 + 공격 슬롯 + 단어 위치 점멸까지 확정. `Docs/DESIGN.md`가 기준이다.
 - **웹 프로토타입:** 5차 규칙이 모두 들어가 있고 플레이 가능하다. 규칙 검사 20개 통과, 봇이 처음부터 끝까지 이긴다. **사람이 직접 해 본 난이도 검증은 아직 안 했다.**
-- **도트 에셋:** 기존 9개 + 5차 추가 22개. Unity에 임포트해 본 적은 없다.
-- **Unity 프로젝트:** 이 저장소가 Unity 프로젝트 루트다(Unity 6000.0.58f2, WebGL 설정 완료, 에셋 31개 임포트 확인). 노트북 내용은 `chore/project-setup` 브랜치에 작업 단위 커밋으로 들어 있다. Unity 이식은 이 브랜치에서 만든 `feature/unity-prototype`에서 한다.
+- **도트 에셋:** 기존 9개 + 5차 추가 22개. Unity에서 그대로 임포트해 씬·프리팹에서 쓰고 있다.
+- **Unity 프로젝트:** 이 저장소가 Unity 프로젝트 루트다(Unity 6000.0.58f2). `feature/unity-prototype`에 처음부터 승리까지 플레이 가능한 버전이 있다: 5차 규칙 전부, 효과음·배경음, 페이즈 전환 연출, 연습 구간, 960x600 커스텀 WebGL 템플릿. PlayMode 테스트(봇 플레이 포함)가 있다. 무엇을 어디서 고치는지는 `Docs/UNITY-STRUCTURE.md`, Unity에서 바꾼 수치는 `Docs/DESIGN.md` 7장. 아직 `main`에 병합되지 않았다.
 - **사용자 안내:** 무언가 고치기 전에 계획(브랜치 이름 포함)을 먼저 보여 주고 확인받는다. 커밋은 작업 단위로 나눈다.
 
 ## 2. 게임 요약 (자세한 건 DESIGN.md)
@@ -25,7 +25,7 @@ GitHub Game Off 2026(주제 SHIFT) 출품작. 마감은 한국시간 **12월 2�
 | 경로 | 내용 | Unity 빌드 포함 |
 | --- | --- | --- |
 | `HANDOVER.md` | 이 문서 | X |
-| `README.md` | 폴더 구성과 에셋 다시 만드는 명령 | X |
+| `README.md` | 영어 소개(Game Off 방문자용): 게임 설명, 조작, 빌드, 크레딧, 라이선스 | X |
 | `Docs/DESIGN.md` | **기획 기준 문서** (5차 + 공격 슬롯 + 점멸 + 에셋 목록 + 일정) | X |
 | `Docs/claude-personal-work-rules.md` | **작업 규칙.** 새 세션도 따른다(한국어, 수정 전 계획 확인, 커밋은 요청할 때만, AI 표시 없음 등). 새 Unity 프로젝트의 `CLAUDE.md`에 붙여 넣을 내용 | X |
 | `Docs/HANDOVER-README.md` | 11/19 첫 인수 문서. **예전 규칙(3·4차)과 예전 경로 기준이라 참고만** | X |
@@ -44,7 +44,7 @@ GitHub Game Off 2026(주제 SHIFT) 출품작. 마감은 한국시간 **12월 2�
   node src/verify-rules.js   # 규칙 검사 20개 (모두 PASS여야 함)
   node src/simtest.js 4 dodge 0.6   # 봇 4판, 0.6초마다 행동
   ```
-- **Aseprite가 있으면** 에셋을 다시 만들 수 있다(명령은 `README.md`). 이 컴퓨터에서는 Steam 설치본 `C:\Program Files (x86)\Steam\steamapps\common\Aseprite\Aseprite.exe`(1.3.18)를 썼다. 다른 컴퓨터에서는 경로가 다를 수 있다. Aseprite에서 손으로 고친 파일은 스크립트로 다시 만들면 덮어써지니 주의.
+- **Aseprite가 있으면** 에셋을 다시 만들 수 있다: `Aseprite.exe -b --script-param root=<이 폴더> --script ArtSource/Scripts/build_assets.lua`(기존 9개), `build_assets_v5.lua`(5차 22개), 미리보기는 `build_preview.lua`·`build_preview_v5.lua`. 이 컴퓨터에서는 Steam 설치본 `C:\Program Files (x86)\Steam\steamapps\common\Aseprite\Aseprite.exe`(1.3.18)를 썼다. 다른 컴퓨터에서는 경로가 다를 수 있다. Aseprite에서 손으로 고친 파일은 스크립트로 다시 만들면 덮어써지니 주의.
 
 ## 5. 남은 일 (순서대로)
 1. ~~이름 변경~~ (11/20 완료: Shift Magic Spell)
