@@ -31,6 +31,15 @@ namespace ShiftMagicSpell.View
         [SerializeField] private float _hurtTime = 0.35f;
         [SerializeField] private float _hurtKnockbackPx = 5f;
 
+        [Header("페이즈 전환")]
+        [Tooltip("손 HP 0 뒤 전환 시간 중 이 비율부터 화면 위로 물러난다(앞부분은 마법을 맞고 흔들림)")]
+        [SerializeField, Range(0f, 1f)] private float _retreatStart = 0.6f;
+        [Tooltip("물러나는·내려오는 거리(px)")]
+        [SerializeField] private float _retreatPx = 120f;
+        [SerializeField] private float _clearShakePx = 3f;
+        [Tooltip("배너 시간 중 이 비율 안에 다시 내려온다")]
+        [SerializeField, Range(0.1f, 1f)] private float _returnRatio = 0.6f;
+
         private Vector3 _bodyHome;
         private bool _hasBodyHome;
 
@@ -56,7 +65,7 @@ namespace ShiftMagicSpell.View
             bool isOverBoard = !hand.IsCharging && IsOverBoard(hand.Pos);
             float lift = isOverBoard ? (isBig ? _bigLiftPx : _liftPx) : 0f;
             float scale = isOverBoard && isBig ? _bigScale : 1f;
-            Vector2 animOffset = GetAnimOffset(hand, attack);
+            Vector2 animOffset = GetAnimOffset(hand, attack) + GetTransitionOffset(game);
 
             transform.localPosition = ViewUtils.PixelToWorld(ViewUtils.ToPixel(hand.Pos));
             _body.transform.localPosition = _bodyHome * scale + new Vector3(Mathf.Round(animOffset.x), -Mathf.Round(animOffset.y - lift), 0f) / ViewUtils.PPU;
@@ -87,6 +96,35 @@ namespace ShiftMagicSpell.View
             _shadow.transform.localScale = new Vector3(shadowSize.x * 2f / 32f, shadowSize.y * 2f / 16f, 1f);
             _shadow.color = new Color(0f, 0f, 0f, _shadowAlpha);
             _shadow.sortingOrder = _sortingOrder - 1;
+        }
+
+        // 페이즈 전환: 마법을 맞고 크게 흔들리다 화면 위로 물러났다가(PhaseClear), 배너 동안 다시 내려온다(PhaseIntro). 화면 픽셀(y 아래가 +)
+        private Vector2 GetTransitionOffset(GameSession game)
+        {
+            if (game.State == GameState.PhaseClear)
+            {
+                float total = Mathf.Max(0.01f, game.Config.PhaseClearTime);
+                float elapsed = total - game.StateT;
+                float retreatAt = total * _retreatStart;
+                if (elapsed < retreatAt)
+                {
+                    float shake = elapsed > game.Config.SpellTime * 0.5f ? _clearShakePx : 0f;
+                    return new Vector2(Mathf.Round(Mathf.Sin(elapsed * 70f) * shake), 0f);
+                }
+
+                float u = Mathf.Clamp01((elapsed - retreatAt) / Mathf.Max(0.01f, total - retreatAt));
+                return new Vector2(0f, -_retreatPx * u * u);
+            }
+
+            if (game.State == GameState.PhaseIntro)
+            {
+                float total = Mathf.Max(0.01f, game.Config.PhaseIntroTime);
+                float u = Mathf.Clamp01((total - game.StateT) / (total * _returnRatio));
+                float eased = 1f - (1f - u) * (1f - u);
+                return new Vector2(0f, -_retreatPx * (1f - eased));
+            }
+
+            return Vector2.zero;
         }
 
         private Vector2 GetAnimOffset(HandController hand, AttackPlan attack)

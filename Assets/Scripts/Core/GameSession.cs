@@ -29,6 +29,9 @@ namespace ShiftMagicSpell.Core
         public bool IsInvincible;
         public bool IsPaused;
 
+        // 마무리 단어(SHIFT)로 바뀐 직후 FINAL 배너를 보여 주는 남은 시간
+        public float FinisherIntroT;
+
         // 단어 위치 힌트 점멸 기준 시각(새 단어가 나오면 다시 센다)
         public float HintT0;
 
@@ -94,6 +97,7 @@ namespace ShiftMagicSpell.Core
             Fx.Clear();
             LastFireBoard = -1;
             _spellHitT = 0f;
+            FinisherIntroT = 0f;
             State = GameState.Play;
             IsPaused = false;
             Banner = new TimedText($"PHASE {phase + 1}", 1.4f);
@@ -277,8 +281,10 @@ namespace ShiftMagicSpell.Core
             _spellHitT = duration * 0.55f;
             if (Hand.Hp <= 0)
             {
+                // 한 판 끝: 진행 중인 예고·탄·공격은 모두 거둔다(전환·승리 화면 동안 공격 없음, 플레이어는 상태가 Play가 아니라 무적)
+                Hand.CancelAttack(0f);
                 State = IsLastPhase ? GameState.Win : GameState.PhaseClear;
-                StateT = IsLastPhase ? 0f : 2f;
+                StateT = IsLastPhase ? 0f : Config.PhaseClearTime;
                 return damage;
             }
 
@@ -328,10 +334,29 @@ namespace ShiftMagicSpell.Core
 
                     break;
                 case GameState.PhaseClear:
+                    // 손이 흔들리다 화면 위로 물러난다(그림은 HandView) → 다음 페이즈 배너
                     StateT -= dt;
+                    Hand.UpdateAnimOnly(dt);
+                    UpdateBoards(dt);
                     if (StateT <= 0f)
                     {
                         StartPhase(Phase + 1);
+                        State = GameState.PhaseIntro;
+                        StateT = Config.PhaseIntroTime;
+                        Banner = null;
+                    }
+
+                    break;
+                case GameState.PhaseIntro:
+                    // 새 판을 보여 주며 배너. 끝나면 새 단어를 한 번 깜빡이고, 첫 공격 전 여유를 둔다
+                    StateT -= dt;
+                    Hand.UpdateAnimOnly(dt);
+                    UpdateBoards(dt);
+                    if (StateT <= 0f)
+                    {
+                        State = GameState.Play;
+                        Hand.CancelAttack(Config.PhaseFirstAttackDelay);
+                        HintT0 = Time;
                     }
 
                     break;
@@ -343,13 +368,26 @@ namespace ShiftMagicSpell.Core
             }
         }
 
-        private void UpdatePlay(float dt)
+        /// <summary>마지막 페이즈에서 목표가 마무리 단어로 바뀐 순간: FINAL 배너, 손은 잠깐 공격하지 않는다</summary>
+        public void OnFinisherStarted()
         {
-            Stats.PlayTime += dt;
+            FinisherIntroT = Config.FinisherIntroTime;
+            Hand.CancelAttack(Config.FinisherIntroTime + Config.PhaseFirstAttackDelay);
+        }
+
+        private void UpdateBoards(float dt)
+        {
             foreach (BoardModel board in Boards)
             {
                 board.Update(dt);
             }
+        }
+
+        private void UpdatePlay(float dt)
+        {
+            Stats.PlayTime += dt;
+            FinisherIntroT = Mathf.Max(0f, FinisherIntroT - dt);
+            UpdateBoards(dt);
 
             Brain.Update(dt);
             Player.Update(dt);

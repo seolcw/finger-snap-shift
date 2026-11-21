@@ -82,6 +82,24 @@ namespace ShiftMagicSpell.Core
             SetAnim(ANIM_STUN);
         }
 
+        /// <summary>진행 중인 예고·공격·소환 탄을 모두 거두고, waitSeconds 뒤에 다음 공격을 고른다(페이즈 전환, 마무리 연출).</summary>
+        public void CancelAttack(float waitSeconds)
+        {
+            Attack = null;
+            _path.Clear();
+            Bullets.Clear();
+            IsCharging = false;
+            _pendingStun = 0f;
+            State = HandState.Idle;
+            T = waitSeconds;
+        }
+
+        /// <summary>전환 연출 중에는 공격 없이 동작 시간만 흐른다</summary>
+        public void UpdateAnimOnly(float dt)
+        {
+            AnimT += dt;
+        }
+
         public void Update(float dt)
         {
             AnimT += dt;

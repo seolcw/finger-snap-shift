@@ -6,6 +6,7 @@ namespace ShiftMagicSpell.Core
         Play,
         Dead,
         PhaseClear,
+        PhaseIntro,
         Win,
     }
 }

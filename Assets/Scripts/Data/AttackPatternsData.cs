@@ -88,6 +88,16 @@ namespace ShiftMagicSpell.Data
         // Unity에서 추가(웹 JSON에 없음): 연타해도 이 간격보다 빨리 움직이거나 돌리지 않는다
         public float MoveDelay = 0.1f;
         public float RotateDelay = 0.2f;
+
+        // Unity에서 추가(웹 JSON에 없음): 페이즈 전환 연출
+        [Tooltip("손 HP가 0이 된 뒤 손이 흔들리다 물러나는 시간(초). 이 동안 공격 없음, 플레이어 무적")]
+        public float PhaseClearTime = 1.5f;
+        [Tooltip("다음 페이즈 배너를 보여 주는 시간(초). 새 판은 이때 보인다")]
+        public float PhaseIntroTime = 2f;
+        [Tooltip("배너가 사라진 뒤 손이 첫 공격을 고르기까지(초)")]
+        public float PhaseFirstAttackDelay = 1f;
+        [Tooltip("마지막 페이즈에서 SHIFT로 바뀔 때 FINAL 배너 시간(초). 이 동안 손은 공격하지 않음")]
+        public float FinisherIntroTime = 1.5f;
     }
 
     /// <summary>웹 디버그 패널 슬라이더 정의. Unity에서는 인스펙터로 조절하므로 범위 참고용으로 남긴다.</summary>

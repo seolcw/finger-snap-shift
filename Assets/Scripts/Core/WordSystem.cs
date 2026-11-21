@@ -112,7 +112,7 @@ namespace ShiftMagicSpell.Core
             Current = finisher;
             Next = null;
             OnNewWord();
-            _game.ShowToast("FINISH IT: LINE UP SHIFT!");
+            _game.OnFinisherStarted();
         }
 
         private void Complete(AlignResult align)
