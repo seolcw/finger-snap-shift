@@ -160,6 +160,32 @@ namespace ShiftMagicSpell.View
             }
         }
 
+        // 블록이 든 슬롯을 가리키는 화살표: 판 바깥에서 슬롯 쪽으로 까딱인다(플레이어가 그 슬롯 위에 있으면 숨김)
+        private void DrawSlotArrows()
+        {
+            if (_game.State != GameState.Play || HudView.GetPendingBlockBoard(_game) < 0)
+            {
+                return;
+            }
+
+            float bob = Mathf.Round(Mathf.Sin(_game.Time * 8f) * 2f);
+            foreach (BoardModel board in _game.Boards)
+            {
+                foreach (BoardCell slot in board.Slots)
+                {
+                    if (slot.Block == null)
+                    {
+                        continue;
+                    }
+
+                    Vector2 center = ViewUtils.CellCenter(board.Index, slot.R, slot.C);
+                    bool isLeft = board.Index == 0;
+                    float x = isLeft ? center.x - ViewUtils.CellW * 0.5f - 7f - bob : center.x + ViewUtils.CellW * 0.5f + 7f + bob;
+                    _canvas.DrawFrameCentered(Frame("EdgeArrow", "Arrow"), x, center.y, Color.white, isLeft ? 0f : 180f);
+                }
+            }
+        }
+
         private static bool IsFxLayer(FxKind kind)
         {
             return kind == FxKind.Spell || kind == FxKind.Float || kind == FxKind.Click;

@@ -9,6 +9,7 @@ namespace ShiftMagicSpell.Core
     {
         public readonly int Index;
         public int Version { get; private set; }
+        public int ResetCount { get; private set; }
         public BoardCell ShiftCell { get; private set; }
         public List<BoardCell> Slots { get; } = new List<BoardCell>();
         public List<BoardLine> Lines { get; } = new List<BoardLine>();
@@ -35,6 +36,7 @@ namespace ShiftMagicSpell.Core
             Slots.Clear();
             Lines.Clear();
             Version = 0;
+            ResetCount++;
             int keyId = 0;
             for (int r = 0; r < GeometryUtils.ROWS; r++)
             {
@@ -181,6 +183,12 @@ namespace ShiftMagicSpell.Core
 
         public static readonly MoveDir[] AllDirs = { MoveDir.Up, MoveDir.Down, MoveDir.Left, MoveDir.Right };
 
+        /// <summary>키를 줄 돌리기가 아닌 방법으로 직접 옮겼을 때(테스트 등) 부른다. 단어 판정 캐시를 무효로 한다.</summary>
+        public void MarkChanged()
+        {
+            Version++;
+        }
+
         public BoardCell EmptySlotOrNull()
         {
             return Slots.Find(slot => slot.Block == null);
@@ -240,7 +248,7 @@ namespace ShiftMagicSpell.Core
         }
 
         /// <summary>그 줄 위에 서 있던 것(플레이어)이 같이 밀려 도착하는 칸과 연출. 줄 밖이면 null.</summary>
-        public BoardCell RideLine(LineAxis axis, int index, int r, int c, int count, int sign, float step, float duration, out SlideAnim slide)
+        public BoardCell RideLineOrNull(LineAxis axis, int index, int r, int c, int count, int sign, float step, float duration, out SlideAnim slide)
         {
             slide = null;
             List<BoardCell> cells = MovableCells(axis, index);

@@ -24,7 +24,41 @@ namespace ShiftMagicSpell.View
         [SerializeField] private PixelText _toast;
         [SerializeField] private PixelText _banner;
 
+        [Header("화면 아래 안내 줄")]
+        [SerializeField] private PixelText _guide;
+        [Tooltip("연습 구간 단계별 안내: 0 이동, 1 줄 돌리기, 2 단어 맞추기, 3 슬롯에서 Space")]
+        [SerializeField] private string[] _tutorialTexts =
+        {
+            "MOVE WITH WASD OR ARROW KEYS",
+            "HOLD SHIFT + ARROW: ROTATE YOUR ROW / COLUMN",
+            "LINE UP THE WORD IN ONE ROW OR COLUMN",
+            "{0} GO TO THE {1} SLOT AND PRESS SPACE {2}",
+        };
+        [Tooltip("블록이 슬롯에 있을 때 안내. {0} = 왼쪽 화살표, {1} = LEFT/RIGHT, {2} = 오른쪽 화살표")]
+        [SerializeField] private string _blockReminderFormat = "{0} BLOCK READY: {1} SLOT + SPACE {2}";
+        [SerializeField] private float _guideBlinkRate = 4f;
+
         private string _handFormat;
+
+        /// <summary>블록이 들어 있는데 플레이어가 그 슬롯 위에 있지 않은 판(없으면 -1)</summary>
+        public static int GetPendingBlockBoard(GameSession game)
+        {
+            BoardCell here = game.Player.Here;
+            if (here != null && here.IsSlot && here.Block != null)
+            {
+                return -1;
+            }
+
+            foreach (BoardModel board in game.Boards)
+            {
+                if (board.BlockCount() > 0)
+                {
+                    return board.Index;
+                }
+            }
+
+            return -1;
+        }
 
         public void Render(GameSession game)
         {
@@ -51,6 +85,7 @@ namespace ShiftMagicSpell.View
             _handHpLabel.Color = isStunned ? colors.Glow : colors.Dim;
 
             _wordPanel.Render(game);
+            RenderGuide(game);
             _slotPrompt.Render(game);
 
             _toast.gameObject.SetActive(game.Toast != null);
@@ -65,6 +100,38 @@ namespace ShiftMagicSpell.View
             {
                 _banner.SetDisplay(game.Banner.Text);
                 _banner.Alpha = Mathf.Min(1f, game.Banner.T);
+            }
+        }
+
+        // 연습 구간에는 단계별 안내, 그 뒤에는 블록이 있으면 반대편 슬롯으로 가라는 안내를 깜빡이며 보여 준다
+        private void RenderGuide(GameSession game)
+        {
+            string text = null;
+            int board = GetPendingBlockBoard(game);
+            string side = board == 0 ? "LEFT" : "RIGHT";
+            string leftArrow = board == 0 ? "←" : string.Empty;
+            string rightArrow = board == 1 ? "→" : string.Empty;
+            if (game.State == GameState.Play && game.IsTutorial)
+            {
+                int step = Mathf.Clamp(game.TutorialStep, 0, _tutorialTexts.Length - 1);
+                bool isWaitingToFire = step == _tutorialTexts.Length - 1;
+                text = isWaitingToFire && board < 0 ? null : string.Format(_tutorialTexts[step], leftArrow, side, rightArrow);
+            }
+            else if (game.State == GameState.Play && board >= 0)
+            {
+                text = string.Format(_blockReminderFormat, leftArrow, side, rightArrow);
+            }
+
+            bool isVisible = !string.IsNullOrEmpty(text);
+            if (_guide.gameObject.activeSelf != isVisible)
+            {
+                _guide.gameObject.SetActive(isVisible);
+            }
+
+            if (isVisible)
+            {
+                _guide.SetDisplay(text.Trim());
+                _guide.Alpha = 0.6f + 0.4f * Mathf.Sin(game.Time * _guideBlinkRate * Mathf.PI);
             }
         }
     }

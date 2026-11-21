@@ -49,7 +49,7 @@ namespace ShiftMagicSpell.Core
             Hp = MaxHp;
             Pos = new Vector2(GeometryUtils.BoardOffsetX(0) + GeometryUtils.COLS * 0.5f, -GeometryUtils.MARGIN);
             State = HandState.Idle;
-            T = 1.6f;
+            T = _game.Config.StartFirstAttackDelay;
             Attack = null;
             _path.Clear();
             Bullets.Clear();
@@ -149,6 +149,14 @@ namespace ShiftMagicSpell.Core
             Vector2 target = PerimeterUtils.Nearest(player.Board, GeometryUtils.CellCenter(player.Board, player.R, player.C));
             SetPath(PerimeterUtils.FindPath(Pos, player.Board, target).Points);
             MoveAlong(dt, Speed * 0.6f);
+
+            // 연습 구간(첫 단어)에는 공격하지 않는다
+            if (_game.IsTutorial)
+            {
+                T = Mathf.Max(T, _game.Config.StartFirstAttackDelay);
+                return;
+            }
+
             T -= dt;
             if (T > 0f)
             {
@@ -431,7 +439,7 @@ namespace ShiftMagicSpell.Core
                     CountAttack(attack);
                     if (IsPlayerIn(attack))
                     {
-                        player.Hurt(def.Name);
+                        player.Hurt(attack.HitName);
                     }
 
                     AddImpact(attack);
@@ -461,7 +469,7 @@ namespace ShiftMagicSpell.Core
                     CountAttack(attack);
                     if (IsPlayerIn(attack))
                     {
-                        player.Hurt(def.Name);
+                        player.Hurt(attack.HitName);
                     }
 
                     AddImpact(attack);
@@ -478,7 +486,7 @@ namespace ShiftMagicSpell.Core
                     CountAttack(attack);
                     if (IsPlayerIn(attack))
                     {
-                        player.Hurt(def.Name);
+                        player.Hurt(attack.HitName);
                     }
 
                     AddImpact(attack);
@@ -499,8 +507,8 @@ namespace ShiftMagicSpell.Core
             float slide = _game.Config.RotateSlide;
             if (player.Board == attack.Board && !player.Here.IsShift && attack.Cells.Exists(cell => cell.Is(player.R, player.C)))
             {
-                player.Hurt(def.Name);
-                BoardCell to = board.RideLine(attack.Axis, attack.Index, player.R, player.C, attack.ShiftCount, attack.Sign, step, slide, out SlideAnim ride);
+                player.Hurt(attack.HitName);
+                BoardCell to = board.RideLineOrNull(attack.Axis, attack.Index, player.R, player.C, attack.ShiftCount, attack.Sign, step, slide, out SlideAnim ride);
                 if (to != null)
                 {
                     player.R = to.R;
@@ -524,7 +532,7 @@ namespace ShiftMagicSpell.Core
             CountAttack(attack);
             if (IsPlayerIn(attack))
             {
-                _game.Player.Hurt(def.Name);
+                _game.Player.Hurt(attack.HitName);
             }
 
             AttackBlock block = attack.Slot.Block;
@@ -555,7 +563,7 @@ namespace ShiftMagicSpell.Core
 
             if (IsPlayerIn(attack))
             {
-                _game.Player.Hurt(def.Name);
+                _game.Player.Hurt(attack.HitName);
             }
 
             _game.Fx.Add(new FxEvent { Kind = FxKind.Click, From = attack.Center, T = 0.25f, Duration = 0.25f });
@@ -596,7 +604,7 @@ namespace ShiftMagicSpell.Core
                     Vector2 center = GeometryUtils.CellCenter(player.Board, player.R, player.C);
                     if (player.Board == attack.Board && Vector2.Distance(Pos, center) < CHARGE_HIT_RADIUS)
                     {
-                        player.Hurt(def.Name);
+                        player.Hurt(attack.HitName);
                     }
                 }
 
@@ -644,7 +652,7 @@ namespace ShiftMagicSpell.Core
                 BoardCell cell = _game.Boards[bullet.Board].GetCellOrNull(r, c);
 
                 // 플레이어를 맞히면 탄은 거기서 사라진다
-                if (cell != null && player.Board == bullet.Board && player.R == r && player.C == c && player.Hurt(Def(AttackType.Summon).Name))
+                if (cell != null && player.Board == bullet.Board && player.R == r && player.C == c && player.Hurt(AttackType.Summon.ToDisplayName()))
                 {
                     bullet.IsDead = true;
                     continue;

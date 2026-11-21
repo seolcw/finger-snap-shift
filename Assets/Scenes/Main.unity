@@ -1301,6 +1301,57 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 304989998255019689, guid: 7e03d4b7d4bec6945a89fe8af9da5e09, type: 3}
   m_PrefabInstance: {fileID: 222582320}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &245996812
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 245996814}
+  - component: {fileID: 245996813}
+  m_Layer: 0
+  m_Name: Guide
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!114 &245996813
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 245996812}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bcce50a8b969a24e8c77e51df3d0d25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _text: LINE UP THE WORD IN ONE ROW OR COLUMN
+  _color: {r: 1, g: 0.8235294, b: 0.2901961, a: 1}
+  _align: 1
+  _scale: 1
+  _hasShadow: 1
+  _shadowColor: {r: 0, g: 0, b: 0, a: 1}
+  _sortingOrder: 10001
+--- !u!4 &245996814
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 245996812}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 10, y: -11.375, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 335034996}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &259900080
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1823,6 +1874,8 @@ Transform:
   - {fileID: 137776526}
   - {fileID: 994869617}
   - {fileID: 265403123}
+  - {fileID: 1887879141}
+  - {fileID: 745297301}
   m_Father: {fileID: 1715871504}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &335034995
@@ -1862,6 +1915,7 @@ Transform:
   - {fileID: 469798295}
   - {fileID: 1610970803}
   - {fileID: 974882531}
+  - {fileID: 245996814}
   m_Father: {fileID: 884972057}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &353305176
@@ -3895,6 +3949,57 @@ MonoBehaviour:
   _borderPx: 3
   _color: {r: 1, g: 1, b: 1, a: 1}
   _sortingOrder: 20001
+--- !u!1 &745297300
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 745297301}
+  - component: {fileID: 745297302}
+  m_Layer: 0
+  m_Name: Kept
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &745297301
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 745297300}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 10, y: -7.625, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 328809396}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &745297302
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 745297300}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bcce50a8b969a24e8c77e51df3d0d25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _text: BLOCKS IN YOUR SLOTS ARE KEPT
+  _color: {r: 0.5411765, g: 0.5647059, b: 0.627451, a: 1}
+  _align: 1
+  _scale: 1
+  _hasShadow: 0
+  _shadowColor: {r: 0, g: 0, b: 0, a: 1}
+  _sortingOrder: 20003
 --- !u!1001 &747709056
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4727,6 +4832,14 @@ MonoBehaviour:
   _slotPrompt: {fileID: 469798296}
   _toast: {fileID: 1610970804}
   _banner: {fileID: 974882530}
+  _guide: {fileID: 245996813}
+  _tutorialTexts:
+  - MOVE WITH WASD OR ARROW KEYS
+  - 'HOLD SHIFT + ARROW: ROTATE YOUR ROW / COLUMN'
+  - LINE UP THE WORD IN ONE ROW OR COLUMN
+  - '{0} GO TO THE {1} SLOT AND PRESS SPACE {2}'
+  _blockReminderFormat: '{0} BLOCK READY: {1} SLOT + SPACE {2}'
+  _guideBlinkRate: 4
 --- !u!4 &884972057
 Transform:
   m_ObjectHideFlags: 0
@@ -8891,6 +9004,7 @@ MonoBehaviour:
   _icon: {fileID: 810326902}
   _word: {fileID: 674811866}
   _progress: {fileID: 56369317}
+  _progressFormat: '{0}/{1} LETTERS LINED UP'
   _next: {fileID: 1467734084}
   _finisherText: FINISHER
   _paddingLeft: 4
@@ -10045,6 +10159,7 @@ MonoBehaviour:
   _paused: {fileID: 1529220731}
   _dead: {fileID: 328809395}
   _deadSubtitle: {fileID: 265403124}
+  _deadCause: {fileID: 1887879142}
   _phaseClear: {fileID: 2132601360}
   _phaseClearTitle: {fileID: 1325668141}
   _phaseClearShowFrom: 0.5
@@ -11069,6 +11184,57 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5ef7d0cf503b7e4a8d8e7e9d235063c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1887879140
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1887879141}
+  - component: {fileID: 1887879142}
+  m_Layer: 0
+  m_Name: Cause
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1887879141
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1887879140}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 10, y: -6.875, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 328809396}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1887879142
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1887879140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bcce50a8b969a24e8c77e51df3d0d25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _text: HIT BY {0}
+  _color: {r: 0.9019608, g: 0.9098039, b: 0.93333334, a: 1}
+  _align: 1
+  _scale: 1
+  _hasShadow: 0
+  _shadowColor: {r: 0, g: 0, b: 0, a: 1}
+  _sortingOrder: 20003
 --- !u!1001 &1895175210
 PrefabInstance:
   m_ObjectHideFlags: 0

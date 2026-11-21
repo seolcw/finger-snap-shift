@@ -98,6 +98,8 @@ namespace ShiftMagicSpell.Data
         public float PhaseFirstAttackDelay = 1f;
         [Tooltip("마지막 페이즈에서 SHIFT로 바뀔 때 FINAL 배너 시간(초). 이 동안 손은 공격하지 않음")]
         public float FinisherIntroTime = 1.5f;
+        [Tooltip("게임 시작·사망 후 재시작 때 손이 첫 공격을 고르기까지(초)")]
+        public float StartFirstAttackDelay = 3f;
     }
 
     /// <summary>웹 디버그 패널 슬라이더 정의. Unity에서는 인스펙터로 조절하므로 범위 참고용으로 남긴다.</summary>
@@ -120,6 +122,10 @@ namespace ShiftMagicSpell.Data
         public float SpeedMul = 1f;
         public float IntervalMul = 1f;
         public float WarnMul = 1f;
+
+        // Unity에서 추가(웹 JSON에 없음)
+        [Tooltip("손이 플레이어가 2글자 이상 맞춘 줄을 가로지르는 줄 섞기에 가산점을 주는가(페이즈 1은 끔: 처음 하는 사람이 버티게)")]
+        public bool IsTargetingProgressLine = true;
     }
 
     [Serializable]

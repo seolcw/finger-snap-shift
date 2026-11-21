@@ -14,6 +14,8 @@ namespace ShiftMagicSpell.View
         [SerializeField] private SpriteRenderer _icon;
         [SerializeField] private PixelText _word;
         [SerializeField] private PixelText _progress;
+        [Tooltip("진행도 문구. {0} = 제자리 글자 수, {1} = 단어 길이")]
+        [SerializeField] private string _progressFormat = "{0}/{1} LETTERS LINED UP";
         [Tooltip("{0} = 다음 단어")]
         [SerializeField] private PixelText _next;
         [SerializeField] private string _finisherText = "FINISHER";
@@ -50,7 +52,7 @@ namespace ShiftMagicSpell.View
 
             _word.SetDisplay(word);
             _word.SetCharColors(charColors);
-            string progress = $"{(best != null ? best.Count : 0)}/{word.Length}";
+            string progress = string.Format(_progressFormat, best != null ? best.Count : 0, word.Length);
             _progress.SetDisplay(progress);
             _progress.Color = game.HintAlpha() > 0f ? colors.Glow : colors.Dim;
 

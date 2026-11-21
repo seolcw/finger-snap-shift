@@ -16,6 +16,8 @@ namespace ShiftMagicSpell.View
         [SerializeField] private GameObject _dead;
         [Tooltip("{0} = 페이즈, {1} = 재시작할 손 HP, {2} = 최대")]
         [SerializeField] private PixelText _deadSubtitle;
+        [Tooltip("{0} = 마지막으로 맞은 공격")]
+        [SerializeField] private PixelText _deadCause;
         [SerializeField] private GameObject _phaseClear;
         [Tooltip("{0} = 클리어한 페이즈")]
         [SerializeField] private PixelText _phaseClearTitle;
@@ -74,6 +76,10 @@ namespace ShiftMagicSpell.View
             if (game.State == GameState.Dead)
             {
                 _deadSubtitle.SetArgs(game.Phase + 1, game.GetRecoveredHandHp(), game.Hand.MaxHp);
+                if (_deadCause != null)
+                {
+                    _deadCause.SetArgs(string.IsNullOrEmpty(game.LastHitSource) ? "THE HAND" : game.LastHitSource);
+                }
             }
 
             if (isPhaseClear)

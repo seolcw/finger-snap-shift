@@ -132,6 +132,19 @@ namespace ShiftMagicSpell.Editor
             Debug.Log($"[INFO] SceneSetupUtils::RebuildTransitionScreens() - Transition screens rebuilt. Details: [Scene={SCENE_PATH}]");
         }
 
+        /// <summary>지금 Main 씬에 화면 아래 안내 줄과 쓰러짐 원인 줄을 넣는다. 다른 내용은 그대로.</summary>
+        [MenuItem("Tools/Shift Magic Spell/Add Guidance Texts To Main Scene (keeps edits)")]
+        public static void AddGuidanceTexts()
+        {
+            var scene = EditorSceneManager.OpenScene(SCENE_PATH, OpenSceneMode.Single);
+            HudView hud = Object.FindAnyObjectByType<HudView>(FindObjectsInactive.Include);
+            ScreensView screens = Object.FindAnyObjectByType<ScreensView>(FindObjectsInactive.Include);
+            HudSetupUtils.BuildGuide(hud);
+            HudSetupUtils.BuildDeadCause(screens, screens.transform.Find("Dead").gameObject);
+            EditorSceneManager.SaveScene(scene);
+            Debug.Log($"[INFO] SceneSetupUtils::AddGuidanceTexts() - Guidance texts added. Details: [Scene={SCENE_PATH}]");
+        }
+
         // 소리는 게임 오브젝트를 실행 중에 찾아 관찰하므로 프리팹만 놓으면 된다
         private static void InstantiateAudio()
         {

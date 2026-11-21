@@ -52,6 +52,9 @@ namespace ShiftMagicSpell.Core
         public Vector2 From;
         public Vector2 To;
 
+        /// <summary>맞았을 때 원인 이름(사망 화면에 보임)</summary>
+        public string HitName => IsDouble && IsSecond ? "DOUBLE CLICK" : Type.ToDisplayName();
+
         /// <summary>줄 섞기 예고 칸에 붙이는 미는 양(→1 …)</summary>
         public string Badge
         {

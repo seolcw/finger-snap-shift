@@ -79,6 +79,7 @@ namespace ShiftMagicSpell.Core
         {
             _heldDirs.Clear();
             IsShiftHeld = false;
+            _hasQueuedInput = false;
         }
 
         public void Update(float dt)
@@ -127,6 +128,7 @@ namespace ShiftMagicSpell.Core
             if (here.Block == null)
             {
                 _game.Fx.Add(FxEvent.AtCell(FxKind.Deny, Board, R, C, 0.2f));
+                _game.ShowToast("NO BLOCK IN THIS SLOT");
                 return false;
             }
 
@@ -148,6 +150,7 @@ namespace ShiftMagicSpell.Core
 
             R += delta.y;
             C += delta.x;
+            _game.Stats.Moves++;
             LastDir = new Vector2Int(delta.y, delta.x);
             SinceMove = 0f;
             Dwell = 0f;
@@ -221,7 +224,9 @@ namespace ShiftMagicSpell.Core
             int sign = delta.x != 0 ? delta.x : delta.y;
             if (here.IsShift || here.IsSlot || !board.CanRotate(axis, index))
             {
+                // 왜 안 되는지 알려 준다(SHIFT 칸·슬롯은 줄에서 빠지는 고정 칸)
                 _game.Fx.Add(FxEvent.AtCell(FxKind.Deny, Board, R, C, 0.2f));
+                _game.ShowToast(here.IsShift ? "CAN'T SHIFT ON A SHIFT KEY - STEP OFF" : here.IsSlot ? "CAN'T SHIFT ON A SLOT - STEP ONTO THE KEYS" : "THIS LINE CAN'T ROTATE");
                 return false;
             }
 

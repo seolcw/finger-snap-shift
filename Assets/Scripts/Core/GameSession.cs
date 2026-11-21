@@ -32,6 +32,12 @@ namespace ShiftMagicSpell.Core
         // 마무리 단어(SHIFT)로 바뀐 직후 FINAL 배너를 보여 주는 남은 시간
         public float FinisherIntroT;
 
+        // 연습 구간(새 판의 첫 단어): 첫 블록을 쏘면 끝난다. 새 판(StartNewRun)에서만 켠다.
+        public bool IsTutorialDone = true;
+
+        // 마지막으로 맞은 공격 이름(사망 화면 원인)
+        public string LastHitSource = string.Empty;
+
         // 단어 위치 힌트 점멸 기준 시각(새 단어가 나오면 다시 센다)
         public float HintT0;
 
@@ -58,12 +64,40 @@ namespace ShiftMagicSpell.Core
         public PhaseDef CurrentPhase => Data.Phases[Phase];
         public bool IsLastPhase => Phase == Data.Phases.Count - 1;
 
+        /// <summary>연습 구간: 손이 공격하지 않고, 단어 힌트가 계속 켜져 있고, 안내가 차례로 나온다</summary>
+        public bool IsTutorial => Phase == 0 && !IsTutorialDone;
+
+        /// <summary>연습 안내 단계: 0 이동, 1 Shift+방향키로 줄 돌리기, 2 단어를 한 줄로, 3 반대편 슬롯에서 Space</summary>
+        public int TutorialStep
+        {
+            get
+            {
+                if (Stats.Moves == 0)
+                {
+                    return 0;
+                }
+
+                if (Stats.Rotations == 0)
+                {
+                    return 1;
+                }
+
+                return Stats.Stored == 0 ? 2 : 3;
+            }
+        }
+
         /// <summary>0~1: 단어 위치 힌트 세기. hintInterval초마다 hintDuration초 동안 두 번 깜빡이고, 나머지 시간에는 0.</summary>
         public float HintAlpha()
         {
             if (Words.Current == null)
             {
                 return 0f;
+            }
+
+            // 연습 구간에는 글자 위치를 계속 보여 준다
+            if (IsTutorial)
+            {
+                return 1f;
             }
 
             float local = Mathf.Repeat(Time - HintT0, Config.HintInterval);
@@ -107,6 +141,7 @@ namespace ShiftMagicSpell.Core
         public void StartNewRun()
         {
             Stats = new GameStats();
+            IsTutorialDone = false;
             StartPhase(0);
         }
 
@@ -150,6 +185,7 @@ namespace ShiftMagicSpell.Core
         public void OnPlayerHurt(string source)
         {
             GameStats.Increment(Stats.Hits, source);
+            LastHitSource = source;
             Shake = 0.3f;
             Vector2 center = GeometryUtils.CellCenter(Player.Board, Player.R, Player.C);
             Fx.Add(new FxEvent { Kind = FxKind.Float, From = center - new Vector2(0f, 0.4f), Text = "-1", Color = PaletteUtils.Hp, T = 0.9f, Duration = 0.9f });
@@ -164,6 +200,12 @@ namespace ShiftMagicSpell.Core
         /// <summary>판이 바뀔 때마다(플레이어·손의 줄 돌리기) 부른다. 손이 섞다가 우연히 맞춰진 단어도 완성으로 친다.</summary>
         public void OnBoardChanged()
         {
+            // 줄 섞기에 맞아 쓰러진 같은 프레임에 단어가 맞춰져도 쓰러짐 상태를 덮지 않게
+            if (State != GameState.Play)
+            {
+                return;
+            }
+
             Words.Check();
         }
 
@@ -228,6 +270,13 @@ namespace ShiftMagicSpell.Core
             }
 
             CastSpell(block.Word, GeometryUtils.CellCenter(board.Index, slot.R, slot.C), 1f + Config.ComboBonus * combo);
+            if (IsTutorial)
+            {
+                // 첫 블록을 쏘면 연습이 끝나고 손 공격이 시작된다(마법에 맞은 멈춤이 끝난 뒤)
+                IsTutorialDone = true;
+                ShowToast("PRACTICE OVER - THE HAND FIGHTS BACK!");
+            }
+
             return true;
         }
 
@@ -325,11 +374,13 @@ namespace ShiftMagicSpell.Core
                     StateT += dt;
                     break;
                 case GameState.Dead:
-                    // 사망: 현재 페이즈 처음부터(판도 시작 배치로), 손 HP는 잃은 만큼의 절반만 회복
+                    // 사망: 현재 페이즈 처음부터(판도 시작 배치로), 손 HP는 잃은 만큼의 절반만 회복. 슬롯에 모아 둔 블록은 남긴다.
                     StateT -= dt;
                     if (StateT <= 0f)
                     {
+                        AttackBlock[][] kept = SaveBlocks();
                         StartPhase(Phase, GetRecoveredHandHp());
+                        RestoreBlocks(kept);
                     }
 
                     break;
@@ -407,6 +458,32 @@ namespace ShiftMagicSpell.Core
                 if (fx.T <= 0f)
                 {
                     Fx.RemoveAt(i);
+                }
+            }
+        }
+
+        private AttackBlock[][] SaveBlocks()
+        {
+            var kept = new AttackBlock[Boards.Length][];
+            for (int b = 0; b < Boards.Length; b++)
+            {
+                kept[b] = new AttackBlock[Boards[b].Slots.Count];
+                for (int i = 0; i < Boards[b].Slots.Count; i++)
+                {
+                    kept[b][i] = Boards[b].Slots[i].Block;
+                }
+            }
+
+            return kept;
+        }
+
+        private void RestoreBlocks(AttackBlock[][] kept)
+        {
+            for (int b = 0; b < Boards.Length; b++)
+            {
+                for (int i = 0; i < Boards[b].Slots.Count && i < kept[b].Length; i++)
+                {
+                    Boards[b].Slots[i].Block = kept[b][i];
                 }
             }
         }

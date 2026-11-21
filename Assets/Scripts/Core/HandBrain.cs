@@ -260,7 +260,7 @@ namespace ShiftMagicSpell.Core
 
             AddLine(LineAxis.Row, player.R, 1f, "player row", false);
             AddLine(LineAxis.Col, player.C, 1f, "player col", false);
-            if (context.Progress != null)
+            if (context.Progress != null && _game.CurrentPhase.IsTargetingProgressLine)
             {
                 // 맞춰 둔 줄을 가로지르는 줄을 섞으면 맞춘 글자 하나가 빠진다
                 string word = _game.Words.Current;

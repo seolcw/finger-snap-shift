@@ -62,7 +62,41 @@ namespace ShiftMagicSpell.Editor
                 ("_slotPrompt", prompt),
                 ("_toast", toast),
                 ("_banner", banner));
+            BuildGuide(hud);
             return hud;
+        }
+
+        /// <summary>화면 아래 안내 줄(연습 단계, 반대편 슬롯 안내). 이미 있는 씬에도 쓸 수 있다(같은 이름은 다시 만든다).</summary>
+        public static void BuildGuide(HudView hud)
+        {
+            GameObject content = hud.transform.Find("Content").gameObject;
+            Transform old = content.transform.Find("Guide");
+            if (old != null)
+            {
+                Object.DestroyImmediate(old.gameObject);
+            }
+
+            PixelText guide = AddText(content, "Guide", "LINE UP THE WORD IN ONE ROW OR COLUMN", CENTER_X, 182f, ViewAssets.Instance.Colors.Glow, TextAlign.Center, hasShadow: true);
+            guide.gameObject.SetActive(false);
+            PrefabSetupUtils.SetRefs(hud, ("_guide", guide));
+        }
+
+        /// <summary>쓰러짐 화면의 원인 줄과 블록 유지 안내</summary>
+        public static void BuildDeadCause(ScreensView screens, GameObject dead)
+        {
+            foreach (string oldName in new[] { "Cause", "Kept" })
+            {
+                Transform old = dead.transform.Find(oldName);
+                if (old != null)
+                {
+                    Object.DestroyImmediate(old.gameObject);
+                }
+            }
+
+            ViewColors colors = ViewAssets.Instance.Colors;
+            PixelText cause = AddText(dead, "Cause", "HIT BY {0}", CENTER_X, 110f, colors.Text, TextAlign.Center, order: RenderOrderUtils.SCREEN_PANEL + 2);
+            AddText(dead, "Kept", "BLOCKS IN YOUR SLOTS ARE KEPT", CENTER_X, 122f, colors.Dim, TextAlign.Center, order: RenderOrderUtils.SCREEN_PANEL + 2);
+            PrefabSetupUtils.SetRefs(screens, ("_deadCause", cause));
         }
 
         public static ScreensView BuildScreens()
@@ -88,6 +122,7 @@ namespace ShiftMagicSpell.Editor
 
             GameObject paused = Panel(root, "Paused", "PAUSED", "P: RESUME  R: RESTART PHASE", colors.Text);
             GameObject dead = Panel(root, "Dead", "YOU FELL", "PHASE {0} AGAIN  HAND HP {1}/{2}", colors.Hp);
+            BuildDeadCause(screens, dead);
             GameObject win = Panel(root, "Win", "VICTORY!", "YOU SHIFTED THE CURSOR AWAY", colors.Glow);
             PixelText winLine1 = AddText(win, "Line1", "TIME {0}:{1:00}   DEATHS {2}   HITS {3}", CENTER_X, 118f, colors.Dim, TextAlign.Center, order: RenderOrderUtils.SCREEN_PANEL + 2);
             PixelText winLine2 = AddText(win, "Line2", "WORDS {0}   ROTATIONS {1}   COMBOS {2}", CENTER_X, 130f, colors.Dim, TextAlign.Center, order: RenderOrderUtils.SCREEN_PANEL + 2);

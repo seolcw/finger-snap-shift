@@ -11,6 +11,8 @@ namespace ShiftMagicSpell.Core
         private readonly GameSession _game;
         private int _order;
         private int _lastCount;
+        private AlignResult _cachedBest;
+        private (string Word, int Version0, int Version1, int Reset0, int Reset1, int PlayerBoard) _cacheKey;
 
         public string Current { get; private set; }
         public string Next { get; private set; }
@@ -38,6 +40,12 @@ namespace ShiftMagicSpell.Core
                 return null;
             }
 
+            var key = (Current, _game.Boards[0].Version, _game.Boards[1].Version, _game.Boards[0].ResetCount, _game.Boards[1].ResetCount, _game.Player.Board);
+            if (_cachedBest != null && key == _cacheKey)
+            {
+                return _cachedBest;
+            }
+
             AlignResult best = null;
             foreach (BoardModel board in _game.Boards)
             {
@@ -48,6 +56,8 @@ namespace ShiftMagicSpell.Core
                 }
             }
 
+            _cacheKey = key;
+            _cachedBest = best;
             return best;
         }
 
@@ -79,7 +89,7 @@ namespace ShiftMagicSpell.Core
                     }
                 }
 
-                _game.Fx.Add(new FxEvent { Kind = FxKind.Match, Board = align.Board, Cells = FxEvent.ToCellList(matched), T = 0.5f, Duration = 0.6f });
+                _game.Fx.Add(new FxEvent { Kind = FxKind.Match, Board = align.Board, Cells = FxEvent.ToCellList(matched), T = 0.5f, Duration = 0.5f });
             }
 
             _lastCount = align.Count;

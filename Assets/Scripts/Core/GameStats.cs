@@ -6,6 +6,7 @@ namespace ShiftMagicSpell.Core
     public class GameStats
     {
         public int Teleports;
+        public int Moves;
         public int WordsDone;
         public int Deaths;
         public int Rotations;

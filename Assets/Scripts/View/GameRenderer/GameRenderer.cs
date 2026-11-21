@@ -91,6 +91,8 @@ namespace ShiftMagicSpell.View
             _player.Render(game);
             _hand.Render(game);
             DrawCellFx();
+            UseCanvas(_overCanvas);
+            DrawSlotArrows();
             _hud.Render(game);
             _screens.Render(game);
             foreach (PixelCanvas canvas in canvases)
