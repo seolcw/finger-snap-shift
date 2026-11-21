@@ -1,0 +1,20 @@
+{
+    "name": "ShiftMagicSpell.Editor",
+    "rootNamespace": "ShiftMagicSpell.Editor",
+    "references": [
+        "ShiftMagicSpell",
+        "Unity.2D.Aseprite.Editor",
+        "Unity.2D.PixelPerfect"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

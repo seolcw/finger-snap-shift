@@ -1,0 +1,156 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2dd653ad3e234a74dbeee72f48bfdead, type: 3}
+  m_Name: SoundLibrary
+  m_EditorClassIdentifier: 
+  _music: {fileID: 8300000, guid: 628759ef98fe57847b6d77f5b9078ac1, type: 3}
+  _musicVolume: 0.35
+  _sfxVolume: 1
+  _entries:
+  - Key: 0
+    Clip: {fileID: 8300000, guid: f6b725828c5c7f949896f51b649394d8, type: 3}
+    Volume: 0.7
+    Pitch: 1.5
+    PitchJitter: 0
+    MinInterval: 0
+  - Key: 1
+    Clip: {fileID: 8300000, guid: f6b725828c5c7f949896f51b649394d8, type: 3}
+    Volume: 0.15
+    Pitch: 1
+    PitchJitter: 0.05
+    MinInterval: 0.05
+  - Key: 2
+    Clip: {fileID: 8300000, guid: 658148e3f5a2e2b4dba98e3fbb33a2ff, type: 3}
+    Volume: 0.45
+    Pitch: 1
+    PitchJitter: 0.05
+    MinInterval: 0
+  - Key: 3
+    Clip: {fileID: 8300000, guid: 81e29c95c9c11fc459d5b6ebeb5a5095, type: 3}
+    Volume: 0.5
+    Pitch: 1
+    PitchJitter: 0
+    MinInterval: 0.1
+  - Key: 4
+    Clip: {fileID: 8300000, guid: 09db69363be280d4cad3d79fd1f22f9c, type: 3}
+    Volume: 0.25
+    Pitch: 1.5
+    PitchJitter: 0
+    MinInterval: 0
+  - Key: 5
+    Clip: {fileID: 8300000, guid: 09db69363be280d4cad3d79fd1f22f9c, type: 3}
+    Volume: 0.7
+    Pitch: 1
+    PitchJitter: 0
+    MinInterval: 0
+  - Key: 6
+    Clip: {fileID: 8300000, guid: fb4e374a32b80924cb06d96cfcbeb692, type: 3}
+    Volume: 0.55
+    Pitch: 1
+    PitchJitter: 0
+    MinInterval: 0
+  - Key: 7
+    Clip: {fileID: 8300000, guid: d00fb14fe46381949840facca027a6a3, type: 3}
+    Volume: 0.55
+    Pitch: 0.6
+    PitchJitter: 0.05
+    MinInterval: 0
+  - Key: 8
+    Clip: {fileID: 8300000, guid: 8a9553d1a60eba14f9a637f5f5eabedb, type: 3}
+    Volume: 0.7
+    Pitch: 1
+    PitchJitter: 0.05
+    MinInterval: 0
+  - Key: 9
+    Clip: {fileID: 8300000, guid: d00fb14fe46381949840facca027a6a3, type: 3}
+    Volume: 0.6
+    Pitch: 1
+    PitchJitter: 0.05
+    MinInterval: 0
+  - Key: 10
+    Clip: {fileID: 8300000, guid: 577538f6295f0714cbd64aeb78890a0b, type: 3}
+    Volume: 0.6
+    Pitch: 1
+    PitchJitter: 0.05
+    MinInterval: 0
+  - Key: 11
+    Clip: {fileID: 8300000, guid: dab38aa2a1cff3740a290b367ce503f4, type: 3}
+    Volume: 0.8
+    Pitch: 1
+    PitchJitter: 0
+    MinInterval: 0
+  - Key: 12
+    Clip: {fileID: 8300000, guid: 3840673fb38e57b4ebc4c9eb448741fd, type: 3}
+    Volume: 0.6
+    Pitch: 1
+    PitchJitter: 0.08
+    MinInterval: 0
+  - Key: 13
+    Clip: {fileID: 8300000, guid: 577538f6295f0714cbd64aeb78890a0b, type: 3}
+    Volume: 0.6
+    Pitch: 1.35
+    PitchJitter: 0
+    MinInterval: 0
+  - Key: 14
+    Clip: {fileID: 8300000, guid: 4d3bccdfbe46eca4793d184b431e3e87, type: 3}
+    Volume: 0.7
+    Pitch: 1
+    PitchJitter: 0.05
+    MinInterval: 0
+  - Key: 15
+    Clip: {fileID: 8300000, guid: 83863619d2f442743999b5f2d4e0c4fd, type: 3}
+    Volume: 0.35
+    Pitch: 1
+    PitchJitter: 0
+    MinInterval: 0.15
+  - Key: 16
+    Clip: {fileID: 8300000, guid: b00540993245e5b409acaf27850f3e85, type: 3}
+    Volume: 0.6
+    Pitch: 1
+    PitchJitter: 0.08
+    MinInterval: 0
+  - Key: 17
+    Clip: {fileID: 8300000, guid: 3840673fb38e57b4ebc4c9eb448741fd, type: 3}
+    Volume: 0.55
+    Pitch: 0.65
+    PitchJitter: 0.05
+    MinInterval: 0
+  - Key: 18
+    Clip: {fileID: 8300000, guid: 3840673fb38e57b4ebc4c9eb448741fd, type: 3}
+    Volume: 0.5
+    Pitch: 1.7
+    PitchJitter: 0.05
+    MinInterval: 0
+  - Key: 19
+    Clip: {fileID: 8300000, guid: 8135299fbf556e6498f9a7032fe87d37, type: 3}
+    Volume: 0.5
+    Pitch: 1
+    PitchJitter: 0
+    MinInterval: 0
+  - Key: 20
+    Clip: {fileID: 8300000, guid: add02e99ee2b02f429e82b2bb064faf6, type: 3}
+    Volume: 0.7
+    Pitch: 1
+    PitchJitter: 0
+    MinInterval: 0
+  - Key: 21
+    Clip: {fileID: 8300000, guid: add02e99ee2b02f429e82b2bb064faf6, type: 3}
+    Volume: 0.8
+    Pitch: 0.85
+    PitchJitter: 0
+    MinInterval: 0
+  - Key: 22
+    Clip: {fileID: 8300000, guid: cfa6be336869bd84ea8fa0e56c6f6477, type: 3}
+    Volume: 0.7
+    Pitch: 1
+    PitchJitter: 0
+    MinInterval: 0

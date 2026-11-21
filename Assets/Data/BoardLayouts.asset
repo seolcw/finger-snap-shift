@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3fa3c44ae27f3348b9eee98a8973cee, type: 3}
+  m_Name: BoardLayouts
+  m_EditorClassIdentifier: 
+  LeftMask:
+  - .#####.
+  - '######.'
+  - '######S'
+  - .######
+  - .#####.
+  RightMask:
+  - .#####.
+  - .######
+  - S######
+  - '######.'
+  - .#####.
+  LeftLayout:
+  - .IGMW_.
+  - BRHNC_.
+  - YADSOT^
+  - .ZLFEPJ
+  - .UXQKV.
+  RightLayout:
+  - .WYFV_.
+  - .KLOTPZ
+  - ^CNISRU
+  - JDHEAQ.
+  - ._BGMX.
+  LeftSlots:
+  - {x: -1, y: 1}
+  - {x: -1, y: 2}
+  RightSlots:
+  - {x: 7, y: 1}
+  - {x: 7, y: 2}
