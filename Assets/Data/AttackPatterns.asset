@@ -103,10 +103,11 @@ MonoBehaviour:
     - summon
     - flick
     - slot
-    HandHp: 20
+    HandHp: 8
     SpeedMul: 1
-    IntervalMul: 1
+    IntervalMul: 1.25
     WarnMul: 1
+    IsTargetingProgressLine: 0
   - Words:
     - MAGIC
     - FROST
@@ -123,10 +124,11 @@ MonoBehaviour:
     - charge
     - drag
     - slot
-    HandHp: 25
+    HandHp: 13
     SpeedMul: 1.1
     IntervalMul: 0.9
     WarnMul: 0.95
+    IsTargetingProgressLine: 1
   - Words:
     - COMET
     - BLAZE
@@ -143,10 +145,11 @@ MonoBehaviour:
     - drag
     - full
     - slot
-    HandHp: 25
+    HandHp: 14
     SpeedMul: 1.2
     IntervalMul: 0.8
     WarnMul: 0.9
+    IsTargetingProgressLine: 1
   FinisherWord: SHIFT
   Spells:
   - Word: FIRE
