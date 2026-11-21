@@ -1,0 +1,378 @@
+{
+  "config": {
+    "warnTime": 0.7,
+    "handSpeed": 560,
+    "attackInterval": 2.4,
+    "moveRepeat": 0.15,
+    "rotateRepeat": 0.24,
+    "dominoStep": 0.035,
+    "playerHp": 5,
+    "hitInvuln": 1,
+    "shiftCooldown": 2,
+    "shiftInvuln": 0.5,
+    "spellStun": 0.8,
+    "spellTime": 0.9,
+    "finisherHp": 5,
+    "deathHandRecover": 0.5,
+    "reaction": 0.25,
+    "rotateSlide": 0.24,
+    "hintInterval": 4,
+    "hintDuration": 1,
+    "overflowMul": 0.8,
+    "comboWindow": 1.5,
+    "comboBonus": 0.5,
+    "blockHp": 2,
+    "storeTime": 0.5,
+    "blockAggro": 0.15
+  },
+  "sliders": [
+    {
+      "key": "warnTime",
+      "label": "예고 시간 (초)",
+      "min": 0.3,
+      "max": 2,
+      "step": 0.05
+    },
+    {
+      "key": "handSpeed",
+      "label": "손 이동 속도 (px/초)",
+      "min": 100,
+      "max": 900,
+      "step": 10
+    },
+    {
+      "key": "attackInterval",
+      "label": "공격 간격 (초)",
+      "min": 0.5,
+      "max": 5,
+      "step": 0.1
+    },
+    {
+      "key": "moveRepeat",
+      "label": "이동 반복 간격 (초)",
+      "min": 0.05,
+      "max": 0.4,
+      "step": 0.01
+    },
+    {
+      "key": "rotateRepeat",
+      "label": "줄 돌리기 반복 간격 (초)",
+      "min": 0.05,
+      "max": 0.5,
+      "step": 0.01
+    },
+    {
+      "key": "rotateSlide",
+      "label": "줄 돌리기 미끄러짐 시간 (초)",
+      "min": 0.05,
+      "max": 0.6,
+      "step": 0.01
+    },
+    {
+      "key": "dominoStep",
+      "label": "도미노 간격 (초)",
+      "min": 0,
+      "max": 0.1,
+      "step": 0.005
+    },
+    {
+      "key": "spellStun",
+      "label": "마법 맞은 손 멈춤 (초)",
+      "min": 0,
+      "max": 3,
+      "step": 0.1
+    },
+    {
+      "key": "hintInterval",
+      "label": "단어 위치 깜빡임 주기 (초)",
+      "min": 1,
+      "max": 12,
+      "step": 0.5
+    },
+    {
+      "key": "hintDuration",
+      "label": "깜빡이는 시간 (초)",
+      "min": 0.2,
+      "max": 3,
+      "step": 0.1
+    }
+  ],
+  "phases": [
+    {
+      "words": [
+        "FIRE",
+        "BOLT",
+        "WIND",
+        "BEAM",
+        "NOVA"
+      ],
+      "attacks": [
+        "click",
+        "aim",
+        "summon",
+        "flick",
+        "slot"
+      ],
+      "handHp": 20,
+      "speedMul": 1,
+      "intervalMul": 1,
+      "warnMul": 1
+    },
+    {
+      "words": [
+        "MAGIC",
+        "FROST",
+        "LASER",
+        "STORM",
+        "BLADE",
+        "FLAME"
+      ],
+      "attacks": [
+        "click",
+        "aim",
+        "summon",
+        "flick",
+        "track",
+        "charge",
+        "drag",
+        "slot"
+      ],
+      "handHp": 25,
+      "speedMul": 1.1,
+      "intervalMul": 0.9,
+      "warnMul": 0.95
+    },
+    {
+      "words": [
+        "COMET",
+        "BLAZE",
+        "VORTEX",
+        "ROCKET",
+        "DRAGON"
+      ],
+      "attacks": [
+        "click",
+        "aim",
+        "summon",
+        "flick",
+        "track",
+        "charge",
+        "drag",
+        "full",
+        "slot"
+      ],
+      "handHp": 25,
+      "speedMul": 1.2,
+      "intervalMul": 0.8,
+      "warnMul": 0.9
+    }
+  ],
+  "finisherWord": "SHIFT",
+  "spells": {
+    "FIRE": {
+      "ko": "화염구",
+      "fx": "fireball",
+      "color": "#ff8a3d",
+      "size": 10,
+      "icon": "Fire"
+    },
+    "BOLT": {
+      "ko": "번개",
+      "fx": "bolt",
+      "color": "#fff27a",
+      "count": 1,
+      "icon": "Bolt"
+    },
+    "WIND": {
+      "ko": "돌풍",
+      "fx": "gust",
+      "color": "#9ff5d0",
+      "count": 3,
+      "icon": "Gust"
+    },
+    "BEAM": {
+      "ko": "광선",
+      "fx": "beam",
+      "color": "#7fd8ff",
+      "count": 1,
+      "icon": "Beam"
+    },
+    "NOVA": {
+      "ko": "폭발",
+      "fx": "nova",
+      "color": "#c9b6ff",
+      "icon": "Star"
+    },
+    "MAGIC": {
+      "ko": "마법",
+      "fx": "sparkle",
+      "color": "#ff7ab0",
+      "count": 6,
+      "icon": "Star"
+    },
+    "FROST": {
+      "ko": "얼음 조각",
+      "fx": "shards",
+      "color": "#a8e6ff",
+      "count": 5,
+      "icon": "Ice"
+    },
+    "LASER": {
+      "ko": "레이저",
+      "fx": "beam",
+      "color": "#ff4d6d",
+      "count": 3,
+      "icon": "Beam"
+    },
+    "STORM": {
+      "ko": "폭풍",
+      "fx": "bolt",
+      "color": "#fff27a",
+      "count": 3,
+      "icon": "Bolt"
+    },
+    "BLADE": {
+      "ko": "칼날",
+      "fx": "slash",
+      "color": "#e8ecf5",
+      "count": 3,
+      "icon": "Blade"
+    },
+    "FLAME": {
+      "ko": "불꽃",
+      "fx": "fireball",
+      "color": "#ff6a2a",
+      "size": 13,
+      "icon": "Fire"
+    },
+    "ROCKET": {
+      "ko": "로켓",
+      "fx": "rocket",
+      "color": "#ffb13d",
+      "icon": "Rocket"
+    },
+    "VORTEX": {
+      "ko": "소용돌이",
+      "fx": "gust",
+      "color": "#b48cff",
+      "count": 5,
+      "icon": "Gust"
+    },
+    "DRAGON": {
+      "ko": "용의 숨결",
+      "fx": "dragon",
+      "color": "#ff5a2a",
+      "icon": "Dragon"
+    },
+    "SHIFT": {
+      "ko": "SHIFT",
+      "fx": "shift",
+      "color": "#3d7bff",
+      "icon": "Shift"
+    },
+    "COMET": {
+      "ko": "혜성",
+      "fx": "fireball",
+      "color": "#9fd8ff",
+      "size": 12,
+      "icon": "Fire"
+    },
+    "BLAZE": {
+      "ko": "업화",
+      "fx": "fireball",
+      "color": "#ff4a1a",
+      "size": 15,
+      "icon": "Fire"
+    }
+  },
+  "attacks": {
+    "flick": {
+      "name": "줄 섞기",
+      "kind": "position",
+      "base": 6,
+      "cooldown": 7,
+      "warnMul": 1,
+      "shiftMin": 1,
+      "shiftMax": 1
+    },
+    "summon": {
+      "name": "소환",
+      "kind": "damage",
+      "base": 7,
+      "cooldown": 4.5,
+      "warnMul": 0.8,
+      "bulletSpeed": 6
+    },
+    "charge": {
+      "name": "둘레 돌진",
+      "kind": "damage",
+      "base": 6,
+      "cooldown": 6,
+      "warnMul": 1.1,
+      "chargeSpeed": 850
+    },
+    "aim": {
+      "name": "조준 돌진",
+      "kind": "damage",
+      "base": 8,
+      "cooldown": 4,
+      "warnMul": 1,
+      "chargeSpeed": 760,
+      "chainMin": {
+        "1": 1,
+        "2": 1,
+        "3": 2
+      },
+      "chainMax": {
+        "1": 1,
+        "2": 2,
+        "3": 2
+      },
+      "chainWarnMul": 0.8
+    },
+    "track": {
+      "name": "추적 내려찍기",
+      "kind": "damage",
+      "base": 8,
+      "cooldown": 6,
+      "warnMul": 1,
+      "trackTime": 1.5,
+      "followSpeed": 220,
+      "lockMul": 0.85
+    },
+    "click": {
+      "name": "클릭",
+      "kind": "damage",
+      "base": 8,
+      "cooldown": 3,
+      "warnMul": 0.9,
+      "doubleChance": {
+        "1": 0.2,
+        "2": 0.4,
+        "3": 0.55
+      },
+      "doubleGap": 0.5
+    },
+    "drag": {
+      "name": "드래그 선택",
+      "kind": "damage",
+      "base": 7,
+      "cooldown": 7,
+      "warnMul": 1.3
+    },
+    "full": {
+      "name": "전체 공격",
+      "kind": "damage",
+      "base": 0,
+      "cooldown": 20,
+      "warnMul": 3.2
+    },
+    "slot": {
+      "name": "슬롯 깨기",
+      "kind": "damage",
+      "base": 5,
+      "cooldown": 6,
+      "warnMul": 1.2
+    }
+  }
+}
