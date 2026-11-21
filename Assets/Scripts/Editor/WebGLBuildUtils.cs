@@ -8,7 +8,7 @@ using UnityEngine;
 namespace ShiftMagicSpell.Editor
 {
     /// <summary>
-    /// WebGL 빌드(itch.io용). 설정: Gzip, Decompression Fallback 끔, 960x600, Exception None, Default 템플릿.
+    /// WebGL 빌드(itch.io용). 설정: Gzip, Decompression Fallback 끔, 960x600, Exception None, 프로젝트 템플릿(ShiftMagicSpell).
     /// bundleVersion은 빌드하는 동안만 빌드 이름으로 바꾸고 끝나면 되돌린다(버전 변경은 커밋하지 않음).
     /// 배치 실행: -executeMethod ShiftMagicSpell.Editor.WebGLBuildUtils.BuildFromCommandLine -buildVersion 이름 -buildOutput 폴더
     /// </summary>
@@ -16,6 +16,9 @@ namespace ShiftMagicSpell.Editor
     {
         private const int WEB_WIDTH = 960;
         private const int WEB_HEIGHT = 600;
+
+        // Assets/WebGLTemplates/ShiftMagicSpell: 하단 막대 없이 캔버스만 960x600(itch.io 임베드 크기와 같게)
+        private const string WEB_TEMPLATE = "PROJECT:ShiftMagicSpell";
 
         [MenuItem("Tools/Shift Magic Spell/Build WebGL")]
         public static void BuildFromMenu()
@@ -71,7 +74,7 @@ namespace ShiftMagicSpell.Editor
             PlayerSettings.WebGL.compressionFormat = WebGLCompressionFormat.Gzip;
             PlayerSettings.WebGL.decompressionFallback = false;
             PlayerSettings.WebGL.exceptionSupport = WebGLExceptionSupport.None;
-            PlayerSettings.WebGL.template = "APPLICATION:Default";
+            PlayerSettings.WebGL.template = WEB_TEMPLATE;
             PlayerSettings.defaultWebScreenWidth = WEB_WIDTH;
             PlayerSettings.defaultWebScreenHeight = WEB_HEIGHT;
 
