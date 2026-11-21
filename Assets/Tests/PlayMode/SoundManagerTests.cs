@@ -24,6 +24,12 @@ namespace ShiftMagicSpell.Tests
         [SetUp]
         public void SetUp()
         {
+            // 앞선 씬 테스트가 남긴 Main 씬에도 Audio가 있어서, 싱글톤 자리를 차지하고 있으면 테스트용 프리팹이 스스로 지워진다
+            if (SoundManager.Instance != null)
+            {
+                Object.DestroyImmediate(SoundManager.Instance.gameObject);
+            }
+
 #if UNITY_EDITOR
             var prefab = UnityEditor.AssetDatabase.LoadAssetAtPath<GameObject>(PREFAB_PATH);
             Assert.IsNotNull(prefab, PREFAB_PATH);
