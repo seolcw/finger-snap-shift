@@ -88,7 +88,6 @@ namespace ShiftMagicSpell.Editor
 
             GameObject paused = Panel(root, "Paused", "PAUSED", "P: RESUME  R: RESTART PHASE", colors.Text);
             GameObject dead = Panel(root, "Dead", "YOU FELL", "PHASE {0} AGAIN  HAND HP {1}/{2}", colors.Hp);
-            GameObject phaseClear = Panel(root, "PhaseClear", "PHASE {0} CLEAR", "THE HAND GETS FASTER", colors.Ok);
             GameObject win = Panel(root, "Win", "VICTORY!", "YOU SHIFTED THE CURSOR AWAY", colors.Glow);
             PixelText winLine1 = AddText(win, "Line1", "TIME {0}:{1:00}   DEATHS {2}   HITS {3}", CENTER_X, 118f, colors.Dim, TextAlign.Center, order: RenderOrderUtils.SCREEN_PANEL + 2);
             PixelText winLine2 = AddText(win, "Line2", "WORDS {0}   ROTATIONS {1}   COMBOS {2}", CENTER_X, 130f, colors.Dim, TextAlign.Center, order: RenderOrderUtils.SCREEN_PANEL + 2);
@@ -100,17 +99,67 @@ namespace ShiftMagicSpell.Editor
                 ("_paused", paused),
                 ("_dead", dead),
                 ("_deadSubtitle", dead.transform.Find("Subtitle").GetComponent<PixelText>()),
-                ("_phaseClear", phaseClear),
-                ("_phaseClearTitle", phaseClear.transform.Find("TitleText").GetComponent<PixelText>()),
                 ("_win", win),
                 ("_winLine1", winLine1),
                 ("_winLine2", winLine2));
-            foreach (GameObject panel in new[] { paused, dead, phaseClear, win })
+            foreach (GameObject panel in new[] { paused, dead, win })
             {
                 panel.SetActive(false);
             }
 
+            BuildTransitionScreens(root, screens);
             return screens;
+        }
+
+        /// <summary>
+        /// 페이즈 전환 화면: 클리어 글자(덮개 없이 손이 물러나는 게 보이게), 다음 페이즈 배너, FINAL 배너, 번쩍임.
+        /// 이미 있는 씬에도 쓸 수 있게 따로 둔다(같은 이름 오브젝트는 지우고 다시 만든다).
+        /// </summary>
+        public static void BuildTransitionScreens(GameObject root, ScreensView screens)
+        {
+            ViewColors colors = ViewAssets.Instance.Colors;
+            foreach (string oldName in new[] { "PhaseClear", "PhaseIntro", "Final", "Flash" })
+            {
+                Transform old = root.transform.Find(oldName);
+                if (old != null)
+                {
+                    Object.DestroyImmediate(old.gameObject);
+                }
+            }
+
+            GameObject phaseClear = Child(root, "PhaseClear", 0f, 0f);
+            PixelText phaseClearTitle = AddText(phaseClear, "TitleText", "PHASE {0} CLEAR", CENTER_X, 40f, colors.Ok, TextAlign.Center, 2, true, order: RenderOrderUtils.SCREEN_PANEL + 2);
+            GameObject phaseIntro = Banner(root, "PhaseIntro", "PHASE {0}", "THE HAND GETS FASTER", colors.Text);
+            GameObject final = Banner(root, "Final", "FINAL: SHIFT", "LINE UP SHIFT!", colors.Glow);
+            SpriteRenderer flash = Child(root, "Flash", 0f, 200f).AddComponent<SpriteRenderer>();
+            flash.sprite = ViewAssets.Instance.WhitePixel;
+            flash.transform.localScale = new Vector3(ViewUtils.SCREEN_W, ViewUtils.SCREEN_H, 1f);
+            flash.sortingOrder = RenderOrderUtils.SCREEN_PANEL + 50;
+            flash.enabled = false;
+            PrefabSetupUtils.SetRefs(screens,
+                ("_phaseClear", phaseClear),
+                ("_phaseClearTitle", phaseClearTitle),
+                ("_phaseIntro", phaseIntro),
+                ("_phaseIntroTitle", phaseIntro.transform.Find("TitleText").GetComponent<PixelText>()),
+                ("_final", final),
+                ("_flash", flash));
+            foreach (GameObject panel in new[] { phaseClear, phaseIntro, final })
+            {
+                panel.SetActive(false);
+            }
+        }
+
+        // 화면 가운데 판(Ui/Panel 9-slice) + 큰 제목 + 부제목. 판 뒤의 새 판(키보드)이 보이게 덮개는 없다.
+        private static GameObject Banner(GameObject parent, string panelName, string titleText, string subtitle, Color titleColor)
+        {
+            const float width = 208f;
+            const float height = 48f;
+            GameObject banner = Child(parent, panelName, 0f, 0f);
+            NineSliceSprite panel = Child(banner, "Panel", CENTER_X - width * 0.5f, 62f).AddComponent<NineSliceSprite>();
+            SetFields(panel, ("_sizePx", new Vector2(width, height)), ("_sortingOrder", RenderOrderUtils.SCREEN_PANEL + 1));
+            AddText(banner, "TitleText", titleText, CENTER_X, 70f, titleColor, TextAlign.Center, 2, true, order: RenderOrderUtils.SCREEN_PANEL + 2);
+            AddText(banner, "Subtitle", subtitle, CENTER_X, 94f, ViewAssets.Instance.Colors.Dim, TextAlign.Center, order: RenderOrderUtils.SCREEN_PANEL + 2);
+            return banner;
         }
 
         // 화면 전체 덮개 + 큰 제목 + 부제목
@@ -173,6 +222,9 @@ namespace ShiftMagicSpell.Editor
                         break;
                     case bool flag:
                         property.boolValue = flag;
+                        break;
+                    case Vector2 vector:
+                        property.vector2Value = vector;
                         break;
                     case Color color:
                         property.colorValue = color;

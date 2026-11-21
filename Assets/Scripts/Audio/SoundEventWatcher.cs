@@ -21,6 +21,7 @@ namespace ShiftMagicSpell.Audio
         private GameStats _stats;
         private GameState _state;
         private TimedText _banner;
+        private float _finisherIntroT;
         private HandState _handState;
         private string _handAnim;
         private float _handAnimT;
@@ -53,6 +54,7 @@ namespace ShiftMagicSpell.Audio
 
             _state = session.State;
             _banner = session.Banner;
+            _finisherIntroT = session.FinisherIntroT;
             SnapshotStats();
             SnapshotHand();
             SnapshotPlayer();
@@ -76,6 +78,14 @@ namespace ShiftMagicSpell.Audio
             bool isStateChanged = PollState();
             bool isPhaseStarted = _session.Banner != null && _session.Banner != _banner;
             _banner = _session.Banner;
+
+            // 마무리 단어(SHIFT)로 바뀌며 FINAL 배너가 뜨는 순간
+            bool isFinisherIntro = _session.FinisherIntroT > 0f && _finisherIntroT <= 0f;
+            _finisherIntroT = _session.FinisherIntroT;
+            if (isFinisherIntro)
+            {
+                _keys.Add(SoundKey.Combo);
+            }
             bool hasWarp = PollFx();
             bool isHurt = PollStats();
             PollHand();
@@ -110,6 +120,10 @@ namespace ShiftMagicSpell.Audio
                     break;
                 case GameState.PhaseClear:
                     QueueJingle(SoundKey.PhaseClear);
+                    break;
+                case GameState.PhaseIntro:
+                    // 다음 페이즈 배너가 뜨는 순간
+                    _keys.Add(SoundKey.Warp);
                     break;
                 case GameState.Win:
                     QueueJingle(SoundKey.Win);

@@ -121,6 +121,17 @@ namespace ShiftMagicSpell.Editor
             Debug.Log($"[INFO] SceneSetupUtils::AddAudioToMainScene() - Audio added. Details: [Scene={SCENE_PATH}]");
         }
 
+        /// <summary>지금 Main 씬의 Screens에 페이즈 전환 화면(클리어 글자, 다음 페이즈·FINAL 배너, 번쩍임)을 다시 만든다. 다른 내용은 그대로.</summary>
+        [MenuItem("Tools/Shift Magic Spell/Rebuild Phase Transition Screens (keeps other edits)")]
+        public static void RebuildTransitionScreens()
+        {
+            var scene = EditorSceneManager.OpenScene(SCENE_PATH, OpenSceneMode.Single);
+            ScreensView screens = Object.FindAnyObjectByType<ScreensView>(FindObjectsInactive.Include);
+            HudSetupUtils.BuildTransitionScreens(screens.gameObject, screens);
+            EditorSceneManager.SaveScene(scene);
+            Debug.Log($"[INFO] SceneSetupUtils::RebuildTransitionScreens() - Transition screens rebuilt. Details: [Scene={SCENE_PATH}]");
+        }
+
         // 소리는 게임 오브젝트를 실행 중에 찾아 관찰하므로 프리팹만 놓으면 된다
         private static void InstantiateAudio()
         {
