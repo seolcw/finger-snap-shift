@@ -24,7 +24,10 @@ namespace ShiftMagicSpell
 
         private void Awake()
         {
+#if !UNITY_WEBGL
+            // WebGL은 브라우저 requestAnimationFrame에 맡긴다(값을 정하면 타이머로 맞춰서 고주사율 화면에서 끊길 수 있음)
             Application.targetFrameRate = 60;
+#endif
             int seed = _seed != 0 ? _seed : System.Environment.TickCount;
             Session = new GameSession(_attackPatterns, _boardLayouts, seed);
             Debug.Log($"[INFO] GameRunner::Awake() - Game started. Details: [Version={Application.version}, Platform={Application.platform}]");
@@ -33,6 +36,9 @@ namespace ShiftMagicSpell
         private void Update()
         {
             _input.Poll(Session);
+
+            // 일시정지 동안 소리(배경음 포함)도 멈춘다
+            AudioListener.pause = Session.IsPaused;
             Session.Update(Mathf.Min(MAX_DELTA, Time.deltaTime));
             _renderer.Render(Session);
         }

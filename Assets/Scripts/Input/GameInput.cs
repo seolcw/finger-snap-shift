@@ -12,7 +12,7 @@ namespace ShiftMagicSpell.Input
     /// </summary>
     public class GameInput
     {
-        private static readonly (Key Key, MoveDir Dir)[] DirKeys =
+        private static readonly (Key Key, MoveDir Dir)[] _dirKeys =
         {
             (Key.W, MoveDir.Up),
             (Key.UpArrow, MoveDir.Up),
@@ -38,13 +38,16 @@ namespace ShiftMagicSpell.Input
                 return;
             }
 
-            if (keyboard.pKey.wasPressedThisFrame)
+            // P: 플레이 중에만 멈춘다(쓰러짐·전환·승리 화면 위에 일시정지가 겹치지 않게). 멈춘 동안에는 언제든 풀 수 있다.
+            if (keyboard.pKey.wasPressedThisFrame && (game.IsPaused || game.State == GameState.Play))
             {
                 game.IsPaused = !game.IsPaused;
                 game.Player.ReleaseAll();
             }
 
-            if (keyboard.rKey.wasPressedThisFrame)
+            // R: 안전한 때만(플레이·쓰러짐·승리). 페이즈 클리어·전환 중에 누르면 방금 깬 페이즈로 되돌아가던 문제
+            bool isRestartAllowed = game.State == GameState.Play || game.State == GameState.Dead || game.State == GameState.Win;
+            if (keyboard.rKey.wasPressedThisFrame && isRestartAllowed)
             {
                 game.RestartPhase();
                 return;
@@ -68,7 +71,7 @@ namespace ShiftMagicSpell.Input
                 player.Fire();
             }
 
-            foreach ((Key key, MoveDir dir) in DirKeys)
+            foreach ((Key key, MoveDir dir) in _dirKeys)
             {
                 if (keyboard[key].wasPressedThisFrame)
                 {
@@ -121,7 +124,7 @@ namespace ShiftMagicSpell.Input
         // W와 ↑처럼 같은 방향 키 두 개 중 하나만 뗐으면 아직 누르고 있는 것
         private static bool IsDirStillHeld(Keyboard keyboard, MoveDir dir)
         {
-            foreach ((Key key, MoveDir keyDir) in DirKeys)
+            foreach ((Key key, MoveDir keyDir) in _dirKeys)
             {
                 if (keyDir == dir && keyboard[key].isPressed)
                 {
