@@ -173,6 +173,7 @@ namespace ShiftMagicSpell.Tests
             }
 
             Assert.AreEqual(GameState.Dead, _game.State, "가만히 서 있으면 언젠가 쓰러져야 함");
+            int blocksBeforeDeath = _game.Boards.Sum(board => board.BlockCount());
             int phase = _game.Phase;
             int maxHp = _game.Hand.MaxHp;
             int expectedHandHp = Mathf.CeilToInt(handHpBeforeDeath + (maxHp - handHpBeforeDeath) * _game.Config.DeathHandRecover);
@@ -186,7 +187,8 @@ namespace ShiftMagicSpell.Tests
             Assert.AreEqual(phase, _game.Phase, "같은 페이즈 처음부터");
             Assert.AreEqual(_game.Config.PlayerHp, _game.Player.Hp, "플레이어 HP 가득");
             Assert.AreEqual(expectedHandHp, _game.Hand.Hp, "손 HP는 잃은 만큼의 절반만 회복");
-            Assert.IsTrue(_game.Boards.All(board => board.BlockCount() == 0), "슬롯 블록은 사라짐");
+            Assert.AreEqual(blocksBeforeDeath, _game.Boards.Sum(board => board.BlockCount()), "쓰러져도 슬롯 블록은 남는다");
+            Assert.IsFalse(string.IsNullOrEmpty(_game.LastHitSource), "쓰러짐 화면에 보일 원인");
             var fresh = TestDataUtils.CreateSession();
             fresh.StartPhase(0);
             for (int b = 0; b < 2; b++)

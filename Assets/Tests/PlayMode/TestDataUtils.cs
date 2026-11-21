@@ -51,6 +51,7 @@ namespace ShiftMagicSpell.Tests
                 (from.Key, row[i].Key) = (row[i].Key, from.Key);
             }
 
+            board.MarkChanged();
             game.OnBoardChanged();
         }
 

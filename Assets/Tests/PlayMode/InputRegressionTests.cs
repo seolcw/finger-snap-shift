@@ -38,5 +38,48 @@ namespace ShiftMagicSpell.Tests
 
             Assert.AreEqual(startC + 1, game.Player.C, "한 번 친 키는 한 칸만 움직여야 함");
         }
+
+        // 검사에서 발견: 페이즈 클리어 직후 R을 누르면 방금 깬 페이즈가 손 HP 가득으로 다시 시작됐다
+        [UnityTest]
+        public IEnumerator RestartKey_IsIgnoredDuringPhaseClear()
+        {
+            Keyboard keyboard = InputSystem.AddDevice<Keyboard>();
+            yield return SceneManager.LoadSceneAsync("Main");
+            yield return null;
+            GameSession game = Object.FindFirstObjectByType<GameRunner>().Session;
+            game.StartPhase(0);
+            game.IsInvincible = true;
+            yield return null;
+            game.Hand.Hp = 2;
+            game.CastSpell("FIRE", Vector2.zero, 1f);
+            Assert.AreEqual(GameState.PhaseClear, game.State);
+            Press(keyboard.rKey, queueEventOnly: true);
+            yield return null;
+            Release(keyboard.rKey, queueEventOnly: true);
+            yield return null;
+            Assert.AreEqual(GameState.PhaseClear, game.State, "전환 중에는 R을 받지 않는다");
+            Assert.AreEqual(0, game.Hand.Hp);
+        }
+
+        // 플레이 평가에서 발견: 쓰러짐 화면에서 P를 누르면 PAUSED가 겹쳤다
+        [UnityTest]
+        public IEnumerator PauseKey_IsIgnoredWhileDead()
+        {
+            Keyboard keyboard = InputSystem.AddDevice<Keyboard>();
+            yield return SceneManager.LoadSceneAsync("Main");
+            yield return null;
+            GameSession game = Object.FindFirstObjectByType<GameRunner>().Session;
+            game.StartPhase(0);
+            yield return null;
+            game.Player.Hp = 1;
+            game.Player.Invuln = 0f;
+            game.Player.Hurt("TEST");
+            Assert.AreEqual(GameState.Dead, game.State);
+            Press(keyboard.pKey, queueEventOnly: true);
+            yield return null;
+            Release(keyboard.pKey, queueEventOnly: true);
+            yield return null;
+            Assert.IsFalse(game.IsPaused, "쓰러짐 화면에서는 일시정지하지 않는다");
+        }
     }
 }

@@ -104,6 +104,7 @@ namespace ShiftMagicSpell.Tests
         {
             _game.StartPhase(0);
             BoardModel right = _game.Boards[1];
+            _game.Hand.Hp = 30;
             int handHp = _game.Hand.Hp;
             right.Slots[0].Block = new AttackBlock { Word = "FIRE", Hp = 2 };
             right.Slots[1].Block = new AttackBlock { Word = "BOLT", Hp = 2 };
@@ -233,7 +234,8 @@ namespace ShiftMagicSpell.Tests
         public void Death_RestartsPhase_HandRecoversHalfOfLostHp()
         {
             _game.StartPhase(0);
-            _game.Hand.Hp = 8;
+            _game.Hand.Hp = 4;
+            _game.Boards[1].Slots[0].Block = new AttackBlock { Word = "BOLT", Hp = 1 };
             _game.Player.Hp = 1;
             _game.Player.Invuln = 0f;
             _game.Player.Hurt("test");
@@ -244,7 +246,10 @@ namespace ShiftMagicSpell.Tests
             }
 
             Assert.AreEqual(GameState.Play, _game.State);
-            Assert.AreEqual(UnityEngine.Mathf.CeilToInt(8 + (20 - 8) * 0.5f), _game.Hand.Hp);
+            Assert.AreEqual(UnityEngine.Mathf.CeilToInt(4 + (_game.Hand.MaxHp - 4) * 0.5f), _game.Hand.Hp);
+            Assert.AreEqual("BOLT", _game.Boards[1].Slots[0].Block?.Word, "쓰러져도 슬롯 블록은 남는다(금 간 상태 그대로)");
+            Assert.AreEqual(1, _game.Boards[1].Slots[0].Block.Hp);
+            Assert.AreEqual("test", _game.LastHitSource, "사망 원인");
             Assert.AreEqual(_game.Config.PlayerHp, _game.Player.Hp);
             Assert.AreEqual(0, _game.Phase);
         }
